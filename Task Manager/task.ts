@@ -226,8 +226,8 @@ function renderTaskList(ul: HTMLUListElement): void {
 
     if (task.finished && task.completionDate) {
       const finishedDate = document.createElement("p");
-      finishedDate.textContent = `Concluída em: ${task.completionDate.toLocaleString(
-        "pt-PT"
+      finishedDate.textContent = `Finished in: ${task.completionDate.toLocaleString(
+        "en"
       )}`;
       finishedDate.classList.add("task-date");
       li.appendChild(finishedDate);

@@ -169,7 +169,7 @@ function renderTaskList(ul) {
         li.appendChild(spanText);
         if (task.finished && task.completionDate) {
             var finishedDate = document.createElement("p");
-            finishedDate.textContent = "Conclu\u00EDda em: ".concat(task.completionDate.toLocaleString("pt-PT"));
+            finishedDate.textContent = "Finished in: ".concat(task.completionDate.toLocaleString("en"));
             finishedDate.classList.add("task-date");
             li.appendChild(finishedDate);
         }
