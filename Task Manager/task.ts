@@ -6,14 +6,14 @@ const counterSpan = document.querySelector("#numPendentes") as HTMLSpanElement;
 const categorySelect = document.querySelector("#categorySelect") as HTMLSelectElement;
 
 // Type, Interface e Class
-type Categoria = "Work" | "Personal" | "Study";
+type Category = "Work" | "Personal" | "Study";
 
 interface Task {
   id: number;
   title: string;
   finished: boolean;
   dataConclusao?: Date;
-  categoria: Categoria;
+  category: Category;
 }
 
 class TaskClass implements Task {
@@ -21,13 +21,13 @@ class TaskClass implements Task {
   title: string;
   finished: boolean;
   dataConclusao?: Date;
-  categoria: Categoria;
+  category: Category;
 
-  constructor(id: number, titulo: string, categoria: Categoria) {
+  constructor(id: number, titulo: string, category: Category) {
     this.id = id;
     this.title = titulo;
     this.finished = false;
-    this.categoria = categoria;
+    this.category = category;
   }
 }
 
@@ -37,13 +37,13 @@ let taskList: Task[] = [];
 
 // FUNÇÕES
 
-function getCategoryColor(categoria: Categoria): string {
-  const cores: Record<Categoria, string> = {
+function getCategoryColor(category: Category): string {
+  const cores: Record<Category, string> = {
     Work: "#3498db",
     Personal: "#e74c3c",
     Study: "#2ecc71",
   };
-  return cores[categoria];
+  return cores[category];
 }
 
 function updateCounter(): void {
@@ -58,7 +58,7 @@ function addTask(): void {
     return;
   }
 
-  const categoriaSelecionada = categorySelect.value as Categoria;
+  const categoriaSelecionada = categorySelect.value as Category;
 
   const newTask = new TaskClass(Date.now(), taskText, categoriaSelecionada);
   taskList.push(newTask);
@@ -135,9 +135,9 @@ function renderTasks(): void {
     const li = document.createElement("li");
 
     const categoryBadge = document.createElement("span");
-    categoryBadge.textContent = task.categoria;
+    categoryBadge.textContent = task.category;
     categoryBadge.classList.add("category-badge");
-    categoryBadge.style.backgroundColor = getCategoryColor(task.categoria);
+    categoryBadge.style.backgroundColor = getCategoryColor(task.category);
 
     const spanText = document.createElement("span");
     spanText.textContent = task.title;

@@ -5,24 +5,24 @@ var output = document.querySelector("#output");
 var counterSpan = document.querySelector("#numPendentes");
 var categorySelect = document.querySelector("#categorySelect");
 var TaskClass = /** @class */ (function () {
-    function TaskClass(id, titulo, categoria) {
+    function TaskClass(id, titulo, category) {
         this.id = id;
         this.title = titulo;
         this.finished = false;
-        this.categoria = categoria;
+        this.category = category;
     }
     return TaskClass;
 }());
 // ARRAY
 var taskList = [];
 // FUNÇÕES
-function getCategoryColor(categoria) {
+function getCategoryColor(category) {
     var cores = {
         Work: "#3498db",
         Personal: "#e74c3c",
         Study: "#2ecc71",
     };
-    return cores[categoria];
+    return cores[category];
 }
 function updateCounter() {
     var pendingCount = taskList.filter(function (task) { return !task.finished; }).length;
@@ -95,9 +95,9 @@ function renderTasks() {
     var _loop_1 = function (task) {
         var li = document.createElement("li");
         var categoryBadge = document.createElement("span");
-        categoryBadge.textContent = task.categoria;
+        categoryBadge.textContent = task.category;
         categoryBadge.classList.add("category-badge");
-        categoryBadge.style.backgroundColor = getCategoryColor(task.categoria);
+        categoryBadge.style.backgroundColor = getCategoryColor(task.category);
         var spanText = document.createElement("span");
         spanText.textContent = task.title;
         spanText.style.cursor = "pointer";
