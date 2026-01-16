@@ -45,15 +45,6 @@ function filterTasks(searchTerm: string): void {
   renderTasks();
 }
 
-function getCategoryColor(category: Category): string {
-  const cores: Record<Category, string> = {
-    Work: "#3498db",
-    Personal: "#e74c3c",
-    Study: "#2ecc71",
-  };
-  return cores[category];
-}
-
 function updateCounter(): void {
   const pendingCount = taskList.filter((task) => !task.finished).length;
   counterSpan.textContent = pendingCount.toString();
@@ -191,7 +182,7 @@ function renderTaskList(ul: HTMLUListElement): void {
     const categoryBadge = document.createElement("span");
     categoryBadge.textContent = task.category;
     categoryBadge.classList.add("category-badge");
-    categoryBadge.style.backgroundColor = getCategoryColor(task.category);
+    categoryBadge.classList.add(`category-${task.category.toLowerCase()}`);
 
     const spanText = document.createElement("span");
     spanText.textContent = task.title;

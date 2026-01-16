@@ -208,23 +208,24 @@ button:hover {
   font-weight: bold;
   margin-right: 10px;
   cursor: default;
+  color: white; /* Add if not already present */
+}
+
+.category-work {
+  background-color: #7d8a94;
+}
+
+.category-personal {
+  background-color: #b08878;
+}
+
+.category-study {
+  background-color: #7a9a7e;
 }
 
 #categorySelect:hover {
   cursor: pointer;
   opacity: 0.7;
-}
-
-.category-work {
-  background-color: #83b5d7;
-}
-
-.category-personal {
-  background-color: #e74c3c;
-}
-
-.category-study {
-  background-color: #3fb26f;
 }
 
 @media (max-width: 768px) {

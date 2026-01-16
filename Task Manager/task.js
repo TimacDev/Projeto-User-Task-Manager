@@ -21,14 +21,6 @@ function filterTasks(searchTerm) {
     currentSearchTerm = searchTerm;
     renderTasks();
 }
-function getCategoryColor(category) {
-    var cores = {
-        Work: "#3498db",
-        Personal: "#e74c3c",
-        Study: "#2ecc71",
-    };
-    return cores[category];
-}
 function updateCounter() {
     var pendingCount = taskList.filter(function (task) { return !task.finished; }).length;
     counterSpan.textContent = pendingCount.toString();
@@ -140,7 +132,7 @@ function renderTaskList(ul) {
         var categoryBadge = document.createElement("span");
         categoryBadge.textContent = task.category;
         categoryBadge.classList.add("category-badge");
-        categoryBadge.style.backgroundColor = getCategoryColor(task.category);
+        categoryBadge.classList.add("category-".concat(task.category.toLowerCase()));
         var spanText = document.createElement("span");
         spanText.textContent = task.title;
         spanText.style.cursor = "pointer";
