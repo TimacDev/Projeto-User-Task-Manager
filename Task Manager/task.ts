@@ -6,7 +6,7 @@ const counterSpan = document.querySelector("#numPendentes") as HTMLSpanElement;
 const categorySelect = document.querySelector("#categorySelect") as HTMLSelectElement;
 
 // Type, Interface e Class
-type Categoria = "Trabalho" | "Pessoal" | "Estudo";
+type Categoria = "Work" | "Personal" | "Study";
 
 interface Task {
   id: number;
@@ -39,9 +39,9 @@ let taskList: Task[] = [];
 
 function getCategoryColor(categoria: Categoria): string {
   const cores: Record<Categoria, string> = {
-    Trabalho: "#3498db",
-    Pessoal: "#e74c3c",
-    Estudo: "#2ecc71",
+    Work: "#3498db",
+    Personal: "#e74c3c",
+    Study: "#2ecc71",
   };
   return cores[categoria];
 }
@@ -95,7 +95,7 @@ function clearAllTasks(): void {
     return;
   }
 
-  if (confirm("Tem certeza que deseja limpar todas as tarefas?")) {
+  if (confirm("Are you sure you want to delete all tasks?")) {
     taskList = [];
     renderTasks();
     output.innerHTML = "";
@@ -120,13 +120,13 @@ function renderTasks(): void {
   const ul = document.createElement("ul");
 
   const btnSort = document.createElement("button");
-  btnSort.textContent = "Ordenar A-Z";
+  btnSort.textContent = "Order A-Z";
   btnSort.classList.add("btn-sort");
   btnSort.addEventListener("click", () => orderTask());
   ul.appendChild(btnSort);
 
   const btnRemoveDone = document.createElement("button");
-  btnRemoveDone.textContent = "Remover Concluídas";
+  btnRemoveDone.textContent = "Remove Done";
   btnRemoveDone.classList.add("btn-removeDone");
   btnRemoveDone.addEventListener("click", () => removeDoneTasks());
   ul.appendChild(btnRemoveDone);
@@ -158,12 +158,12 @@ function renderTasks(): void {
     });
 
     const btnRemove = document.createElement("button");
-    btnRemove.textContent = "Remover";
+    btnRemove.textContent = "Remove";
     btnRemove.classList.add("btn-remove");
     btnRemove.addEventListener("click", () => removeTask(task.id));
 
     const btnEdit = document.createElement("button");
-    btnEdit.textContent = "Editar";
+    btnEdit.textContent = "Edit";
     btnEdit.classList.add("btn-edit");
     btnEdit.addEventListener("click", () => editTask(task.id));
 
