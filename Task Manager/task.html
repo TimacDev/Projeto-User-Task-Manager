@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Gestor de Tarefas</h1>
+
+    <div id="contador" class="contador-destaque">
+      Tarefas pendentes: <span id="numPendentes">0</span>
+    </div>
+
+    <!-- Task Input -->
+    <div class="input-section">
+      <select id="categorySelect">
+        <option value="Trabalho">Trabalho</option>
+        <option value="Pessoal">Pessoal</option>
+        <option value="Estudo">Estudo</option>
+      </select>
+      <input id="taskInput" type="text" placeholder="Nova tarefa" />
+      <button id="addBtn">Adicionar</button>
+      <button id="btnLimpar">Limpar lista</button>
+    </div>
+
+    <!-- Task List Output -->
+    <div id="output"></div>
+
+    <script src="task.js"></script>
+  </body>
+</html>
