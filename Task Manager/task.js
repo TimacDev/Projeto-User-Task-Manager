@@ -82,8 +82,7 @@ function orderTask() {
 // Render Tasks
 function renderTasks() {
     output.innerHTML = "";
-    if (taskList.length === 0) {
-        output.innerHTML = "";
+    if (taskList.length === 0 && currentSearchTerm === "") {
         return;
     }
     var filteredTasks = currentSearchTerm.trim() === ""
@@ -91,28 +90,50 @@ function renderTasks() {
         : taskList.filter(function (task) {
             return task.title.toLowerCase().includes(currentSearchTerm.toLowerCase());
         });
-    var ul = document.createElement("ul");
+    // Controls container (buttons + search)
+    var controls = document.createElement("div");
+    controls.classList.add("controls");
     var btnSort = document.createElement("button");
     btnSort.textContent = "Order A-Z";
     btnSort.classList.add("btn-sort");
     btnSort.addEventListener("click", function () { return orderTask(); });
-    ul.appendChild(btnSort);
+    controls.appendChild(btnSort);
     var btnRemoveDone = document.createElement("button");
     btnRemoveDone.textContent = "Remove Done";
     btnRemoveDone.classList.add("btn-removeDone");
     btnRemoveDone.addEventListener("click", function () { return removeDoneTasks(); });
-    ul.appendChild(btnRemoveDone);
+    controls.appendChild(btnRemoveDone);
     var searchBox = document.createElement("input");
     searchBox.type = "text";
     searchBox.placeholder = "Search tasks...";
     searchBox.classList.add("input-searchbox");
-    searchBox.addEventListener("input", function () { return filterTasks(searchBox.value); });
-    ul.appendChild(searchBox);
+    searchBox.value = currentSearchTerm;
+    searchBox.oninput = function () {
+        currentSearchTerm = searchBox.value;
+        renderTaskList(ul); // Only re-render the task list
+    };
+    controls.appendChild(searchBox);
+    output.appendChild(controls);
+    // Task list container
+    var ul = document.createElement("ul");
+    renderTaskList(ul);
+    output.appendChild(ul);
+    updateCounter();
+}
+// New function: Only renders the task items
+function renderTaskList(ul) {
+    ul.innerHTML = "";
+    var filteredTasks = currentSearchTerm.trim() === ""
+        ? taskList
+        : taskList.filter(function (task) {
+            return task.title.toLowerCase().includes(currentSearchTerm.toLowerCase());
+        });
     if (filteredTasks.length === 0) {
         var noResults = document.createElement("li");
         noResults.textContent = "No tasks found.";
         noResults.classList.add("no-results");
         ul.appendChild(noResults);
+        return;
     }
     var _loop_1 = function (task) {
         var li = document.createElement("li");
@@ -134,7 +155,7 @@ function renderTasks() {
             else {
                 task.completionDate = undefined;
             }
-            renderTasks();
+            renderTaskList(ul);
         });
         var btnRemove = document.createElement("button");
         btnRemove.textContent = "Remove";
@@ -160,7 +181,6 @@ function renderTasks() {
         var task = filteredTasks_1[_i];
         _loop_1(task);
     }
-    output.appendChild(ul);
     updateCounter();
 }
 // Event Listeners

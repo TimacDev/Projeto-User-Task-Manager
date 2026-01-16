@@ -120,44 +120,69 @@ function orderTask(): void {
 function renderTasks(): void {
   output.innerHTML = "";
 
-  if (taskList.length === 0) {
-    output.innerHTML = "";
+  if (taskList.length === 0 && currentSearchTerm === "") {
     return;
   }
 
-  const filteredTasks =
-    currentSearchTerm.trim() === ""
-      ? taskList
-      : taskList.filter((task) =>
-          task.title.toLowerCase().includes(currentSearchTerm.toLowerCase())
-        );
+  const filteredTasks = currentSearchTerm.trim() === ""
+    ? taskList
+    : taskList.filter((task) =>
+        task.title.toLowerCase().includes(currentSearchTerm.toLowerCase())
+      );
 
-  const ul = document.createElement("ul");
+  // Controls container (buttons + search)
+  const controls = document.createElement("div");
+  controls.classList.add("controls");
 
   const btnSort = document.createElement("button");
   btnSort.textContent = "Order A-Z";
   btnSort.classList.add("btn-sort");
   btnSort.addEventListener("click", () => orderTask());
-  ul.appendChild(btnSort);
+  controls.appendChild(btnSort);
 
   const btnRemoveDone = document.createElement("button");
   btnRemoveDone.textContent = "Remove Done";
   btnRemoveDone.classList.add("btn-removeDone");
   btnRemoveDone.addEventListener("click", () => removeDoneTasks());
-  ul.appendChild(btnRemoveDone);
+  controls.appendChild(btnRemoveDone);
 
   const searchBox = document.createElement("input");
   searchBox.type = "text";
   searchBox.placeholder = "Search tasks...";
   searchBox.classList.add("input-searchbox");
-  searchBox.addEventListener("input", () => filterTasks(searchBox.value));
-  ul.appendChild(searchBox);
+  searchBox.value = currentSearchTerm;
+  searchBox.oninput = () => {
+    currentSearchTerm = searchBox.value;
+    renderTaskList(ul); // Only re-render the task list
+  };
+  controls.appendChild(searchBox);
+
+  output.appendChild(controls);
+
+  // Task list container
+  const ul = document.createElement("ul");
+  renderTaskList(ul);
+  output.appendChild(ul);
+
+  updateCounter();
+}
+
+// New function: Only renders the task items
+function renderTaskList(ul: HTMLUListElement): void {
+  ul.innerHTML = "";
+
+  const filteredTasks = currentSearchTerm.trim() === ""
+    ? taskList
+    : taskList.filter((task) =>
+        task.title.toLowerCase().includes(currentSearchTerm.toLowerCase())
+      );
 
   if (filteredTasks.length === 0) {
     const noResults = document.createElement("li");
     noResults.textContent = "No tasks found.";
     noResults.classList.add("no-results");
     ul.appendChild(noResults);
+    return;
   }
 
   for (const task of filteredTasks) {
@@ -183,7 +208,7 @@ function renderTasks(): void {
       } else {
         task.completionDate = undefined;
       }
-      renderTasks();
+      renderTaskList(ul);
     });
 
     const btnRemove = document.createElement("button");
@@ -214,7 +239,6 @@ function renderTasks(): void {
     ul.appendChild(li);
   }
 
-  output.appendChild(ul);
   updateCounter();
 }
 
