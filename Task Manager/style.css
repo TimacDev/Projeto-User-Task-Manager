@@ -138,6 +138,10 @@ button:hover {
   border-radius: 4px;
 }
 
+.btn-remove {
+  margin-left: 100px;
+}
+
 .btn-remove:hover {
   color: #c47c7c;
 }
@@ -178,15 +182,15 @@ button:hover {
 }
 
 /* Cores alternativas via classes (opcional) */
-.category-trabalho {
+.category-work {
   background-color: #83b5d7;
 }
 
-.category-pessoal {
+.category-personal {
   background-color: #e74c3c;
 }
 
-.category-estudo {
+.category-study {
   background-color: #3fb26f;
 }
 
