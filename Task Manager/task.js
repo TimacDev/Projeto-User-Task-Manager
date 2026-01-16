@@ -107,10 +107,10 @@ function renderTasks() {
         spanText.addEventListener("click", function () {
             task.finished = !task.finished;
             if (task.finished) {
-                task.dataConclusao = new Date();
+                task.completionDate = new Date();
             }
             else {
-                task.dataConclusao = undefined;
+                task.completionDate = undefined;
             }
             renderTasks();
         });
@@ -124,9 +124,9 @@ function renderTasks() {
         btnEdit.addEventListener("click", function () { return editTask(task.id); });
         li.appendChild(categoryBadge);
         li.appendChild(spanText);
-        if (task.finished && task.dataConclusao) {
+        if (task.finished && task.completionDate) {
             var finishedDate = document.createElement("p");
-            finishedDate.textContent = "Conclu\u00EDda em: ".concat(task.dataConclusao.toLocaleString("pt-PT"));
+            finishedDate.textContent = "Conclu\u00EDda em: ".concat(task.completionDate.toLocaleString("pt-PT"));
             finishedDate.classList.add("task-date");
             li.appendChild(finishedDate);
         }

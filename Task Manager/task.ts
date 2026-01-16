@@ -12,7 +12,7 @@ interface Task {
   id: number;
   title: string;
   finished: boolean;
-  dataConclusao?: Date;
+  completionDate?: Date;
   category: Category;
 }
 
@@ -20,7 +20,7 @@ class TaskClass implements Task {
   id: number;
   title: string;
   finished: boolean;
-  dataConclusao?: Date;
+  completionDate?: Date;
   category: Category;
 
   constructor(id: number, titulo: string, category: Category) {
@@ -150,9 +150,9 @@ function renderTasks(): void {
     spanText.addEventListener("click", () => {
       task.finished = !task.finished;
       if (task.finished) {
-        task.dataConclusao = new Date();
+        task.completionDate = new Date();
       } else {
-        task.dataConclusao = undefined;
+        task.completionDate = undefined;
       }
       renderTasks();
     });
@@ -170,9 +170,9 @@ function renderTasks(): void {
     li.appendChild(categoryBadge);
     li.appendChild(spanText);
 
-    if (task.finished && task.dataConclusao) {
+    if (task.finished && task.completionDate) {
       const finishedDate = document.createElement("p");
-      finishedDate.textContent = `Concluída em: ${task.dataConclusao.toLocaleString(
+      finishedDate.textContent = `Concluída em: ${task.completionDate.toLocaleString(
         "pt-PT"
       )}`;
       finishedDate.classList.add("task-date");
