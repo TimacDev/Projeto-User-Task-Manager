@@ -18,9 +18,9 @@ var taskList = [];
 // FUNÇÕES
 function getCategoryColor(categoria) {
     var cores = {
-        Trabalho: "#3498db",
-        Pessoal: "#e74c3c",
-        Estudo: "#2ecc71",
+        Work: "#3498db",
+        Personal: "#e74c3c",
+        Study: "#2ecc71",
     };
     return cores[categoria];
 }
@@ -63,7 +63,7 @@ function clearAllTasks() {
     if (taskList.length === 0) {
         return;
     }
-    if (confirm("Tem certeza que deseja limpar todas as tarefas?")) {
+    if (confirm("Are you sure you want to delete all tasks?")) {
         taskList = [];
         renderTasks();
         output.innerHTML = "";
@@ -83,12 +83,12 @@ function renderTasks() {
     }
     var ul = document.createElement("ul");
     var btnSort = document.createElement("button");
-    btnSort.textContent = "Ordenar A-Z";
+    btnSort.textContent = "Order A-Z";
     btnSort.classList.add("btn-sort");
     btnSort.addEventListener("click", function () { return orderTask(); });
     ul.appendChild(btnSort);
     var btnRemoveDone = document.createElement("button");
-    btnRemoveDone.textContent = "Remover Concluídas";
+    btnRemoveDone.textContent = "Remove Done";
     btnRemoveDone.classList.add("btn-removeDone");
     btnRemoveDone.addEventListener("click", function () { return removeDoneTasks(); });
     ul.appendChild(btnRemoveDone);
@@ -115,11 +115,11 @@ function renderTasks() {
             renderTasks();
         });
         var btnRemove = document.createElement("button");
-        btnRemove.textContent = "Remover";
+        btnRemove.textContent = "Remove";
         btnRemove.classList.add("btn-remove");
         btnRemove.addEventListener("click", function () { return removeTask(task.id); });
         var btnEdit = document.createElement("button");
-        btnEdit.textContent = "Editar";
+        btnEdit.textContent = "Edit";
         btnEdit.classList.add("btn-edit");
         btnEdit.addEventListener("click", function () { return editTask(task.id); });
         li.appendChild(categoryBadge);
