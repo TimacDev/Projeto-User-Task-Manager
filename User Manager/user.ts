@@ -81,7 +81,7 @@ const form = document.querySelector("form") as HTMLFormElement;
 
 form.addEventListener("submit", (event) => {
   event.preventDefault(); // Prevents page reload
-  
+
   const taskText: string = nameInput.value;
   const taskEmail: string = emailInput.value;
 
@@ -195,5 +195,3 @@ function showTotalUsers(): void {
 }
 
 showTotalUsers();
-
-//
