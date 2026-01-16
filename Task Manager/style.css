@@ -168,7 +168,7 @@ button:hover {
 }
 
 .category-badge {
-  flex: 0 0 auto !important;  /* ✅ Não expandir */
+  flex: 0 0 auto !important;  
   display: inline-block;
   min-width: 100px;
   width: 100px;
@@ -178,10 +178,10 @@ button:hover {
   font-size: 0.8em;
   font-weight: bold;
   margin-right: 10px;
-  cursor: default;  /* ✅ Cursor normal, não pointer */
+  cursor: default;  
 }
 
-/* Cores alternativas via classes (opcional) */
+/* Cores alternativas via classes */
 .category-work {
   background-color: #83b5d7;
 }
