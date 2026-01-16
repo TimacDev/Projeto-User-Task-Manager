@@ -77,6 +77,22 @@ const nameInput = document.querySelector("#nameInput") as HTMLInputElement;
 const emailInput = document.querySelector("#emailInput") as HTMLInputElement;
 const btnAddUser = document.querySelector("#btnAddUser") as HTMLButtonElement;
 
+const form = document.querySelector("form") as HTMLFormElement;
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault(); // Prevents page reload
+  
+  const taskText: string = nameInput.value;
+  const taskEmail: string = emailInput.value;
+
+  let newUser = new UserClass(Date.now(), taskText, taskEmail);
+  userList.push(newUser);
+  renderUsers();
+
+  nameInput.value = "";
+  emailInput.value = "";
+});
+
 btnAddUser.addEventListener("click", () => {
   const taskText: string = nameInput.value;
 
