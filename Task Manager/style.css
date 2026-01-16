@@ -167,6 +167,10 @@ button:hover {
   font-size: 14px;
 }
 
+#categorySelect:hover {
+  cursor: pointer;
+}
+
 .category-badge {
   flex: 0 0 auto !important;  
   display: inline-block;
