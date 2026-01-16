@@ -16,6 +16,11 @@ var TaskClass = /** @class */ (function () {
 // ARRAY
 var taskList = [];
 // FUNÇÕES
+var currentSearchTerm = "";
+function filterTasks(searchTerm) {
+    currentSearchTerm = searchTerm;
+    renderTasks();
+}
 function getCategoryColor(category) {
     var cores = {
         Work: "#3498db",
@@ -74,13 +79,18 @@ function orderTask() {
     taskList.sort(function (a, b) { return a.title.localeCompare(b.title, "pt-PT"); });
     renderTasks();
 }
-// Render all tasks
+// Render Tasks
 function renderTasks() {
     output.innerHTML = "";
     if (taskList.length === 0) {
         output.innerHTML = "";
         return;
     }
+    var filteredTasks = currentSearchTerm.trim() === ""
+        ? taskList
+        : taskList.filter(function (task) {
+            return task.title.toLowerCase().includes(currentSearchTerm.toLowerCase());
+        });
     var ul = document.createElement("ul");
     var btnSort = document.createElement("button");
     btnSort.textContent = "Order A-Z";
@@ -92,6 +102,18 @@ function renderTasks() {
     btnRemoveDone.classList.add("btn-removeDone");
     btnRemoveDone.addEventListener("click", function () { return removeDoneTasks(); });
     ul.appendChild(btnRemoveDone);
+    var searchBox = document.createElement("input");
+    searchBox.type = "text";
+    searchBox.placeholder = "Search tasks...";
+    searchBox.classList.add("input-searchbox");
+    searchBox.addEventListener("input", function () { return filterTasks(searchBox.value); });
+    ul.appendChild(searchBox);
+    if (filteredTasks.length === 0) {
+        var noResults = document.createElement("li");
+        noResults.textContent = "No tasks found.";
+        noResults.classList.add("no-results");
+        ul.appendChild(noResults);
+    }
     var _loop_1 = function (task) {
         var li = document.createElement("li");
         var categoryBadge = document.createElement("span");
@@ -134,8 +156,8 @@ function renderTasks() {
         li.appendChild(btnEdit);
         ul.appendChild(li);
     };
-    for (var _i = 0, taskList_1 = taskList; _i < taskList_1.length; _i++) {
-        var task = taskList_1[_i];
+    for (var _i = 0, filteredTasks_1 = filteredTasks; _i < filteredTasks_1.length; _i++) {
+        var task = filteredTasks_1[_i];
         _loop_1(task);
     }
     output.appendChild(ul);

@@ -3,7 +3,9 @@ const addBtn = document.querySelector("#addBtn") as HTMLButtonElement;
 const clearBtn = document.querySelector("#btnLimpar") as HTMLButtonElement;
 const output = document.querySelector("#output") as HTMLDivElement;
 const counterSpan = document.querySelector("#numPendentes") as HTMLSpanElement;
-const categorySelect = document.querySelector("#categorySelect") as HTMLSelectElement;
+const categorySelect = document.querySelector(
+  "#categorySelect"
+) as HTMLSelectElement;
 
 // Type, Interface e Class
 type Category = "Work" | "Personal" | "Study";
@@ -36,6 +38,12 @@ class TaskClass implements Task {
 let taskList: Task[] = [];
 
 // FUNÇÕES
+let currentSearchTerm: string = "";
+
+function filterTasks(searchTerm: string): void {
+  currentSearchTerm = searchTerm;
+  renderTasks();
+}
 
 function getCategoryColor(category: Category): string {
   const cores: Record<Category, string> = {
@@ -108,7 +116,7 @@ function orderTask(): void {
   renderTasks();
 }
 
-// Render all tasks
+// Render Tasks
 function renderTasks(): void {
   output.innerHTML = "";
 
@@ -116,6 +124,13 @@ function renderTasks(): void {
     output.innerHTML = "";
     return;
   }
+
+  const filteredTasks =
+    currentSearchTerm.trim() === ""
+      ? taskList
+      : taskList.filter((task) =>
+          task.title.toLowerCase().includes(currentSearchTerm.toLowerCase())
+        );
 
   const ul = document.createElement("ul");
 
@@ -131,7 +146,21 @@ function renderTasks(): void {
   btnRemoveDone.addEventListener("click", () => removeDoneTasks());
   ul.appendChild(btnRemoveDone);
 
-  for (const task of taskList) {
+  const searchBox = document.createElement("input");
+  searchBox.type = "text";
+  searchBox.placeholder = "Search tasks...";
+  searchBox.classList.add("input-searchbox");
+  searchBox.addEventListener("input", () => filterTasks(searchBox.value));
+  ul.appendChild(searchBox);
+
+  if (filteredTasks.length === 0) {
+    const noResults = document.createElement("li");
+    noResults.textContent = "No tasks found.";
+    noResults.classList.add("no-results");
+    ul.appendChild(noResults);
+  }
+
+  for (const task of filteredTasks) {
     const li = document.createElement("li");
 
     const categoryBadge = document.createElement("span");
