@@ -93,27 +93,6 @@ form.addEventListener("submit", (event) => {
   emailInput.value = "";
 });
 
-btnAddUser.addEventListener("click", () => {
-  const taskText: string = nameInput.value;
-
-  if (taskText === "") {
-    return;
-  }
-
-  const taskEmail: string = emailInput.value;
-
-  if (taskEmail === "") {
-    return;
-  }
-
-  let newUser = new UserClass(Date.now(), taskText, taskEmail);
-  userList.push(newUser);
-  renderUsers();
-
-  nameInput.value = "";
-  emailInput.value = "";
-});
-
 // Botão desativar users
 
 function handleDeactivate(userId: number): void {

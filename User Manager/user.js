@@ -38,15 +38,11 @@ function renderUsers() {
 var nameInput = document.querySelector("#nameInput");
 var emailInput = document.querySelector("#emailInput");
 var btnAddUser = document.querySelector("#btnAddUser");
-btnAddUser.addEventListener("click", function () {
+var form = document.querySelector("form");
+form.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevents page reload
     var taskText = nameInput.value;
-    if (taskText === "") {
-        return;
-    }
     var taskEmail = emailInput.value;
-    if (taskEmail === "") {
-        return;
-    }
     var newUser = new UserClass(Date.now(), taskText, taskEmail);
     userList.push(newUser);
     renderUsers();
@@ -103,4 +99,3 @@ function showTotalUsers() {
     totalUsers.innerHTML = "O total de utilizadores \u00E9: ".concat(userList.length);
 }
 showTotalUsers();
-//
