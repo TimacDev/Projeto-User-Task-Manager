@@ -115,7 +115,7 @@ button:hover {
 #userContainer {
   list-style: none;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .user-card {
@@ -123,7 +123,7 @@ button:hover {
   align-items: flex-start;
   padding: 20px 0;
   border-bottom: 1px solid #e8dfd4;
-  background: transparent;
+  background: rgba(232, 223, 212, 0.3);
   transition: background 0.2s;
 }
 
@@ -132,7 +132,7 @@ button:hover {
 }
 
 .user-card:hover {
-  background: rgba(232, 223, 212, 0.3);
+  
 }
 
 .user-info {

@@ -24,10 +24,14 @@ function renderUsers() {
         var userCard = document.createElement("li");
         userCard.className = "user-card";
         // Adiciona o conteúdo do cartão
-        userCard.innerHTML = "\n      <div class=\"user-info\">\n        <h3 class=\"user-name\">".concat(user.name, "</h3>\n        <p class=\"user-email\">").concat(user.email, "</p>\n        <button type=\"button\" class=\"btnDeactivate user-status ").concat(user.active ? "active" : "inactive", "\">\n          ").concat(user.active ? "✓ Ativo" : "✗ Inativo", "\n        </button>\n        <p class=\"user-tasks\">0 tarefas atribu\u00EDdas</p>\n      </div>\n    ");
+        userCard.innerHTML = "\n      <div class=\"user-info\">\n        <h3 class=\"user-name\">".concat(user.name, "</h3>\n        <p class=\"user-email\">").concat(user.email, "</p>\n        <button type=\"button\" class=\"btnDeactivate user-status ").concat(user.active ? "active" : "inactive", "\">\n          ").concat(user.active ? "✓ Ativo" : "✗ Inativo", "\n        </button>\n        <button type=\"button\" class=\"btnDeleteUser\">Delete User</button>\n        <p class=\"user-tasks\">0 tarefas atribu\u00EDdas</p>\n      </div>\n    ");
         var btnDeactivate = userCard.querySelector(".btnDeactivate");
         btnDeactivate.addEventListener("click", function () {
             handleDeactivate(user.id);
+        });
+        var btnDeleteUser = userCard.querySelector(".btnDeleteUser");
+        btnDeleteUser.addEventListener("click", function () {
+            handleDelete(user.id);
         });
         // Adiciona o cartão ao contentor
         userContainer.appendChild(userCard);
@@ -40,7 +44,7 @@ var emailInput = document.querySelector("#emailInput");
 var btnAddUser = document.querySelector("#btnAddUser");
 var form = document.querySelector("form");
 form.addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevents page reload
+    event.preventDefault();
     var taskText = nameInput.value;
     var taskEmail = emailInput.value;
     var newUser = new UserClass(Date.now(), taskText, taskEmail);
@@ -49,9 +53,8 @@ form.addEventListener("submit", function (event) {
     nameInput.value = "";
     emailInput.value = "";
 });
-// Botão desativar users
+// Função eliminar utilizador
 function handleDeactivate(userId) {
-    // PASSO 2: Localiza o utilizador no array
     var user = userList.find(function (u) { return u.id === userId; });
     if (!user) {
         return; // Utilizador não encontrado
@@ -62,7 +65,10 @@ function handleDeactivate(userId) {
     else {
         user.activate();
     }
-    // PASSO 4: Atualiza a renderização
+    renderUsers();
+}
+function handleDelete(userId) {
+    userList = userList.filter(function (u) { return u.id !== userId; });
     renderUsers();
 }
 // Botão filtro

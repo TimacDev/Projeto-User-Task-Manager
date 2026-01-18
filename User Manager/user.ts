@@ -53,15 +53,19 @@ function renderUsers(): void {
         }">
           ${user.active ? "✓ Ativo" : "✗ Inativo"}
         </button>
+        <button type="button" class="btnDeleteUser">Delete User</button>
         <p class="user-tasks">0 tarefas atribuídas</p>
       </div>
     `;
 
-    const btnDeactivate = userCard.querySelector(
-      ".btnDeactivate"
-    ) as HTMLButtonElement;
+    const btnDeactivate = userCard.querySelector(".btnDeactivate") as HTMLButtonElement;
     btnDeactivate.addEventListener("click", () => {
       handleDeactivate(user.id);
+    });
+
+    const btnDeleteUser = userCard.querySelector(".btnDeleteUser") as HTMLButtonElement;
+    btnDeleteUser.addEventListener("click", () => {
+      handleDelete(user.id);
     });
 
     // Adiciona o cartão ao contentor
@@ -80,7 +84,7 @@ const btnAddUser = document.querySelector("#btnAddUser") as HTMLButtonElement;
 const form = document.querySelector("form") as HTMLFormElement;
 
 form.addEventListener("submit", (event) => {
-  event.preventDefault(); // Prevents page reload
+  event.preventDefault(); 
 
   const taskText: string = nameInput.value;
   const taskEmail: string = emailInput.value;
@@ -93,10 +97,9 @@ form.addEventListener("submit", (event) => {
   emailInput.value = "";
 });
 
-// Botão desativar users
+// Função eliminar utilizador
 
 function handleDeactivate(userId: number): void {
-  // PASSO 2: Localiza o utilizador no array
   const user = userList.find((u) => u.id === userId);
 
   if (!user) {
@@ -109,7 +112,12 @@ function handleDeactivate(userId: number): void {
     user.activate();
   }
 
-  // PASSO 4: Atualiza a renderização
+  renderUsers();
+}
+
+function handleDelete(userId: number): void {
+  userList= userList.filter((u) => u.id !== userId);  
+
   renderUsers();
 }
 
