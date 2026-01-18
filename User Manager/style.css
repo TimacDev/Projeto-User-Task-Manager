@@ -105,34 +105,37 @@ button:hover {
 }
 
 #btnFilter {
-  background: transparent;
+  background: #6b5344;
   color: #a08977;
   text-decoration: underline;
   padding: 10px 0;
 }
 
+.btnDeleteUser {
+  background: #e6b18b72;
+  width: 75%;
+}
+
 /* User List */
 #userContainer {
   list-style: none;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 20px;
 }
 
 .user-card {
   display: flex;
   align-items: flex-start;
-  padding: 20px 0;
-  border-bottom: 1px solid #e8dfd4;
-  background: rgba(232, 223, 212, 0.3);
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid #e8dfd4;
+  background: rgba(232, 223, 212, 0.4);
   transition: background 0.2s;
 }
 
 .user-card:last-child {
   border-bottom: none;
-}
-
-.user-card:hover {
-  
 }
 
 .user-info {
@@ -203,5 +206,17 @@ section {
   #btnAddUser {
     width: 100%;
     text-align: center;
+  }
+}
+
+@media (max-width: 992px) {
+  #userContainer {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  }
+}
+
+@media (max-width: 576px) {
+  #userContainer {
+    grid-template-columns: 1fr; /* 1 column */
   }
 }
