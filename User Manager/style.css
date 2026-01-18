@@ -97,18 +97,12 @@ button:hover {
   opacity: 0.7;
 }
 
-#btnAddUser {
+#btnAddUser,
+#btnFilter {
   background: #6b5344;
   color: #faf6f1;
   margin-top: 10px;
   align-self: flex-start;
-}
-
-#btnFilter {
-  background: #6b5344;
-  color: #a08977;
-  text-decoration: underline;
-  padding: 10px 0;
 }
 
 .btnDeleteUser {
