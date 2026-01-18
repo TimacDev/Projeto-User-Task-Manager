@@ -5,111 +5,203 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #c9a66b 0%, #6f4e37 100%);
+  font-family: "Inter", system-ui, sans-serif;
+  background: #faf6f1;
+  color: #4a3728;
   min-height: 100vh;
-  padding: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; 
+  padding: 60px 20px;
+  width: clamp(300px, 70vw, 800px);
+  margin: 0 auto;
 }
 
 main {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  width: 90%;
-  max-width: 1400px;
-  margin: 0 auto; 
-  background: white;
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  gap: 40px;
 }
 
 h1 {
-  color: #333;
-  margin-bottom: 40px;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #6b5344;
+  margin-bottom: 20px;
   text-align: center;
-  font-size: 2em;
+  letter-spacing: 1px;
 }
 
-#userContainer {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 30px;
+h2 {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #a08977;
+  margin-bottom: 15px;
+  letter-spacing: 0.5px;
 }
 
-.user-card {
-  width: 320px; 
-  min-width: 320px;
-  max-width: 320px;
-  background: linear-gradient(145deg, #fff3e0 0%, #dcc4a0 100%);
-  border-radius: 10px;
-  padding: 25px;
-  border: 2px solid transparent;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.3s ease;
+/* Total Users Section */
+#totalUsers {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #6b5344;
+  font-weight: 500;
 }
 
-.user-card:hover {
-  border-color: #4a5568;
-}
-
-.user-info {
+/* Form Styling */
+form {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
+label {
+  font-size: 0.85rem;
+  color: #a08977;
+}
+
+input[type="text"],
+input[type="email"] {
+  width: 100%;
+  padding: 12px 0;
+  font-size: 1rem;
+  border: none;
+  border-bottom: 1px solid #d9cec3;
+  background: transparent;
+  color: #4a3728;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder {
+  color: #c4b5a5;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus {
+  border-bottom-color: #8b7355;
+}
+
+/* Buttons */
+button {
+  padding: 10px 20px;
+  font-size: 0.85rem;
+  font-weight: 400;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  background: #e8dfd4;
+  color: #6b5344;
+}
+
+button:hover {
+  opacity: 0.7;
+}
+
+#btnAddUser {
+  background: #6b5344;
+  color: #faf6f1;
+  margin-top: 10px;
+  align-self: flex-start;
+}
+
+#btnFilter {
+  background: transparent;
+  color: #a08977;
+  text-decoration: underline;
+  padding: 10px 0;
+}
+
+/* User List */
+#userContainer {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-card {
+  display: flex;
+  align-items: flex-start;
+  padding: 20px 0;
+  border-bottom: 1px solid #e8dfd4;
+  background: transparent;
+  transition: background 0.2s;
+}
+
+.user-card:last-child {
+  border-bottom: none;
+}
+
+.user-card:hover {
+  background: rgba(232, 223, 212, 0.3);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
 .user-name {
-  color: #2d3748;
-  font-size: 1.5em;
-  font-weight: 600;
-  margin-bottom: 5px;
+  color: #5c4a3d;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 .user-email {
-  color: #4a5568;
-  font-size: 0.95em;
-  margin-bottom: 10px;
+  color: #a08977;
+  font-size: 0.85rem;
 }
 
+.user-tasks {
+  color: #c4b5a5;
+  font-size: 0.75rem;
+}
+
+/* Status Button */
 .user-status {
   display: inline-block;
-  padding: 8px 16px;
+  padding: 6px 14px;
   border-radius: 20px;
-  font-size: 0.85em;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 500;
   width: fit-content;
-  margin-top: 5px;
+  text-shadow: none;
 }
 
 .user-status.active {
-  background-color: #48bb78;
+  background-color: #7a9a7e;
   color: white;
 }
 
 .user-status.inactive {
-  background-color: #f56565;
+  background-color: #b8a899;
   color: white;
 }
 
-button {
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  background-color: #4caf50;
-  color: white;
-  padding: 12px 24px;
-  border: solid black;
-  border-radius: 20px;
-  cursor: pointer;
-  margin-top: 15px;
-  transition: transform 0.15s ease-in-out, background-color 0.3s ease;
+.user-status:hover {
+  opacity: 0.7;
 }
 
-button:hover {
-  transform: scale(1.1);
-  background-color: #45a049;
+/* Sections */
+section {
+  padding-bottom: 20px;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  body {
+    padding: 40px 20px;
+    width: 100%;
+  }
+
+  form {
+    width: 100%;
+  }
+
+  #btnAddUser {
+    width: 100%;
+    text-align: center;
+  }
 }

@@ -96,6 +96,6 @@ btnFilter.addEventListener("click", function () {
 // Total Users
 var totalUsers = document.querySelector("#totalUsers");
 function showTotalUsers() {
-    totalUsers.innerHTML = "O total de utilizadores \u00E9: ".concat(userList.length);
+    totalUsers.innerHTML = "Total number of users: ".concat(userList.length);
 }
 showTotalUsers();

@@ -170,7 +170,7 @@ btnFilter.addEventListener("click", () => {
 const totalUsers = document.querySelector("#totalUsers") as HTMLDivElement;
 
 function showTotalUsers(): void {
-  totalUsers.innerHTML = `O total de utilizadores é: ${userList.length}`;
+  totalUsers.innerHTML = `Total number of users: ${userList.length}`;
 }
 
 showTotalUsers();
