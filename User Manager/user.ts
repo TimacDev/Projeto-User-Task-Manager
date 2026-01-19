@@ -1,3 +1,5 @@
+// Interface & Class
+
 interface User {
   id: number;
   name: string;
@@ -27,10 +29,110 @@ class UserClass implements User {
   }
 }
 
+// Variáveis globais
 let userList: UserClass[] = [];
+
 let showOnlyActive: boolean = false;
 
-// Função ordernar (sort)
+let selectedUser: UserClass | null = null;
+
+// Função para mostrar detalhes do utilizador
+function showUserDetails(userId: number): void {
+  const user = userList.find((u) => u.id === userId);
+
+  if (!user) {
+    return;
+  }
+
+  selectedUser = user;
+
+  const userDetails = document.querySelector("#userDetails") as HTMLDivElement;
+  const detailsBody = document.querySelector("#detailsBody") as HTMLDivElement;
+
+  // Calcula há quanto tempo foi criado (simulado com o ID que é timestamp)
+  const createdDate = new Date(user.id);
+  const formattedDate = createdDate.toLocaleDateString("pt-PT", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  detailsBody.innerHTML = `
+    <div class="detail-item">
+      <div class="detail-label">ID</div>
+      <div class="detail-value">#${user.id}</div>
+    </div>
+    
+    <div class="detail-item">
+      <div class="detail-label">Nome</div>
+      <div class="detail-value">${user.name}</div>
+    </div>
+    
+    <div class="detail-item">
+      <div class="detail-label">Email</div>
+      <div class="detail-value">${user.email}</div>
+    </div>
+    
+    <div class="detail-item">
+      <div class="detail-label">Estado</div>
+      <div class="detail-value">
+        <span class="status-badge ${user.active ? "active" : "inactive"}">
+          ${user.active ? "Ativo" : "Inativo"}
+        </span>
+      </div>
+    </div>
+    
+    <div class="detail-item">
+      <div class="detail-label">Data de Criação</div>
+      <div class="detail-value">${formattedDate}</div>
+    </div>
+    
+    <div class="detail-item">
+      <div class="detail-label">Tarefas Atribuídas</div>
+      <div class="detail-value">0 tarefas</div>
+    </div>
+  `;
+
+  // Mostra o painel de detalhes
+  userDetails.classList.remove("hidden");
+}
+
+// Função para fechar detalhes
+function closeUserDetails(): void {
+  const userDetails = document.querySelector("#userDetails") as HTMLDivElement;
+  userDetails.classList.add("hidden");
+  selectedUser = null;
+}
+
+// Event listener para fechar detalhes
+document.addEventListener("DOMContentLoaded", () => {
+  const closeBtn = document.querySelector("#closeDetails") as HTMLButtonElement;
+  const userDetails = document.querySelector("#userDetails") as HTMLDivElement;
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", closeUserDetails);
+  }
+
+  // Fechar ao clicar fora do modal
+  if (userDetails) {
+    userDetails.addEventListener("click", (event) => {
+      if (event.target === userDetails) {
+        closeUserDetails();
+      }
+    });
+  }
+
+  // Fechar com tecla Escape
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeUserDetails();
+    }
+  });
+});
+
+// Função Ordenar (sort)
 
 function orderUserList(): void {
   userList = userList.sort((a, b) => a.name.localeCompare(b.name));
@@ -46,7 +148,7 @@ function filterUser(searchTerm: string): void {
   renderUsers();
 }
 
-// Função render users
+// Função Render Users
 
 function renderUsers(): void {
   const userSearchBox = document.querySelector(
@@ -134,24 +236,38 @@ function renderUsers(): void {
     userCard.className = "user-card";
 
     userCard.innerHTML = `
-      <div class="user-info">
-        <h3 class="user-name">${user.name}</h3>
-        <p class="user-email">${user.email}</p>
-        <button type="button" class="btnDeactivate user-status ${
-          user.active ? "active" : "inactive"
-        }">
-          ${user.active ? "Active" : "Inactive"}
-        </button>
-        <button type="button" class="btnDeleteUser">Delete</button>
-        <p class="user-tasks">0 tarefas atribuídas</p>
-      </div>
-    `;
+    <div class="user-info">
+      <h3 class="user-name">${user.name}</h3>
+      <p class="user-email">${user.email}</p>
+      <button type="button" class="btnDeactivate user-status ${
+        user.active ? "active" : "inactive"
+      }">
+        ${user.active ? "Active" : "Inactive"}
+      </button>
+      <button type="button" class="btnDeleteUser">Delete</button>
+      <p class="user-tasks">0 tarefas atribuídas</p>
+    </div>
+  `;
+
+    // 🆕 Evento de clique no cartão para mostrar detalhes
+    userCard.addEventListener("click", (event) => {
+      // Evita abrir detalhes quando clica nos botões
+      const target = event.target as HTMLElement;
+      if (
+        target.classList.contains("btnDeactivate") ||
+        target.classList.contains("btnDeleteUser")
+      ) {
+        return;
+      }
+      showUserDetails(user.id);
+    });
 
     // Botão desativar/ativar
     const btnDeactivate = userCard.querySelector(
       ".btnDeactivate"
     ) as HTMLButtonElement;
-    btnDeactivate.addEventListener("click", () => {
+    btnDeactivate.addEventListener("click", (event) => {
+      event.stopPropagation(); // Evita que o clique propague para o cartão
       handleDeactivate(user.id);
     });
 
@@ -159,7 +275,8 @@ function renderUsers(): void {
     const btnDeleteUser = userCard.querySelector(
       ".btnDeleteUser"
     ) as HTMLButtonElement;
-    btnDeleteUser.addEventListener("click", () => {
+    btnDeleteUser.addEventListener("click", (event) => {
+      event.stopPropagation(); // Evita que o clique propague para o cartão
       handleDelete(user.id);
     });
 

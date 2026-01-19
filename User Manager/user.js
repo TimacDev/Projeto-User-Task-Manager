@@ -1,3 +1,4 @@
+// Interface & Class
 var UserClass = /** @class */ (function () {
     function UserClass(id, name, email) {
         this.id = id;
@@ -13,9 +14,61 @@ var UserClass = /** @class */ (function () {
     };
     return UserClass;
 }());
+// Variáveis globais
 var userList = [];
 var showOnlyActive = false;
-// Função ordernar (sort)
+var selectedUser = null;
+// Função para mostrar detalhes do utilizador
+function showUserDetails(userId) {
+    var user = userList.find(function (u) { return u.id === userId; });
+    if (!user) {
+        return;
+    }
+    selectedUser = user;
+    var userDetails = document.querySelector("#userDetails");
+    var detailsBody = document.querySelector("#detailsBody");
+    // Calcula há quanto tempo foi criado (simulado com o ID que é timestamp)
+    var createdDate = new Date(user.id);
+    var formattedDate = createdDate.toLocaleDateString("pt-PT", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+    detailsBody.innerHTML = "\n    <div class=\"detail-item\">\n      <div class=\"detail-label\">ID</div>\n      <div class=\"detail-value\">#".concat(user.id, "</div>\n    </div>\n    \n    <div class=\"detail-item\">\n      <div class=\"detail-label\">Nome</div>\n      <div class=\"detail-value\">").concat(user.name, "</div>\n    </div>\n    \n    <div class=\"detail-item\">\n      <div class=\"detail-label\">Email</div>\n      <div class=\"detail-value\">").concat(user.email, "</div>\n    </div>\n    \n    <div class=\"detail-item\">\n      <div class=\"detail-label\">Estado</div>\n      <div class=\"detail-value\">\n        <span class=\"status-badge ").concat(user.active ? "active" : "inactive", "\">\n          ").concat(user.active ? "Ativo" : "Inativo", "\n        </span>\n      </div>\n    </div>\n    \n    <div class=\"detail-item\">\n      <div class=\"detail-label\">Data de Cria\u00E7\u00E3o</div>\n      <div class=\"detail-value\">").concat(formattedDate, "</div>\n    </div>\n    \n    <div class=\"detail-item\">\n      <div class=\"detail-label\">Tarefas Atribu\u00EDdas</div>\n      <div class=\"detail-value\">0 tarefas</div>\n    </div>\n  ");
+    // Mostra o painel de detalhes
+    userDetails.classList.remove("hidden");
+}
+// Função para fechar detalhes
+function closeUserDetails() {
+    var userDetails = document.querySelector("#userDetails");
+    userDetails.classList.add("hidden");
+    selectedUser = null;
+}
+// Event listener para fechar detalhes
+document.addEventListener("DOMContentLoaded", function () {
+    var closeBtn = document.querySelector("#closeDetails");
+    var userDetails = document.querySelector("#userDetails");
+    if (closeBtn) {
+        closeBtn.addEventListener("click", closeUserDetails);
+    }
+    // Fechar ao clicar fora do modal
+    if (userDetails) {
+        userDetails.addEventListener("click", function (event) {
+            if (event.target === userDetails) {
+                closeUserDetails();
+            }
+        });
+    }
+    // Fechar com tecla Escape
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            closeUserDetails();
+        }
+    });
+});
+// Função Ordenar (sort)
 function orderUserList() {
     userList = userList.sort(function (a, b) { return a.name.localeCompare(b.name); });
     renderUsers();
@@ -26,7 +79,7 @@ function filterUser(searchTerm) {
     currentSearchTerm = searchTerm;
     renderUsers();
 }
-// Função render users
+// Função Render Users
 function renderUsers() {
     var userSearchBox = document.querySelector("#userSearchBox");
     if (userList.length > 0) {
@@ -78,15 +131,27 @@ function renderUsers() {
     usersToDisplay.forEach(function (user) {
         var userCard = document.createElement("li");
         userCard.className = "user-card";
-        userCard.innerHTML = "\n      <div class=\"user-info\">\n        <h3 class=\"user-name\">".concat(user.name, "</h3>\n        <p class=\"user-email\">").concat(user.email, "</p>\n        <button type=\"button\" class=\"btnDeactivate user-status ").concat(user.active ? "active" : "inactive", "\">\n          ").concat(user.active ? "Active" : "Inactive", "\n        </button>\n        <button type=\"button\" class=\"btnDeleteUser\">Delete</button>\n        <p class=\"user-tasks\">0 tarefas atribu\u00EDdas</p>\n      </div>\n    ");
+        userCard.innerHTML = "\n    <div class=\"user-info\">\n      <h3 class=\"user-name\">".concat(user.name, "</h3>\n      <p class=\"user-email\">").concat(user.email, "</p>\n      <button type=\"button\" class=\"btnDeactivate user-status ").concat(user.active ? "active" : "inactive", "\">\n        ").concat(user.active ? "Active" : "Inactive", "\n      </button>\n      <button type=\"button\" class=\"btnDeleteUser\">Delete</button>\n      <p class=\"user-tasks\">0 tarefas atribu\u00EDdas</p>\n    </div>\n  ");
+        // 🆕 Evento de clique no cartão para mostrar detalhes
+        userCard.addEventListener("click", function (event) {
+            // Evita abrir detalhes quando clica nos botões
+            var target = event.target;
+            if (target.classList.contains("btnDeactivate") ||
+                target.classList.contains("btnDeleteUser")) {
+                return;
+            }
+            showUserDetails(user.id);
+        });
         // Botão desativar/ativar
         var btnDeactivate = userCard.querySelector(".btnDeactivate");
-        btnDeactivate.addEventListener("click", function () {
+        btnDeactivate.addEventListener("click", function (event) {
+            event.stopPropagation(); // Evita que o clique propague para o cartão
             handleDeactivate(user.id);
         });
         // Botão Delete
         var btnDeleteUser = userCard.querySelector(".btnDeleteUser");
-        btnDeleteUser.addEventListener("click", function () {
+        btnDeleteUser.addEventListener("click", function (event) {
+            event.stopPropagation(); // Evita que o clique propague para o cartão
             handleDelete(user.id);
         });
         userContainer.appendChild(userCard);
