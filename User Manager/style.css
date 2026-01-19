@@ -39,6 +39,12 @@ h2 {
 
 /* Total Users Section */
 #totalUsers {
+  font-size: 1rem;
+  color: #6b5344;
+  font-weight: 500;
+}
+#totalInactiveUsers,
+#totalActiveUsers {
   font-size: 0.85rem;
   color: #6b5344;
   font-weight: 500;
