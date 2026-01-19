@@ -14,6 +14,14 @@ var UserClass = /** @class */ (function () {
     };
     return UserClass;
 }());
+// Query selectors
+var nameInput = document.querySelector("#nameInput");
+var emailInput = document.querySelector("#emailInput");
+var btnAddUser = document.querySelector("#btnAddUser");
+var totalUsers = document.querySelector("#totalUsers");
+var totalActiveUsers = document.querySelector("#totalActiveUsers");
+var totalInactiveUsers = document.querySelector("#totalInactiveUsers");
+var form = document.querySelector("form");
 // Variáveis globais
 var userList = [];
 var showOnlyActive = false;
@@ -47,26 +55,24 @@ function closeUserDetails() {
     selectedUser = null;
 }
 // Event listener para fechar detalhes
-document.addEventListener("DOMContentLoaded", function () {
-    var closeBtn = document.querySelector("#closeDetails");
-    var userDetails = document.querySelector("#userDetails");
-    if (closeBtn) {
-        closeBtn.addEventListener("click", closeUserDetails);
-    }
-    // Fechar ao clicar fora do modal
-    if (userDetails) {
-        userDetails.addEventListener("click", function (event) {
-            if (event.target === userDetails) {
-                closeUserDetails();
-            }
-        });
-    }
-    // Fechar com tecla Escape
-    document.addEventListener("keydown", function (event) {
-        if (event.key === "Escape") {
+var closeBtn = document.querySelector("#closeDetails");
+var userDetails = document.querySelector("#userDetails");
+if (closeBtn) {
+    closeBtn.addEventListener("click", closeUserDetails);
+}
+// Fechar ao clicar fora do modal
+if (userDetails) {
+    userDetails.addEventListener("click", function (event) {
+        if (event.target === userDetails) {
             closeUserDetails();
         }
     });
+}
+// Fechar com tecla Escape
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+        closeUserDetails();
+    }
 });
 // Função Ordenar (sort)
 function orderUserList() {
@@ -160,14 +166,6 @@ function renderUsers() {
     showTotalActiveUsers();
     showTotalInactiveUsers();
 }
-// Query selectors
-var nameInput = document.querySelector("#nameInput");
-var emailInput = document.querySelector("#emailInput");
-var btnAddUser = document.querySelector("#btnAddUser");
-var totalUsers = document.querySelector("#totalUsers");
-var totalActiveUsers = document.querySelector("#totalActiveUsers");
-var totalInactiveUsers = document.querySelector("#totalInactiveUsers");
-var form = document.querySelector("form");
 // Botão add users
 form.addEventListener("submit", function (event) {
     event.preventDefault();

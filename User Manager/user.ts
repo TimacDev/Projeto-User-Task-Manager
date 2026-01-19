@@ -29,6 +29,20 @@ class UserClass implements User {
   }
 }
 
+// Query selectors
+
+const nameInput = document.querySelector("#nameInput") as HTMLInputElement;
+const emailInput = document.querySelector("#emailInput") as HTMLInputElement;
+const btnAddUser = document.querySelector("#btnAddUser") as HTMLButtonElement;
+const totalUsers = document.querySelector("#totalUsers") as HTMLDivElement;
+const totalActiveUsers = document.querySelector(
+  "#totalActiveUsers"
+) as HTMLDivElement;
+const totalInactiveUsers = document.querySelector(
+  "#totalInactiveUsers"
+) as HTMLDivElement;
+const form = document.querySelector("form") as HTMLFormElement;
+
 // Variáveis globais
 let userList: UserClass[] = [];
 
@@ -107,29 +121,28 @@ function closeUserDetails(): void {
 }
 
 // Event listener para fechar detalhes
-document.addEventListener("DOMContentLoaded", () => {
-  const closeBtn = document.querySelector("#closeDetails") as HTMLButtonElement;
-  const userDetails = document.querySelector("#userDetails") as HTMLDivElement;
 
-  if (closeBtn) {
-    closeBtn.addEventListener("click", closeUserDetails);
-  }
+const closeBtn = document.querySelector("#closeDetails") as HTMLButtonElement;
+const userDetails = document.querySelector("#userDetails") as HTMLDivElement;
 
-  // Fechar ao clicar fora do modal
-  if (userDetails) {
-    userDetails.addEventListener("click", (event) => {
-      if (event.target === userDetails) {
-        closeUserDetails();
-      }
-    });
-  }
+if (closeBtn) {
+  closeBtn.addEventListener("click", closeUserDetails);
+}
 
-  // Fechar com tecla Escape
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
+// Fechar ao clicar fora do modal
+if (userDetails) {
+  userDetails.addEventListener("click", (event) => {
+    if (event.target === userDetails) {
       closeUserDetails();
     }
   });
+}
+
+// Fechar com tecla Escape
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeUserDetails();
+  }
 });
 
 // Função Ordenar (sort)
@@ -287,20 +300,6 @@ function renderUsers(): void {
   showTotalActiveUsers();
   showTotalInactiveUsers();
 }
-
-// Query selectors
-
-const nameInput = document.querySelector("#nameInput") as HTMLInputElement;
-const emailInput = document.querySelector("#emailInput") as HTMLInputElement;
-const btnAddUser = document.querySelector("#btnAddUser") as HTMLButtonElement;
-const totalUsers = document.querySelector("#totalUsers") as HTMLDivElement;
-const totalActiveUsers = document.querySelector(
-  "#totalActiveUsers"
-) as HTMLDivElement;
-const totalInactiveUsers = document.querySelector(
-  "#totalInactiveUsers"
-) as HTMLDivElement;
-const form = document.querySelector("form") as HTMLFormElement;
 
 // Botão add users
 
