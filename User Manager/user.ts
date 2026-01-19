@@ -140,9 +140,9 @@ function renderUsers(): void {
         <button type="button" class="btnDeactivate user-status ${
           user.active ? "active" : "inactive"
         }">
-          ${user.active ? "✓ Ativo" : "✗ Inativo"}
+          ${user.active ? "Active" : "Inactive"}
         </button>
-        <button type="button" class="btnDeleteUser">Delete User</button>
+        <button type="button" class="btnDeleteUser">Delete</button>
         <p class="user-tasks">0 tarefas atribuídas</p>
       </div>
     `;
@@ -250,7 +250,7 @@ function filterActiveUsers(): void {
         <button type="button" class="btnDeactivate user-status ${
           user.active ? "active" : "inactive"
         }">
-          ${user.active ? "✓ Ativo" : "✗ Inativo"}
+          ${user.active ? "Active" : "Inactive"}
         </button>
       </div>
     `;
