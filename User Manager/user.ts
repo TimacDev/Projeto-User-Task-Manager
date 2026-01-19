@@ -114,6 +114,8 @@ function renderUsers(): void {
   });
 
   showTotalUsers();
+  showTotalActiveUsers();
+  showTotalInactiveUsers();
 }
 
 // Query selectors
@@ -123,6 +125,8 @@ const emailInput = document.querySelector("#emailInput") as HTMLInputElement;
 const btnAddUser = document.querySelector("#btnAddUser") as HTMLButtonElement;
 const btnFilter = document.querySelector("#btnFilter") as HTMLButtonElement;
 const totalUsers = document.querySelector("#totalUsers") as HTMLDivElement;
+const totalActiveUsers = document.querySelector("#totalActiveUsers") as HTMLDivElement;
+const totalInactiveUsers = document.querySelector("#totalInactiveUsers") as HTMLDivElement;
 const form = document.querySelector("form") as HTMLFormElement;
 
 // Botão add users
@@ -219,7 +223,19 @@ function filterActiveUsers(): void {
 // Função Total Users
 
 function showTotalUsers(): void {
-  totalUsers.innerHTML = `Total number of users: ${userList.length}`;
+  totalUsers.innerHTML = `Total users: ${userList.length}`;
+}
+
+function showTotalActiveUsers(): void {
+  const activeCount = userList.filter(user => user.active).length;
+  totalActiveUsers.innerHTML = `Active users: ${activeCount}`;
+}
+
+function showTotalInactiveUsers(): void {
+  const inactiveCount = userList.filter(user => !user.active).length;
+  totalInactiveUsers.innerHTML = `Inactive users: ${inactiveCount}`;
 }
 
 showTotalUsers();
+showTotalActiveUsers();
+showTotalInactiveUsers();

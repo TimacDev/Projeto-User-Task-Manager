@@ -59,6 +59,8 @@ function renderUsers() {
         userContainer.appendChild(userCard);
     });
     showTotalUsers();
+    showTotalActiveUsers();
+    showTotalInactiveUsers();
 }
 // Query selectors
 var nameInput = document.querySelector("#nameInput");
@@ -66,6 +68,8 @@ var emailInput = document.querySelector("#emailInput");
 var btnAddUser = document.querySelector("#btnAddUser");
 var btnFilter = document.querySelector("#btnFilter");
 var totalUsers = document.querySelector("#totalUsers");
+var totalActiveUsers = document.querySelector("#totalActiveUsers");
+var totalInactiveUsers = document.querySelector("#totalInactiveUsers");
 var form = document.querySelector("form");
 // Botão add users
 form.addEventListener("submit", function (event) {
@@ -123,6 +127,16 @@ function filterActiveUsers() {
 }
 // Função Total Users
 function showTotalUsers() {
-    totalUsers.innerHTML = "Total number of users: ".concat(userList.length);
+    totalUsers.innerHTML = "Total users: ".concat(userList.length);
+}
+function showTotalActiveUsers() {
+    var activeCount = userList.filter(function (user) { return user.active; }).length;
+    totalActiveUsers.innerHTML = "Active users: ".concat(activeCount);
+}
+function showTotalInactiveUsers() {
+    var inactiveCount = userList.filter(function (user) { return !user.active; }).length;
+    totalInactiveUsers.innerHTML = "Inactive users: ".concat(inactiveCount);
 }
 showTotalUsers();
+showTotalActiveUsers();
+showTotalInactiveUsers();
