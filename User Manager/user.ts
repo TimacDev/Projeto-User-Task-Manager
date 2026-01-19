@@ -46,24 +46,51 @@ function renderUsers(): void {
     "#userSearchBox"
   ) as HTMLDivElement;
 
-  if (userList.length > 0 && !userSearchBox.querySelector(".search-box")) {
-    userSearchBox.innerHTML = `<h2>Search user</h2><input type="text" class="search-box" placeholder="Type to search by name">`;
+  if (userList.length > 0) {
+    // Only create the controls if they don't exist
+    if (!userSearchBox.querySelector(".search-box")) {
+      userSearchBox.innerHTML = `
+        <h2>Search user</h2>        
+        <input type="text" class="search-box" placeholder="Type to search by name">
+        <button type="button" id="btnFilter">${showOnlyActive ? "Show all users" : "Filter active users"}</button>        
+      `;
 
+      const searchInput = userSearchBox.querySelector(
+        ".search-box"
+      ) as HTMLInputElement;
+
+      searchInput.oninput = () => {
+        currentSearchTerm = searchInput.value;
+        renderUsers();
+      };
+
+      const btnFilter = userSearchBox.querySelector(
+        "#btnFilter"
+      ) as HTMLButtonElement;
+      
+      btnFilter.addEventListener("click", () => {
+        showOnlyActive = !showOnlyActive;
+        renderUsers();
+      });
+    }
+
+    // Update existing controls state
     const searchInput = userSearchBox.querySelector(
       ".search-box"
     ) as HTMLInputElement;
-
     searchInput.value = currentSearchTerm;
-    searchInput.oninput = () => {
-      currentSearchTerm = searchInput.value;
-      renderUsers();
-    };
-  }
 
-  // Hide search box if no users
-  if (userList.length === 0) {
+    const btnFilter = userSearchBox.querySelector(
+      "#btnFilter"
+    ) as HTMLButtonElement;
+    btnFilter.textContent = showOnlyActive
+      ? "Show all users"
+      : "Filter active users";
+  } else {
+    // Hide search box and reset state if no users
     userSearchBox.innerHTML = "";
     currentSearchTerm = "";
+    showOnlyActive = false;
   }
 
   const userContainer = document.querySelector(
@@ -90,6 +117,7 @@ function renderUsers(): void {
     const userCard = document.createElement("li");
     userCard.className = "user-card";
 
+    // ✅ Removed btnFilter from here
     userCard.innerHTML = `
       <div class="user-info">
         <h3 class="user-name">${user.name}</h3>
@@ -104,6 +132,7 @@ function renderUsers(): void {
       </div>
     `;
 
+    // Botão desativar/ativar
     const btnDeactivate = userCard.querySelector(
       ".btnDeactivate"
     ) as HTMLButtonElement;
@@ -111,6 +140,7 @@ function renderUsers(): void {
       handleDeactivate(user.id);
     });
 
+    // Botão Delete
     const btnDeleteUser = userCard.querySelector(
       ".btnDeleteUser"
     ) as HTMLButtonElement;
@@ -131,7 +161,6 @@ function renderUsers(): void {
 const nameInput = document.querySelector("#nameInput") as HTMLInputElement;
 const emailInput = document.querySelector("#emailInput") as HTMLInputElement;
 const btnAddUser = document.querySelector("#btnAddUser") as HTMLButtonElement;
-const btnFilter = document.querySelector("#btnFilter") as HTMLButtonElement;
 const totalUsers = document.querySelector("#totalUsers") as HTMLDivElement;
 const totalActiveUsers = document.querySelector(
   "#totalActiveUsers"
@@ -155,16 +184,6 @@ form.addEventListener("submit", (event) => {
 
   nameInput.value = "";
   emailInput.value = "";
-});
-
-// Botão filter active/inactive
-
-btnFilter.addEventListener("click", () => {
-  showOnlyActive = !showOnlyActive;
-  btnFilter.textContent = showOnlyActive
-    ? "Show all users"
-    : "Filter active users";
-  renderUsers();
 });
 
 // Função eliminar utilizador

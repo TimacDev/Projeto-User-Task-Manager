@@ -24,19 +24,34 @@ function filterUser(searchTerm) {
 // Função render users
 function renderUsers() {
     var userSearchBox = document.querySelector("#userSearchBox");
-    if (userList.length > 0 && !userSearchBox.querySelector(".search-box")) {
-        userSearchBox.innerHTML = "<h2>Search user</h2><input type=\"text\" class=\"search-box\" placeholder=\"Type to search by name\">";
-        var searchInput_1 = userSearchBox.querySelector(".search-box");
-        searchInput_1.value = currentSearchTerm;
-        searchInput_1.oninput = function () {
-            currentSearchTerm = searchInput_1.value;
-            renderUsers();
-        };
+    if (userList.length > 0) {
+        // Only create the controls if they don't exist
+        if (!userSearchBox.querySelector(".search-box")) {
+            userSearchBox.innerHTML = "\n        <h2>Search user</h2>        \n        <input type=\"text\" class=\"search-box\" placeholder=\"Type to search by name\">\n        <button type=\"button\" id=\"btnFilter\">".concat(showOnlyActive ? "Show all users" : "Filter active users", "</button>        \n      ");
+            var searchInput_1 = userSearchBox.querySelector(".search-box");
+            searchInput_1.oninput = function () {
+                currentSearchTerm = searchInput_1.value;
+                renderUsers();
+            };
+            var btnFilter_1 = userSearchBox.querySelector("#btnFilter");
+            btnFilter_1.addEventListener("click", function () {
+                showOnlyActive = !showOnlyActive;
+                renderUsers();
+            });
+        }
+        // Update existing controls state
+        var searchInput = userSearchBox.querySelector(".search-box");
+        searchInput.value = currentSearchTerm;
+        var btnFilter = userSearchBox.querySelector("#btnFilter");
+        btnFilter.textContent = showOnlyActive
+            ? "Show all users"
+            : "Filter active users";
     }
-    // Hide search box if no users
-    if (userList.length === 0) {
+    else {
+        // Hide search box and reset state if no users
         userSearchBox.innerHTML = "";
         currentSearchTerm = "";
+        showOnlyActive = false;
     }
     var userContainer = document.querySelector("#userContainer");
     userContainer.innerHTML = "";
@@ -54,11 +69,14 @@ function renderUsers() {
     usersToDisplay.forEach(function (user) {
         var userCard = document.createElement("li");
         userCard.className = "user-card";
+        // ✅ Removed btnFilter from here
         userCard.innerHTML = "\n      <div class=\"user-info\">\n        <h3 class=\"user-name\">".concat(user.name, "</h3>\n        <p class=\"user-email\">").concat(user.email, "</p>\n        <button type=\"button\" class=\"btnDeactivate user-status ").concat(user.active ? "active" : "inactive", "\">\n          ").concat(user.active ? "✓ Ativo" : "✗ Inativo", "\n        </button>\n        <button type=\"button\" class=\"btnDeleteUser\">Delete User</button>\n        <p class=\"user-tasks\">0 tarefas atribu\u00EDdas</p>\n      </div>\n    ");
+        // Botão desativar/ativar
         var btnDeactivate = userCard.querySelector(".btnDeactivate");
         btnDeactivate.addEventListener("click", function () {
             handleDeactivate(user.id);
         });
+        // Botão Delete
         var btnDeleteUser = userCard.querySelector(".btnDeleteUser");
         btnDeleteUser.addEventListener("click", function () {
             handleDelete(user.id);
@@ -73,7 +91,6 @@ function renderUsers() {
 var nameInput = document.querySelector("#nameInput");
 var emailInput = document.querySelector("#emailInput");
 var btnAddUser = document.querySelector("#btnAddUser");
-var btnFilter = document.querySelector("#btnFilter");
 var totalUsers = document.querySelector("#totalUsers");
 var totalActiveUsers = document.querySelector("#totalActiveUsers");
 var totalInactiveUsers = document.querySelector("#totalInactiveUsers");
@@ -88,14 +105,6 @@ form.addEventListener("submit", function (event) {
     renderUsers();
     nameInput.value = "";
     emailInput.value = "";
-});
-// Botão filter active/inactive
-btnFilter.addEventListener("click", function () {
-    showOnlyActive = !showOnlyActive;
-    btnFilter.textContent = showOnlyActive
-        ? "Show all users"
-        : "Filter active users";
-    renderUsers();
 });
 // Função eliminar utilizador
 function handleDeactivate(userId) {
