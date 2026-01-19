@@ -46,17 +46,25 @@ function renderUsers(): void {
     "#userSearchBox"
   ) as HTMLDivElement;
 
-  userSearchBox.innerHTML = `<h2>Search user</h2><input type="text" class="search-box" placeholder="Type to search by name">`;
+  if (userList.length > 0 && !userSearchBox.querySelector(".search-box")) {
+    userSearchBox.innerHTML = `<h2>Search user</h2><input type="text" class="search-box" placeholder="Type to search by name">`;
 
-  const searchInput = userSearchBox.querySelector(
-    ".search-box"
-  ) as HTMLInputElement;
+    const searchInput = userSearchBox.querySelector(
+      ".search-box"
+    ) as HTMLInputElement;
 
-  searchInput.value = currentSearchTerm;
-  searchInput.oninput = () => {
-    currentSearchTerm = searchInput.value;
-    renderUsers();
-  };
+    searchInput.value = currentSearchTerm;
+    searchInput.oninput = () => {
+      currentSearchTerm = searchInput.value;
+      renderUsers();
+    };
+  }
+
+  // Hide search box if no users
+  if (userList.length === 0) {
+    userSearchBox.innerHTML = "";
+    currentSearchTerm = "";
+  }
 
   const userContainer = document.querySelector(
     "#userContainer"
@@ -125,8 +133,12 @@ const emailInput = document.querySelector("#emailInput") as HTMLInputElement;
 const btnAddUser = document.querySelector("#btnAddUser") as HTMLButtonElement;
 const btnFilter = document.querySelector("#btnFilter") as HTMLButtonElement;
 const totalUsers = document.querySelector("#totalUsers") as HTMLDivElement;
-const totalActiveUsers = document.querySelector("#totalActiveUsers") as HTMLDivElement;
-const totalInactiveUsers = document.querySelector("#totalInactiveUsers") as HTMLDivElement;
+const totalActiveUsers = document.querySelector(
+  "#totalActiveUsers"
+) as HTMLDivElement;
+const totalInactiveUsers = document.querySelector(
+  "#totalInactiveUsers"
+) as HTMLDivElement;
 const form = document.querySelector("form") as HTMLFormElement;
 
 // Botão add users
@@ -227,12 +239,12 @@ function showTotalUsers(): void {
 }
 
 function showTotalActiveUsers(): void {
-  const activeCount = userList.filter(user => user.active).length;
+  const activeCount = userList.filter((user) => user.active).length;
   totalActiveUsers.innerHTML = `Active users: ${activeCount}`;
 }
 
 function showTotalInactiveUsers(): void {
-  const inactiveCount = userList.filter(user => !user.active).length;
+  const inactiveCount = userList.filter((user) => !user.active).length;
   totalInactiveUsers.innerHTML = `Inactive users: ${inactiveCount}`;
 }
 

@@ -24,13 +24,20 @@ function filterUser(searchTerm) {
 // Função render users
 function renderUsers() {
     var userSearchBox = document.querySelector("#userSearchBox");
-    userSearchBox.innerHTML = "<h2>Search user</h2><input type=\"text\" class=\"search-box\" placeholder=\"Type to search by name\">";
-    var searchInput = userSearchBox.querySelector(".search-box");
-    searchInput.value = currentSearchTerm;
-    searchInput.oninput = function () {
-        currentSearchTerm = searchInput.value;
-        renderUsers();
-    };
+    if (userList.length > 0 && !userSearchBox.querySelector(".search-box")) {
+        userSearchBox.innerHTML = "<h2>Search user</h2><input type=\"text\" class=\"search-box\" placeholder=\"Type to search by name\">";
+        var searchInput_1 = userSearchBox.querySelector(".search-box");
+        searchInput_1.value = currentSearchTerm;
+        searchInput_1.oninput = function () {
+            currentSearchTerm = searchInput_1.value;
+            renderUsers();
+        };
+    }
+    // Hide search box if no users
+    if (userList.length === 0) {
+        userSearchBox.innerHTML = "";
+        currentSearchTerm = "";
+    }
     var userContainer = document.querySelector("#userContainer");
     userContainer.innerHTML = "";
     if (userList.length === 0 && currentSearchTerm === "") {
