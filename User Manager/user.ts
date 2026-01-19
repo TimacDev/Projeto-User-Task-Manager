@@ -30,6 +30,13 @@ class UserClass implements User {
 let userList: UserClass[] = [];
 let showOnlyActive: boolean = false;
 
+// Função ordernar (sort)
+
+function orderUserList(): void {
+  userList = userList.sort((a, b) => a.name.localeCompare(b.name));
+  renderUsers();
+}
+
 // Função Search
 
 let currentSearchTerm: string = "";
@@ -52,7 +59,10 @@ function renderUsers(): void {
       userSearchBox.innerHTML = `
         <h2>Search user</h2>        
         <input type="text" class="search-box" placeholder="Type to search by name">
-        <button type="button" id="btnFilter">${showOnlyActive ? "Show all users" : "Filter active users"}</button>        
+        <button type="button" id="btnFilter">${
+          showOnlyActive ? "Show all users" : "Filter active users"
+        }</button>
+        <button type="button" id="btnOrder">Order A-Z</button>        
       `;
 
       const searchInput = userSearchBox.querySelector(
@@ -67,10 +77,16 @@ function renderUsers(): void {
       const btnFilter = userSearchBox.querySelector(
         "#btnFilter"
       ) as HTMLButtonElement;
-      
+
       btnFilter.addEventListener("click", () => {
         showOnlyActive = !showOnlyActive;
         renderUsers();
+      });
+
+      const btnOrder = document.querySelector("#btnOrder") as HTMLButtonElement;
+
+      btnOrder.addEventListener("click", () => {
+        orderUserList();
       });
     }
 
@@ -117,7 +133,6 @@ function renderUsers(): void {
     const userCard = document.createElement("li");
     userCard.className = "user-card";
 
-    // ✅ Removed btnFilter from here
     userCard.innerHTML = `
       <div class="user-info">
         <h3 class="user-name">${user.name}</h3>

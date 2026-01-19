@@ -15,6 +15,11 @@ var UserClass = /** @class */ (function () {
 }());
 var userList = [];
 var showOnlyActive = false;
+// Função ordernar (sort)
+function orderUserList() {
+    userList = userList.sort(function (a, b) { return a.name.localeCompare(b.name); });
+    renderUsers();
+}
 // Função Search
 var currentSearchTerm = "";
 function filterUser(searchTerm) {
@@ -27,7 +32,7 @@ function renderUsers() {
     if (userList.length > 0) {
         // Only create the controls if they don't exist
         if (!userSearchBox.querySelector(".search-box")) {
-            userSearchBox.innerHTML = "\n        <h2>Search user</h2>        \n        <input type=\"text\" class=\"search-box\" placeholder=\"Type to search by name\">\n        <button type=\"button\" id=\"btnFilter\">".concat(showOnlyActive ? "Show all users" : "Filter active users", "</button>        \n      ");
+            userSearchBox.innerHTML = "\n        <h2>Search user</h2>        \n        <input type=\"text\" class=\"search-box\" placeholder=\"Type to search by name\">\n        <button type=\"button\" id=\"btnFilter\">".concat(showOnlyActive ? "Show all users" : "Filter active users", "</button>\n        <button type=\"button\" id=\"btnOrder\">Order A-Z</button>        \n      ");
             var searchInput_1 = userSearchBox.querySelector(".search-box");
             searchInput_1.oninput = function () {
                 currentSearchTerm = searchInput_1.value;
@@ -37,6 +42,10 @@ function renderUsers() {
             btnFilter_1.addEventListener("click", function () {
                 showOnlyActive = !showOnlyActive;
                 renderUsers();
+            });
+            var btnOrder = document.querySelector("#btnOrder");
+            btnOrder.addEventListener("click", function () {
+                orderUserList();
             });
         }
         // Update existing controls state
@@ -69,7 +78,6 @@ function renderUsers() {
     usersToDisplay.forEach(function (user) {
         var userCard = document.createElement("li");
         userCard.className = "user-card";
-        // ✅ Removed btnFilter from here
         userCard.innerHTML = "\n      <div class=\"user-info\">\n        <h3 class=\"user-name\">".concat(user.name, "</h3>\n        <p class=\"user-email\">").concat(user.email, "</p>\n        <button type=\"button\" class=\"btnDeactivate user-status ").concat(user.active ? "active" : "inactive", "\">\n          ").concat(user.active ? "✓ Ativo" : "✗ Inativo", "\n        </button>\n        <button type=\"button\" class=\"btnDeleteUser\">Delete User</button>\n        <p class=\"user-tasks\">0 tarefas atribu\u00EDdas</p>\n      </div>\n    ");
         // Botão desativar/ativar
         var btnDeactivate = userCard.querySelector(".btnDeactivate");
