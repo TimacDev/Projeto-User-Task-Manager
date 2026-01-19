@@ -39,10 +39,11 @@ h2 {
 
 /* Total Users Section */
 #totalUsers {
-  font-size: 1rem;
+  font-size: 0.85rem;
   color: #6b5344;
   font-weight: 500;
 }
+
 #totalInactiveUsers,
 #totalActiveUsers {
   font-size: 0.85rem;
@@ -119,7 +120,7 @@ button:hover {
 #userContainer {
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(3, 1fr); 
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
@@ -130,7 +131,14 @@ button:hover {
   border-radius: 15px;
   border: 1px solid #e8dfd4;
   background: rgba(232, 223, 212, 0.4);
-  transition: background 0.2s;
+  transition: all 0.3s ease;
+}
+
+.user-card:hover {
+  cursor: pointer;
+  background: rgba(232, 223, 212, 0.8);
+  box-shadow: 0 8px 25px rgba(107, 83, 68, 0.15);
+  transform: translateY(-4px);
 }
 
 .user-card:last-child {
@@ -303,11 +311,6 @@ section {
 .status-badge.inactive {
   background-color: #f8d7da;
   color: #721c24;
-}
-
-/* Hidden Class */
-.hidden {
-  display: none !important;
 }
 
 /* Responsive */
