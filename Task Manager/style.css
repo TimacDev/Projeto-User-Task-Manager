@@ -103,6 +103,10 @@ button:hover {
   gap: 15px;
 }
 
+#output ul li p {
+  align-items: flex-end;
+}
+
 #output ul li:last-child {
   border-bottom: none;
 }

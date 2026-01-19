@@ -107,7 +107,8 @@ function orderTask(): void {
   renderTasks();
 }
 
-// Render Tasks
+// Função Render Tasks
+
 function renderTasks(): void {
   output.innerHTML = "";
 
@@ -144,7 +145,7 @@ function renderTasks(): void {
   searchBox.value = currentSearchTerm;
   searchBox.oninput = () => {
     currentSearchTerm = searchBox.value;
-    renderTaskList(ul); // Only re-render the task list
+    renderTaskList(ul); 
   };
   controls.appendChild(searchBox);
 
@@ -158,7 +159,8 @@ function renderTasks(): void {
   updateCounter();
 }
 
-// New function: Only renders the task items
+// Função render task items
+
 function renderTaskList(ul: HTMLUListElement): void {
   ul.innerHTML = "";
 
@@ -234,6 +236,7 @@ function renderTaskList(ul: HTMLUListElement): void {
 }
 
 // Event Listeners
+
 addBtn.addEventListener("click", addTask);
 
 clearBtn.addEventListener("click", clearAllTasks);
