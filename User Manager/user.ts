@@ -38,12 +38,15 @@ function renderUsers(): void {
   ) as HTMLUListElement;
   userContainer.innerHTML = "";
 
-  userList.forEach((user) => {
-    // Cria o elemento li para o cartão
+  // Filter users based on the showOnlyActive flag
+  const usersToDisplay = showOnlyActive
+    ? userList.filter((user) => user.active === true)
+    : userList;
+
+  usersToDisplay.forEach((user) => {
     const userCard = document.createElement("li");
     userCard.className = "user-card";
 
-    // Adiciona o conteúdo do cartão
     userCard.innerHTML = `
       <div class="user-info">
         <h3 class="user-name">${user.name}</h3>
@@ -58,33 +61,39 @@ function renderUsers(): void {
       </div>
     `;
 
-    const btnDeactivate = userCard.querySelector(".btnDeactivate") as HTMLButtonElement;
+    const btnDeactivate = userCard.querySelector(
+      ".btnDeactivate"
+    ) as HTMLButtonElement;
     btnDeactivate.addEventListener("click", () => {
       handleDeactivate(user.id);
     });
 
-    const btnDeleteUser = userCard.querySelector(".btnDeleteUser") as HTMLButtonElement;
+    const btnDeleteUser = userCard.querySelector(
+      ".btnDeleteUser"
+    ) as HTMLButtonElement;
     btnDeleteUser.addEventListener("click", () => {
       handleDelete(user.id);
     });
 
-    // Adiciona o cartão ao contentor
     userContainer.appendChild(userCard);
   });
 
   showTotalUsers();
 }
 
-// Botão adicionar users
+// Query selectors
 
 const nameInput = document.querySelector("#nameInput") as HTMLInputElement;
 const emailInput = document.querySelector("#emailInput") as HTMLInputElement;
 const btnAddUser = document.querySelector("#btnAddUser") as HTMLButtonElement;
-
+const btnFilter = document.querySelector("#btnFilter") as HTMLButtonElement;
+const totalUsers = document.querySelector("#totalUsers") as HTMLDivElement;
 const form = document.querySelector("form") as HTMLFormElement;
 
+// Botão add users
+
 form.addEventListener("submit", (event) => {
-  event.preventDefault(); 
+  event.preventDefault();
 
   const taskText: string = nameInput.value;
   const taskEmail: string = emailInput.value;
@@ -95,6 +104,16 @@ form.addEventListener("submit", (event) => {
 
   nameInput.value = "";
   emailInput.value = "";
+});
+
+// Botão filter active/inactive
+
+btnFilter.addEventListener("click", () => {
+  showOnlyActive = !showOnlyActive;
+  btnFilter.textContent = showOnlyActive
+    ? "Show all users"
+    : "Filter active users";
+  renderUsers(); 
 });
 
 // Função eliminar utilizador
@@ -115,13 +134,15 @@ function handleDeactivate(userId: number): void {
   renderUsers();
 }
 
+// Função botão delete
+
 function handleDelete(userId: number): void {
-  userList= userList.filter((u) => u.id !== userId);  
+  userList = userList.filter((u) => u.id !== userId);
 
   renderUsers();
 }
 
-// Botão filtro
+// Função filtro
 
 function filterActiveUsers(): void {
   const userContainer = document.querySelector(
@@ -160,22 +181,7 @@ function filterActiveUsers(): void {
   });
 }
 
-const btnFilter = document.querySelector("#btnFilter") as HTMLButtonElement;
-
-btnFilter.addEventListener("click", () => {
-  showOnlyActive = !showOnlyActive;
-
-  if (showOnlyActive) {
-    filterActiveUsers();
-    btnFilter.textContent = "Show all users";
-  } else {
-    renderUsers();
-    btnFilter.textContent = "Filter active users";
-  }
-});
-
-// Total Users
-const totalUsers = document.querySelector("#totalUsers") as HTMLDivElement;
+// Função Total Users
 
 function showTotalUsers(): void {
   totalUsers.innerHTML = `Total number of users: ${userList.length}`;

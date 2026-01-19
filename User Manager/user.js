@@ -19,11 +19,13 @@ var showOnlyActive = false;
 function renderUsers() {
     var userContainer = document.querySelector("#userContainer");
     userContainer.innerHTML = "";
-    userList.forEach(function (user) {
-        // Cria o elemento li para o cartão
+    // Filter users based on the showOnlyActive flag
+    var usersToDisplay = showOnlyActive
+        ? userList.filter(function (user) { return user.active === true; })
+        : userList;
+    usersToDisplay.forEach(function (user) {
         var userCard = document.createElement("li");
         userCard.className = "user-card";
-        // Adiciona o conteúdo do cartão
         userCard.innerHTML = "\n      <div class=\"user-info\">\n        <h3 class=\"user-name\">".concat(user.name, "</h3>\n        <p class=\"user-email\">").concat(user.email, "</p>\n        <button type=\"button\" class=\"btnDeactivate user-status ").concat(user.active ? "active" : "inactive", "\">\n          ").concat(user.active ? "✓ Ativo" : "✗ Inativo", "\n        </button>\n        <button type=\"button\" class=\"btnDeleteUser\">Delete User</button>\n        <p class=\"user-tasks\">0 tarefas atribu\u00EDdas</p>\n      </div>\n    ");
         var btnDeactivate = userCard.querySelector(".btnDeactivate");
         btnDeactivate.addEventListener("click", function () {
@@ -33,16 +35,18 @@ function renderUsers() {
         btnDeleteUser.addEventListener("click", function () {
             handleDelete(user.id);
         });
-        // Adiciona o cartão ao contentor
         userContainer.appendChild(userCard);
     });
     showTotalUsers();
 }
-// Botão adicionar users
+// Query selectors
 var nameInput = document.querySelector("#nameInput");
 var emailInput = document.querySelector("#emailInput");
 var btnAddUser = document.querySelector("#btnAddUser");
+var btnFilter = document.querySelector("#btnFilter");
+var totalUsers = document.querySelector("#totalUsers");
 var form = document.querySelector("form");
+// Botão add users
 form.addEventListener("submit", function (event) {
     event.preventDefault();
     var taskText = nameInput.value;
@@ -52,6 +56,14 @@ form.addEventListener("submit", function (event) {
     renderUsers();
     nameInput.value = "";
     emailInput.value = "";
+});
+// Botão filter active/inactive
+btnFilter.addEventListener("click", function () {
+    showOnlyActive = !showOnlyActive;
+    btnFilter.textContent = showOnlyActive
+        ? "Show all users"
+        : "Filter active users";
+    renderUsers();
 });
 // Função eliminar utilizador
 function handleDeactivate(userId) {
@@ -67,11 +79,12 @@ function handleDeactivate(userId) {
     }
     renderUsers();
 }
+// Função botão delete
 function handleDelete(userId) {
     userList = userList.filter(function (u) { return u.id !== userId; });
     renderUsers();
 }
-// Botão filtro
+// Função filtro
 function filterActiveUsers() {
     var userContainer = document.querySelector("#userContainer");
     userContainer.innerHTML = "";
@@ -87,20 +100,7 @@ function filterActiveUsers() {
         userContainer.appendChild(userCard);
     });
 }
-var btnFilter = document.querySelector("#btnFilter");
-btnFilter.addEventListener("click", function () {
-    showOnlyActive = !showOnlyActive;
-    if (showOnlyActive) {
-        filterActiveUsers();
-        btnFilter.textContent = "Show all users";
-    }
-    else {
-        renderUsers();
-        btnFilter.textContent = "Filter active users";
-    }
-});
-// Total Users
-var totalUsers = document.querySelector("#totalUsers");
+// Função Total Users
 function showTotalUsers() {
     totalUsers.innerHTML = "Total number of users: ".concat(userList.length);
 }
