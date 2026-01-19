@@ -30,18 +30,53 @@ class UserClass implements User {
 let userList: UserClass[] = [];
 let showOnlyActive: boolean = false;
 
+// Função Search
+
+let currentSearchTerm: string = "";
+
+function filterUser(searchTerm: string): void {
+  currentSearchTerm = searchTerm;
+  renderUsers();
+}
+
 // Função render users
 
 function renderUsers(): void {
+  const userSearchBox = document.querySelector(
+    "#userSearchBox"
+  ) as HTMLDivElement;
+
+  userSearchBox.innerHTML = `<h2>Search user</h2><input type="text" class="search-box" placeholder="Type to search by name">`;
+
+  const searchInput = userSearchBox.querySelector(
+    ".search-box"
+  ) as HTMLInputElement;
+
+  searchInput.value = currentSearchTerm;
+  searchInput.oninput = () => {
+    currentSearchTerm = searchInput.value;
+    renderUsers();
+  };
+
   const userContainer = document.querySelector(
     "#userContainer"
   ) as HTMLUListElement;
   userContainer.innerHTML = "";
 
-  // Filter users based on the showOnlyActive flag
+  if (userList.length === 0 && currentSearchTerm === "") {
+    return;
+  }
+
+  const filteredBySearch =
+    currentSearchTerm.trim() === ""
+      ? userList
+      : userList.filter((user) =>
+          user.name.toLowerCase().includes(currentSearchTerm.toLowerCase())
+        );
+
   const usersToDisplay = showOnlyActive
-    ? userList.filter((user) => user.active === true)
-    : userList;
+    ? filteredBySearch.filter((user) => user.active === true)
+    : filteredBySearch;
 
   usersToDisplay.forEach((user) => {
     const userCard = document.createElement("li");
@@ -113,7 +148,7 @@ btnFilter.addEventListener("click", () => {
   btnFilter.textContent = showOnlyActive
     ? "Show all users"
     : "Filter active users";
-  renderUsers(); 
+  renderUsers();
 });
 
 // Função eliminar utilizador

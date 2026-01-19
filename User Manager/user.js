@@ -15,14 +15,35 @@ var UserClass = /** @class */ (function () {
 }());
 var userList = [];
 var showOnlyActive = false;
+// Função Search
+var currentSearchTerm = "";
+function filterUser(searchTerm) {
+    currentSearchTerm = searchTerm;
+    renderUsers();
+}
 // Função render users
 function renderUsers() {
+    var userSearchBox = document.querySelector("#userSearchBox");
+    userSearchBox.innerHTML = "<h2>Search user</h2><input type=\"text\" class=\"search-box\" placeholder=\"Type to search by name\">";
+    var searchInput = userSearchBox.querySelector(".search-box");
+    searchInput.value = currentSearchTerm;
+    searchInput.oninput = function () {
+        currentSearchTerm = searchInput.value;
+        renderUsers();
+    };
     var userContainer = document.querySelector("#userContainer");
     userContainer.innerHTML = "";
-    // Filter users based on the showOnlyActive flag
+    if (userList.length === 0 && currentSearchTerm === "") {
+        return;
+    }
+    var filteredBySearch = currentSearchTerm.trim() === ""
+        ? userList
+        : userList.filter(function (user) {
+            return user.name.toLowerCase().includes(currentSearchTerm.toLowerCase());
+        });
     var usersToDisplay = showOnlyActive
-        ? userList.filter(function (user) { return user.active === true; })
-        : userList;
+        ? filteredBySearch.filter(function (user) { return user.active === true; })
+        : filteredBySearch;
     usersToDisplay.forEach(function (user) {
         var userCard = document.createElement("li");
         userCard.className = "user-card";
