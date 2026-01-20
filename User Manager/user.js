@@ -138,7 +138,7 @@ function renderUsers() {
         var userCard = document.createElement("li");
         userCard.className = "user-card";
         userCard.innerHTML = "\n    <div class=\"user-info\">\n      <h3 class=\"user-name\">".concat(user.name, "</h3>\n      <p class=\"user-email\">").concat(user.email, "</p>\n      <button type=\"button\" class=\"btnDeactivate user-status ").concat(user.active ? "active" : "inactive", "\">\n        ").concat(user.active ? "Active" : "Inactive", "\n      </button>\n      <button type=\"button\" class=\"btnDeleteUser\">Delete</button>\n      <p class=\"user-tasks\">0 tarefas atribu\u00EDdas</p>\n    </div>\n  ");
-        // 🆕 Evento de clique no cartão para mostrar detalhes
+        // Evento de clique no cartão para mostrar detalhes
         userCard.addEventListener("click", function (event) {
             // Evita abrir detalhes quando clica nos botões
             var target = event.target;

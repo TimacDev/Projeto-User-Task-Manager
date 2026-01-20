@@ -262,7 +262,7 @@ function renderUsers(): void {
     </div>
   `;
 
-    // 🆕 Evento de clique no cartão para mostrar detalhes
+    // Evento de clique no cartão para mostrar detalhes
     userCard.addEventListener("click", (event) => {
       // Evita abrir detalhes quando clica nos botões
       const target = event.target as HTMLElement;
