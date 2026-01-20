@@ -1,13 +1,5 @@
-const input = document.querySelector("#taskInput") as HTMLInputElement;
-const addBtn = document.querySelector("#addBtn") as HTMLButtonElement;
-const clearBtn = document.querySelector("#btnLimpar") as HTMLButtonElement;
-const output = document.querySelector("#output") as HTMLDivElement;
-const counterSpan = document.querySelector("#numPendentes") as HTMLSpanElement;
-const categorySelect = document.querySelector(
-  "#categorySelect"
-) as HTMLSelectElement;
-
 // Type, Interface e Class
+
 type Category = "Work" | "Personal" | "Study";
 
 interface Task {
@@ -33,11 +25,23 @@ class TaskClass implements Task {
   }
 }
 
-// ARRAY
+// Query selectors
+
+const input = document.querySelector("#taskInput") as HTMLInputElement;
+const addBtn = document.querySelector("#addBtn") as HTMLButtonElement;
+const clearBtn = document.querySelector("#btnLimpar") as HTMLButtonElement;
+const output = document.querySelector("#output") as HTMLDivElement;
+const counterSpan = document.querySelector("#numPendentes") as HTMLSpanElement;
+const categorySelect = document.querySelector(
+  "#categorySelect"
+) as HTMLSelectElement;
+
+// Array Task List
 
 let taskList: Task[] = [];
 
-// FUNÇÕES
+// Functions
+
 let currentSearchTerm: string = "";
 
 function filterTasks(searchTerm: string): void {
