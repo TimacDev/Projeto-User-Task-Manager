@@ -86,6 +86,13 @@ input[type="email"]:focus {
   border-bottom-color: #8b7355;
 }
 
+.error-message {
+  color: red;
+  font-size: 0.875rem;
+  display: block;
+  margin-top: 0.5rem;
+}
+
 /* Buttons */
 button {
   padding: 10px 20px;

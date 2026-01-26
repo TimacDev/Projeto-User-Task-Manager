@@ -1,130 +1,38 @@
-// Type, Interface e Class
+import {
+  taskList, 
+  getCurrentSearchTerm, 
+  setSearchTerm, 
+  orderTask, 
+  removeDoneTasks, 
+  removeTask, 
+  editTask 
+} from "../services/index.js";
 
-type Category = "Work" | "Personal" | "Study";
-
-interface Task {
-  id: number;
-  title: string;
-  finished: boolean;
-  completionDate?: Date;
-  category: Category;
-}
-
-class TaskClass implements Task {
-  id: number;
-  title: string;
-  finished: boolean;
-  completionDate?: Date;
-  category: Category;
-
-  constructor(id: number, titulo: string, category: Category) {
-    this.id = id;
-    this.title = titulo;
-    this.finished = false;
-    this.category = category;
-  }
-}
-
-// Query selectors
-
-const input = document.querySelector("#taskInput") as HTMLInputElement;
-const addBtn = document.querySelector("#addBtn") as HTMLButtonElement;
-const clearBtn = document.querySelector("#btnLimpar") as HTMLButtonElement;
-const output = document.querySelector("#output") as HTMLDivElement;
+// Função counter
 const counterSpan = document.querySelector("#numPendentes") as HTMLSpanElement;
-const categorySelect = document.querySelector(
-  "#categorySelect"
-) as HTMLSelectElement;
+const output = document.querySelector("#output") as HTMLDivElement;
 
-// Array Task List
-
-let taskList: Task[] = [];
-
-// Functions
-
-let currentSearchTerm: string = "";
-
-function filterTasks(searchTerm: string): void {
-  currentSearchTerm = searchTerm;
-  renderTasks();
-}
-
-function updateCounter(): void {
+export function updateCounter(): void {
   const pendingCount = taskList.filter((task) => !task.finished).length;
   counterSpan.textContent = pendingCount.toString();
 }
 
-function addTask(): void {
-  const taskText = input.value.trim();
-
-  if (taskText === "") {
-    return;
-  }
-
-  const categoriaSelecionada = categorySelect.value as Category;
-
-  const newTask = new TaskClass(Date.now(), taskText, categoriaSelecionada);
-  taskList.push(newTask);
-  input.value = "";
-  renderTasks();
-}
-
-function removeTask(id: number): void {
-  taskList = taskList.filter((task) => task.id !== id);
-  renderTasks();
-  updateCounter();
-}
-
-function removeDoneTasks(): void {
-  taskList = taskList.filter((task) => task.finished === false);
-  renderTasks();
-  updateCounter();
-}
-
-function editTask(id: number): void {
-  const task = taskList.find((t) => t.id === id);
-  if (!task) return;
-
-  const newTitle = prompt("Editar tarefa:", task.title);
-
-  if (newTitle !== null && newTitle.trim() !== "") {
-    task.title = newTitle.trim();
-    renderTasks();
-  }
-}
-
-function clearAllTasks(): void {
-  if (taskList.length === 0) {
-    return;
-  }
-
-  if (confirm("Are you sure you want to delete all tasks?")) {
-    taskList = [];
-    renderTasks();
-    output.innerHTML = "";
-    updateCounter();
-  }
-}
-
-function orderTask(): void {
-  taskList.sort((a, b) => a.title.localeCompare(b.title, "pt-PT"));
-  renderTasks();
-}
-
 // Função Render Tasks
 
-function renderTasks(): void {
+export function renderTasks(): void {
   output.innerHTML = "";
 
-  if (taskList.length === 0 && currentSearchTerm === "") {
+  if (taskList.length === 0 && getCurrentSearchTerm() === "") {
+    updateCounter();
     return;
   }
 
-  const filteredTasks = currentSearchTerm.trim() === ""
-    ? taskList
-    : taskList.filter((task) =>
-        task.title.toLowerCase().includes(currentSearchTerm.toLowerCase())
-      );
+  const filteredTasks =
+    getCurrentSearchTerm().trim() === ""
+      ? taskList
+      : taskList.filter((task) =>
+          task.title.toLowerCase().includes(getCurrentSearchTerm().toLowerCase()),
+        );
 
   // Controls container (buttons + search)
   const controls = document.createElement("div");
@@ -146,11 +54,12 @@ function renderTasks(): void {
   searchBox.type = "text";
   searchBox.placeholder = "Search tasks...";
   searchBox.classList.add("input-searchbox");
-  searchBox.value = currentSearchTerm;
+  searchBox.value = getCurrentSearchTerm();
   searchBox.oninput = () => {
-    currentSearchTerm = searchBox.value;
-    renderTaskList(ul); 
-  };
+  setSearchTerm(searchBox.value);
+  renderTaskList(ul); 
+};
+
   controls.appendChild(searchBox);
 
   output.appendChild(controls);
@@ -164,15 +73,15 @@ function renderTasks(): void {
 }
 
 // Função render task items
-
 function renderTaskList(ul: HTMLUListElement): void {
   ul.innerHTML = "";
 
-  const filteredTasks = currentSearchTerm.trim() === ""
-    ? taskList
-    : taskList.filter((task) =>
-        task.title.toLowerCase().includes(currentSearchTerm.toLowerCase())
-      );
+  const filteredTasks =
+    getCurrentSearchTerm().trim() === ""
+      ? taskList
+      : taskList.filter((task) =>
+          task.title.toLowerCase().includes(getCurrentSearchTerm().toLowerCase()),
+        );
 
   if (filteredTasks.length === 0) {
     const noResults = document.createElement("li");
@@ -206,6 +115,7 @@ function renderTaskList(ul: HTMLUListElement): void {
         task.completionDate = undefined;
       }
       renderTaskList(ul);
+      updateCounter();
     });
 
     const btnRemove = document.createElement("button");
@@ -224,7 +134,7 @@ function renderTaskList(ul: HTMLUListElement): void {
     if (task.finished && task.completionDate) {
       const finishedDate = document.createElement("p");
       finishedDate.textContent = `Finished in: ${task.completionDate.toLocaleString(
-        "en"
+        "en",
       )}`;
       finishedDate.classList.add("task-date");
       li.appendChild(finishedDate);
@@ -238,9 +148,3 @@ function renderTaskList(ul: HTMLUListElement): void {
 
   updateCounter();
 }
-
-// Event Listeners
-
-addBtn.addEventListener("click", addTask);
-
-clearBtn.addEventListener("click", clearAllTasks);

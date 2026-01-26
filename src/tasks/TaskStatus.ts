@@ -1,0 +1,8 @@
+// export enum TaskStatus {
+//     CREATED,
+//     ASSIGNED,
+//     IN_PROGRESS,
+//     BLOCKED,
+//     COMPLETED,
+//     ARCHIVED
+// }
