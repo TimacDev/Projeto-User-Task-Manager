@@ -1,13 +1,38 @@
-import { UserClass } from "../models/index.js";
-import { userList, orderUserList, showTotalUsers, showTotalActiveUsers, showTotalInactiveUsers, handleDeactivate, handleDelete, } from "../services/userService.js";
+import { userList, toggleUserActive, deleteUser, orderUserList, getUserById, getTotalUsers, getActiveUsersCount, getInactiveUsersCount, getFilteredUsers, addUser, setOnUserUpdate, } from "../services/userService.js";
+// ============ STATE ============
 let showOnlyActive = false;
-let selectedUser = null;
 let currentSearchTerm = "";
-// Função Render Users
+let selectedUser = null;
+// ============ DOM DISPLAY FUNCTIONS ============
+export function displayTotalUsers() {
+    const el = document.querySelector("#totalUsers");
+    if (el)
+        el.innerHTML = `Total users: ${getTotalUsers()}`;
+}
+export function displayActiveUsers() {
+    const el = document.querySelector("#totalActiveUsers");
+    if (el)
+        el.innerHTML = `Active users: ${getActiveUsersCount()}`;
+}
+export function displayInactiveUsers() {
+    const el = document.querySelector("#totalInactiveUsers");
+    if (el)
+        el.innerHTML = `Inactive users: ${getInactiveUsersCount()}`;
+}
+function updateAllCounters() {
+    displayTotalUsers();
+    displayActiveUsers();
+    displayInactiveUsers();
+}
+// ============ RENDER USERS ============
 export function renderUsers() {
+    var _a, _b;
     const userSearchBox = document.querySelector("#userSearchBox");
+    const userContainer = document.querySelector("#userContainer");
+    if (!userSearchBox || !userContainer)
+        return;
+    // Render search controls if users exist
     if (userList.length > 0) {
-        // Only create the controls if they don't exist
         if (!userSearchBox.querySelector(".search-box")) {
             userSearchBox.innerHTML = `
         <h2>Search user</h2>        
@@ -20,93 +45,74 @@ export function renderUsers() {
                 currentSearchTerm = searchInput.value;
                 renderUsers();
             };
-            const btnFilter = userSearchBox.querySelector("#btnFilter");
-            btnFilter.addEventListener("click", () => {
+            (_a = userSearchBox
+                .querySelector("#btnFilter")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
                 showOnlyActive = !showOnlyActive;
                 renderUsers();
             });
-            const btnOrder = document.querySelector("#btnOrder");
-            btnOrder.addEventListener("click", () => {
-                orderUserList();
-            });
+            (_b = userSearchBox
+                .querySelector("#btnOrder")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", orderUserList);
         }
-        // Update existing controls state
+        // Update controls state
         const searchInput = userSearchBox.querySelector(".search-box");
-        searchInput.value = currentSearchTerm;
+        if (searchInput)
+            searchInput.value = currentSearchTerm;
         const btnFilter = userSearchBox.querySelector("#btnFilter");
-        btnFilter.textContent = showOnlyActive
-            ? "Show all users"
-            : "Filter active users";
+        if (btnFilter)
+            btnFilter.textContent = showOnlyActive
+                ? "Show all users"
+                : "Filter active users";
     }
     else {
-        // Hide search box and reset state if no users
         userSearchBox.innerHTML = "";
         currentSearchTerm = "";
         showOnlyActive = false;
     }
-    const userContainer = document.querySelector("#userContainer");
+    // Render user list
     userContainer.innerHTML = "";
-    if (userList.length === 0 && currentSearchTerm === "") {
-        return;
-    }
-    const filteredBySearch = currentSearchTerm.trim() === ""
-        ? userList
-        : userList.filter((user) => user.name.toLowerCase().includes(currentSearchTerm.toLowerCase()));
-    const usersToDisplay = showOnlyActive
-        ? filteredBySearch.filter((user) => user.active === true)
-        : filteredBySearch;
+    const usersToDisplay = getFilteredUsers(currentSearchTerm, showOnlyActive);
     usersToDisplay.forEach((user) => {
+        var _a, _b;
         const userCard = document.createElement("li");
         userCard.className = "user-card";
         userCard.innerHTML = `
-    <div class="user-info">
-      <h3 class="user-name">${user.name}</h3>
-      <p class="user-email">${user.email}</p>
-      <button type="button" class="btnDeactivate user-status ${user.active ? "active" : "inactive"}">
-        ${user.active ? "Active" : "Inactive"}
-      </button>
-      <button type="button" class="btnDeleteUser">Delete</button>
-      <p class="user-tasks">0 tarefas atribuídas</p>
-    </div>
-  `;
-        // Evento de clique no cartão para mostrar detalhes
+      <div class="user-info">
+        <h3 class="user-name">${user.name}</h3>
+        <p class="user-email">${user.email}</p>
+        <button type="button" class="btnDeactivate user-status ${user.active ? "active" : "inactive"}">
+          ${user.active ? "Active" : "Inactive"}
+        </button>
+        <button type="button" class="btnDeleteUser">Delete</button>
+        <p class="user-tasks">0 tarefas atribuídas</p>
+      </div>
+    `;
         userCard.addEventListener("click", (event) => {
-            // Evita abrir detalhes quando clica nos botões
             const target = event.target;
             if (target.classList.contains("btnDeactivate") ||
-                target.classList.contains("btnDeleteUser")) {
+                target.classList.contains("btnDeleteUser"))
                 return;
-            }
             showUserDetails(user.id);
         });
-        // Botão desativar/ativar
-        const btnDeactivate = userCard.querySelector(".btnDeactivate");
-        btnDeactivate.addEventListener("click", (event) => {
-            event.stopPropagation(); // Evita que o clique propague para o cartão
-            handleDeactivate(user.id);
+        (_a = userCard.querySelector(".btnDeactivate")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", (e) => {
+            e.stopPropagation();
+            toggleUserActive(user.id);
         });
-        // Botão Delete
-        const btnDeleteUser = userCard.querySelector(".btnDeleteUser");
-        btnDeleteUser.addEventListener("click", (event) => {
-            event.stopPropagation(); // Evita que o clique propague para o cartão
-            handleDelete(user.id);
+        (_b = userCard.querySelector(".btnDeleteUser")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", (e) => {
+            e.stopPropagation();
+            deleteUser(user.id);
         });
         userContainer.appendChild(userCard);
     });
-    showTotalUsers();
-    showTotalActiveUsers();
-    showTotalInactiveUsers();
+    updateAllCounters();
 }
-// Função para mostrar detalhes do utilizador
+// ============ USER DETAILS MODAL ============
 export function showUserDetails(userId) {
-    const user = userList.find((u) => u.id === userId);
-    if (!user) {
+    const user = getUserById(userId);
+    if (!user)
         return;
-    }
     selectedUser = user;
     const userDetails = document.querySelector("#userDetails");
     const detailsBody = document.querySelector("#detailsBody");
-    // Calcula há quanto tempo foi criado (simulado com o ID que é timestamp)
     const createdDate = new Date(user.id);
     const formattedDate = createdDate.toLocaleDateString("pt-PT", {
         day: "2-digit",
@@ -120,17 +126,14 @@ export function showUserDetails(userId) {
       <div class="detail-label">ID</div>
       <div class="detail-value">#${user.id}</div>
     </div>
-    
     <div class="detail-item">
       <div class="detail-label">Nome</div>
       <div class="detail-value">${user.name}</div>
     </div>
-    
     <div class="detail-item">
       <div class="detail-label">Email</div>
       <div class="detail-value">${user.email}</div>
     </div>
-    
     <div class="detail-item">
       <div class="detail-label">Estado</div>
       <div class="detail-value">
@@ -139,83 +142,62 @@ export function showUserDetails(userId) {
         </span>
       </div>
     </div>
-    
     <div class="detail-item">
       <div class="detail-label">Data de Criação</div>
       <div class="detail-value">${formattedDate}</div>
     </div>
-    
-    <div class="detail-item">
-      <div class="detail-label">Tarefas Atribuídas</div>
-      <div class="detail-value">0 tarefas</div>
-    </div>
   `;
-    // Mostra o painel de detalhes
     userDetails.classList.remove("hidden");
 }
-// Função para fechar detalhes
 export function closeUserDetails() {
     const userDetails = document.querySelector("#userDetails");
-    if (userDetails) {
+    if (userDetails)
         userDetails.classList.add("hidden");
-    }
     selectedUser = null;
 }
-// Event listener para fechar detalhes
-const closeBtn = document.querySelector("#closeDetails");
-const userDetails = document.querySelector("#userDetails");
-export function closeModal() {
+export function setupModal() {
     const closeBtn = document.querySelector("#closeDetails");
     const userDetails = document.querySelector("#userDetails");
-    if (closeBtn) {
-        closeBtn.addEventListener("click", closeUserDetails);
-    }
-    if (userDetails) {
-        userDetails.addEventListener("click", (event) => {
-            if (event.target === userDetails) {
-                closeUserDetails();
-            }
-        });
-    }
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
+    closeBtn === null || closeBtn === void 0 ? void 0 : closeBtn.addEventListener("click", closeUserDetails);
+    userDetails === null || userDetails === void 0 ? void 0 : userDetails.addEventListener("click", (e) => {
+        if (e.target === userDetails)
             closeUserDetails();
-        }
+    });
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape")
+            closeUserDetails();
     });
 }
+// ============ INIT FUNCTION ============
 export function initUserPage() {
     const form = document.querySelector("form");
     const nameInput = document.querySelector("#nameInput");
     const emailInput = document.querySelector("#emailInput");
     const errorMsg = document.querySelector("#errorMsg");
-    if (form) {
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const taskText = nameInput.value.trim();
-            const taskEmail = emailInput.value.trim();
-            function validateEmail(email_) {
-                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return emailPattern.test(email_);
-            }
-            errorMsg.textContent = "";
-            if (taskText === "") {
-                errorMsg.textContent = "Name is required";
-                return;
-            }
-            if (!validateEmail(taskEmail)) {
-                errorMsg.textContent = "Invalid e-mail";
-                return;
-            }
-            const newUser = new UserClass(Date.now(), taskText, taskEmail);
-            userList.push(newUser);
-            renderUsers();
-            nameInput.value = "";
-            emailInput.value = "";
-        });
-    }
-    // Initialize modal & counters
-    closeModal();
-    showTotalUsers();
-    showTotalActiveUsers();
-    showTotalInactiveUsers();
+    if (!form)
+        return;
+    // Connect service updates to UI
+    setOnUserUpdate(() => {
+        renderUsers();
+    });
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        errorMsg.textContent = "";
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        if (name === "") {
+            errorMsg.textContent = "Name is required";
+            return;
+        }
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            errorMsg.textContent = "Invalid e-mail";
+            return;
+        }
+        addUser(name, email);
+        nameInput.value = "";
+        emailInput.value = "";
+    });
+    setupModal();
+    updateAllCounters();
 }

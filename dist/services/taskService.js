@@ -1,57 +1,28 @@
 import { TaskClass } from "../models/index.js";
+// ============ DATA ============
 export let taskList = [];
-export let currentSearchTerm = "";
-// Getter function
-export function getCurrentSearchTerm() {
-    return currentSearchTerm;
-}
-// Função
-export function setSearchTerm(term) {
-    currentSearchTerm = term;
-}
-export const input = document.querySelector("#taskInput");
-export const categorySelect = document.querySelector("#categorySelect");
-// Callback that main.ts will set
+let currentSearchTerm = "";
+// ============ CALLBACKS ============
 let onUpdate = null;
 export function setOnUpdate(callback) {
     onUpdate = callback;
 }
-export function addTask() {
-    const taskText = input.value.trim();
-    if (taskText === "")
-        return;
-    const categoriaSelecionada = categorySelect.value;
-    const newTask = new TaskClass(Date.now(), taskText, categoriaSelecionada);
+// ============ GETTERS/SETTERS ============
+export function getCurrentSearchTerm() {
+    return currentSearchTerm;
+}
+export function setSearchTerm(term) {
+    currentSearchTerm = term;
+    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+}
+// ============ BUSINESS LOGIC ============
+export function addTask(title, category) {
+    if (title.trim() === "")
+        return false;
+    const newTask = new TaskClass(Date.now(), title.trim(), category);
     taskList.push(newTask);
-    input.value = "";
     onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
-}
-export function filterTasks(searchTerm) {
-    currentSearchTerm = searchTerm;
-    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
-}
-const output = document.querySelector("#output");
-export function clearAllTasks() {
-    if (taskList.length === 0)
-        return;
-    if (confirm("Are you sure you want to delete all tasks?")) {
-        taskList.length = 0;
-        onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
-    }
-}
-export function orderTask() {
-    taskList.sort((a, b) => a.title.localeCompare(b.title, "pt-PT"));
-    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
-}
-export function editTask(id) {
-    const task = taskList.find((t) => t.id === id);
-    if (!task)
-        return;
-    const newTitle = prompt("Editar tarefa:", task.title);
-    if (newTitle !== null && newTitle.trim() !== "") {
-        task.title = newTitle.trim();
-        onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
-    }
+    return true;
 }
 export function removeTask(id) {
     const index = taskList.findIndex((task) => task.id === id);
@@ -60,6 +31,38 @@ export function removeTask(id) {
     onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
 }
 export function removeDoneTasks() {
-    taskList = taskList.filter((task) => task.finished === false);
+    taskList = taskList.filter((task) => !task.finished);
     onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+}
+export function clearAllTasks() {
+    taskList.length = 0;
+    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+}
+export function orderTasks() {
+    taskList.sort((a, b) => a.title.localeCompare(b.title, "pt-PT"));
+    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+}
+export function updateTaskTitle(id, newTitle) {
+    const task = taskList.find((t) => t.id === id);
+    if (!task || newTitle.trim() === "")
+        return false;
+    task.title = newTitle.trim();
+    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+    return true;
+}
+export function toggleTaskFinished(id) {
+    const task = taskList.find((t) => t.id === id);
+    if (!task)
+        return;
+    task.finished = !task.finished;
+    task.completionDate = task.finished ? new Date() : undefined;
+    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+}
+export function getFilteredTasks() {
+    if (currentSearchTerm.trim() === "")
+        return taskList;
+    return taskList.filter((task) => task.title.toLowerCase().includes(currentSearchTerm.toLowerCase()));
+}
+export function getPendingCount() {
+    return taskList.filter((task) => !task.finished).length;
 }

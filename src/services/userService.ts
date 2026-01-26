@@ -1,99 +1,72 @@
 import { UserClass } from "../models/index.js";
 
-import { renderUsers } from "../ui/renderUser.js";
-
+// ============ DATA ============
 export let userList: UserClass[] = [];
 
-// Função eliminar utilizador
-export function handleDeactivate(userId: number): void {
-  const user = userList.find((u) => u.id === userId);
+// ============ CALLBACKS ============
+let onUpdate: (() => void) | null = null;
 
-  if (!user) {
-    return; // Utilizador não encontrado
-  }
-
-  if (user.active) {
-    user.deactivate();
-  } else {
-    user.activate();
-  }
-
-  renderUsers();
+export function setOnUserUpdate(callback: () => void): void {
+  onUpdate = callback;
 }
 
-// Função botão delete
-export function handleDelete(userId: number): void {
+// ============ BUSINESS LOGIC ============
+export function addUser(name: string, email: string): boolean {
+  if (name.trim() === "" || email.trim() === "") return false;
+
+  const newUser = new UserClass(Date.now(), name.trim(), email.trim());
+  userList.push(newUser);
+  onUpdate?.();
+  return true;
+}
+
+export function deleteUser(userId: number): void {
   userList = userList.filter((u) => u.id !== userId);
-
-  renderUsers();
+  onUpdate?.();
 }
 
-// Função filtro
-export function filterActiveUsers(): void {
-  const userContainer = document.querySelector(
-    "#userContainer",
-  ) as HTMLUListElement;
-  userContainer.innerHTML = "";
+export function toggleUserActive(userId: number): void {
+  const user = userList.find((u) => u.id === userId);
+  if (!user) return;
 
-  const activeUsers: UserClass[] = userList.filter(
-    (user) => user.active === true,
-  );
-
-  activeUsers.forEach((user) => {
-    const userCard = document.createElement("li");
-    userCard.className = "user-card";
-
-    userCard.innerHTML = `
-      <div class="user-info">
-        <h3 class="user-name">${user.name}</h3>
-        <p class="user-email">${user.email}</p>
-        <button type="button" class="btnDeactivate user-status ${
-          user.active ? "active" : "inactive"
-        }">
-          ${user.active ? "Active" : "Inactive"}
-        </button>
-      </div>
-    `;
-
-    const btnDeactivate = userCard.querySelector(
-      ".btnDeactivate",
-    ) as HTMLButtonElement;
-    btnDeactivate.addEventListener("click", () => {
-      handleDeactivate(user.id);
-    });
-
-    userContainer.appendChild(userCard);
-  });
+  user.active ? user.deactivate() : user.activate();
+  onUpdate?.();
 }
-
-// Função Total Users
-export const totalUsers = document.querySelector(
-  "#totalUsers",
-) as HTMLDivElement;
-export const totalActiveUsers = document.querySelector(
-  "#totalActiveUsers",
-) as HTMLDivElement;
-export const totalInactiveUsers = document.querySelector(
-  "#totalInactiveUsers",
-) as HTMLDivElement;
-
-export function showTotalUsers(): void {
-  totalUsers.innerHTML = `Total users: ${userList.length}`;
-}
-
-export function showTotalActiveUsers(): void {
-  const activeCount = userList.filter((user) => user.active).length;
-  totalActiveUsers.innerHTML = `Active users: ${activeCount}`;
-}
-
-export function showTotalInactiveUsers(): void {
-  const inactiveCount = userList.filter((user) => !user.active).length;
-  totalInactiveUsers.innerHTML = `Inactive users: ${inactiveCount}`;
-}
-
-// Função Ordenar (sort)
 
 export function orderUserList(): void {
-  userList = userList.sort((a, b) => a.name.localeCompare(b.name));
-  renderUsers();
+  userList.sort((a, b) => a.name.localeCompare(b.name, "pt-PT"));
+  onUpdate?.();
+}
+
+export function getUserById(userId: number): UserClass | undefined {
+  return userList.find((u) => u.id === userId);
+}
+
+// ============ COMPUTED DATA ============
+export function getTotalUsers(): number {
+  return userList.length;
+}
+
+export function getActiveUsersCount(): number {
+  return userList.filter((user) => user.active).length;
+}
+
+export function getInactiveUsersCount(): number {
+  return userList.filter((user) => !user.active).length;
+}
+
+export function getFilteredUsers(searchTerm: string, onlyActive: boolean): UserClass[] {
+  let filtered = userList;
+
+  if (searchTerm.trim() !== "") {
+    filtered = filtered.filter((user) =>
+      user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
+
+  if (onlyActive) {
+    filtered = filtered.filter((user) => user.active);
+  }
+
+  return filtered;
 }

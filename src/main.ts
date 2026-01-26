@@ -1,24 +1,32 @@
-import { addTask, clearAllTasks, setOnUpdate } from "./services/taskService.js";
-import { renderTasks, updateCounter } from "./ui/renderTask.js";
+import { setOnUpdate } from "./services/taskService.js";
+import { 
+  renderTasks, 
+  updateCounter, 
+  handleAddTask, 
+  handleClearAllTasks 
+} from "./ui/renderTask.js";
 import { initUserPage } from "./ui/renderUser.js";
 
-// TASK PAGE
+// ========== TASK PAGE ==========
 const addBtn = document.querySelector("#addBtn");
+
 if (addBtn) {
   const clearBtn = document.querySelector("#btnLimpar")!;
-  
+
   setOnUpdate(() => {
     renderTasks();
     updateCounter();
   });
 
-  addBtn.addEventListener("click", addTask);
-  clearBtn.addEventListener("click", clearAllTasks);
+  addBtn.addEventListener("click", handleAddTask);
+  clearBtn.addEventListener("click", handleClearAllTasks);
+
   updateCounter();
 }
 
-// USER PAGE
+// ========== USER PAGE ==========
 const nameInput = document.querySelector("#nameInput");
+
 if (nameInput) {
   initUserPage();
 }
