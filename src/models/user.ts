@@ -6,18 +6,21 @@ export interface User {
   name: string;
   email: string;
   active: boolean;
+  role: UserRole;
 }
 
 export class UserClass extends BaseEntity implements User {
   name: string;
   email: string;
   active: boolean;
+  role: UserRole;
 
-  constructor(id: number, name: string, email: string) {
+  constructor(id: number, name: string, email: string, role: UserRole = UserRole.VIEWER) {
     super(id); // ← Calls BaseEntity constructor (sets id & createdAt)
     this.name = name;
     this.email = email;
     this.active = true;
+    this.role = role;
   }
 
   deactivate(): void {
@@ -29,6 +32,10 @@ export class UserClass extends BaseEntity implements User {
   }
 
   getRole(): UserRole {
-    return UserRole;
+    return this.role;
+  }
+
+  setRole(newRole: UserRole): void {
+    this.role = newRole;
   }
 }

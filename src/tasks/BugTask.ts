@@ -1,25 +1,12 @@
-// import { ITask } from './ITask';
-// import { TaskStatus } from './TaskStatus';
+import { Category, TaskClass } from "../models/task.js";
+import { TaskStatus } from "./TaskStatus.js";
 
-// export class BugTask implements ITask {
+export class BugTask extends TaskClass {
+  id: number;
+  
 
-//     id: number;
-//     title: string;
-//     completed: boolean;
-//     status: TaskStatus;
+  constructor(id: number, title: string, category: Category, status: TaskStatus) {
+    super
+  }
 
-//     constructor(id: number, title: string) {
-//         // TODO: inicializar propriedades
-//     }
-
-//     getType(): string {
-//         // TODO: retornar "bug"
-//     }
-
-//     moveTo(status: TaskStatus): void {
-//         // TODO:
-//         // - validar transição
-//         // - atualizar estado
-//         // - marcar completed se necessário
-//     }
-// }
+}
