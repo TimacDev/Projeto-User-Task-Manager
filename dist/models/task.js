@@ -1,6 +1,7 @@
 import { BaseEntity } from "./BaseEntity.js";
+import { TaskStatus } from "../tasks/TaskStatus.js";
 export class TaskClass extends BaseEntity {
-    constructor(id, title, category, status) {
+    constructor(id, title, category, status = TaskStatus.CREATED) {
         super(id); // ← Calls BaseEntity constructor (sets id & createdAt)
         this.title = title;
         this.finished = false;

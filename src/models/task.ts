@@ -26,7 +26,7 @@ export class TaskClass extends BaseEntity implements Task {
     id: number,
     title: string,
     category: Category,
-    status: TaskStatus,
+    status: TaskStatus = TaskStatus.CREATED,
   ) {
     super(id); // ← Calls BaseEntity constructor (sets id & createdAt)
     this.title = title;
