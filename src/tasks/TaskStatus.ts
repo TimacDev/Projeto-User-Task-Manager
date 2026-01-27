@@ -4,5 +4,5 @@ export enum TaskStatus {
   IN_PROGRESS,
   BLOCKED,
   COMPLETED,
-  ARCHIVED,
+  ARCHIVED
 }
