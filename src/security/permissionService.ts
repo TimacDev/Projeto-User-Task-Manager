@@ -1,17 +1,36 @@
-// import { UserRole } from './UserRole';
+import { UserRole } from "./UserRole.js";
 
-// export function canCreateTask(role: UserRole): boolean {
-//     // TODO
-// }
+// ADMIN > MANAGER > MEMBER > VIEWER
 
-// export function canEditTask(role: UserRole): boolean {
-//     // TODO
-// }
+export function canViewTask(role: UserRole): boolean {
+  return (
+    role === UserRole.VIEWER ||
+    role === UserRole.ADMIN ||
+    role === UserRole.MANAGER ||
+    role === UserRole.MEMBER
+  );
+}
 
-// export function canDeleteTask(role: UserRole): boolean {
-//     // TODO
-// }
+export function canCreateTask(role: UserRole): boolean {
+  return (
+    role === UserRole.ADMIN ||
+    role === UserRole.MANAGER ||
+    role === UserRole.MEMBER
+  );
+}
 
-// export function canAssignTask(role: UserRole): boolean {
-//     // TODO
-// }
+export function canEditTask(role: UserRole): boolean {
+  return (
+    role === UserRole.ADMIN ||
+    role === UserRole.MANAGER ||
+    role === UserRole.MEMBER
+  );
+}
+
+export function canDeleteTask(role: UserRole): boolean {
+  return role === UserRole.ADMIN || role === UserRole.MANAGER;
+}
+
+export function canAssignTask(role: UserRole): boolean {
+  return role === UserRole.ADMIN || role === UserRole.MANAGER;
+}

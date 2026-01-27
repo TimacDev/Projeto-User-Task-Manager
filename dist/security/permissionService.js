@@ -1,14 +1,24 @@
-"use strict";
-// import { UserRole } from './UserRole';
-// export function canCreateTask(role: UserRole): boolean {
-//     // TODO
-// }
-// export function canEditTask(role: UserRole): boolean {
-//     // TODO
-// }
-// export function canDeleteTask(role: UserRole): boolean {
-//     // TODO
-// }
-// export function canAssignTask(role: UserRole): boolean {
-//     // TODO
-// }
+import { UserRole } from "./UserRole.js";
+// ADMIN > MANAGER > MEMBER > VIEWER
+export function canViewTask(role) {
+    return (role === UserRole.VIEWER ||
+        role === UserRole.ADMIN ||
+        role === UserRole.MANAGER ||
+        role === UserRole.MEMBER);
+}
+export function canCreateTask(role) {
+    return (role === UserRole.ADMIN ||
+        role === UserRole.MANAGER ||
+        role === UserRole.MEMBER);
+}
+export function canEditTask(role) {
+    return (role === UserRole.ADMIN ||
+        role === UserRole.MANAGER ||
+        role === UserRole.MEMBER);
+}
+export function canDeleteTask(role) {
+    return role === UserRole.ADMIN || role === UserRole.MANAGER;
+}
+export function canAssignTask(role) {
+    return role === UserRole.ADMIN || role === UserRole.MANAGER;
+}

@@ -2,7 +2,7 @@ import { BaseEntity } from "./BaseEntity.js";
 import { UserRole } from "../security/UserRole.js";
 export class UserClass extends BaseEntity {
     constructor(id, name, email, role = UserRole.VIEWER) {
-        super(id); // ← Calls BaseEntity constructor (sets id & createdAt)
+        super(id); // Calls BaseEntity constructor (sets id & createdAt)
         this.name = name;
         this.email = email;
         this.active = true;
