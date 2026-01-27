@@ -1,7 +1,7 @@
-"use strict";
-// export enum UserRole {
-//     ADMIN,
-//     MANAGER,
-//     MEMBER,
-//     VIEWER
-// }
+export var UserRole;
+(function (UserRole) {
+    UserRole[UserRole["ADMIN"] = 0] = "ADMIN";
+    UserRole[UserRole["MANAGER"] = 1] = "MANAGER";
+    UserRole[UserRole["MEMBER"] = 2] = "MEMBER";
+    UserRole[UserRole["VIEWER"] = 3] = "VIEWER";
+})(UserRole || (UserRole = {}));

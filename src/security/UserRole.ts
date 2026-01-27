@@ -1,6 +1,6 @@
-// export enum UserRole {
-//     ADMIN,
-//     MANAGER,
-//     MEMBER,
-//     VIEWER
-// }
+export enum UserRole {
+  ADMIN,
+  MANAGER,
+  MEMBER,
+  VIEWER,
+}

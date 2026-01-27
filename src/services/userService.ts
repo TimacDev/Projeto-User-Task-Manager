@@ -29,7 +29,7 @@ export function toggleUserActive(userId: number): void {
   const user = userList.find((u) => u.id === userId);
   if (!user) return;
 
-  user.active ? user.deactivate() : user.activate();
+  user.active ? user.deactivate() : user.activate(); 
   onUpdate?.();
 }
 

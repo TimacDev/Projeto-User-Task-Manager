@@ -1,14 +1,12 @@
-"use strict";
-// export class BaseEntity {
-//     protected id: number;
-//     protected createdAt: Date;
-//     constructor(id: number) {
-//         // TODO: inicializar id e createdAt
-//     }
-//     getId(): number {
-//         // TODO
-//     }
-//     getCreatedAt(): Date {
-//         // TODO
-//     }
-// }
+export class BaseEntity {
+    constructor(id) {
+        this.id = id;
+        this.createdAt = new Date();
+    }
+    getId() {
+        return this.id;
+    }
+    getCreatedAt() {
+        return this.createdAt;
+    }
+}

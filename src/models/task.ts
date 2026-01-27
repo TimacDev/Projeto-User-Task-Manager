@@ -1,3 +1,6 @@
+import { BaseEntity } from "./BaseEntity.js";
+import { TaskStatus } from "../tasks/TaskStatus.js";
+
 export type Category = "Work" | "Personal" | "Study";
 
 export interface Task {
@@ -6,19 +9,29 @@ export interface Task {
   finished: boolean;
   completionDate?: Date;
   category: Category;
+
+  getType(): string;  
+  moveTo(status: TaskStatus): void;
 }
 
-export class TaskClass implements Task {
-  id: number;
+export class TaskClass extends BaseEntity implements Task {
   title: string;
   finished: boolean;
   completionDate?: Date;
   category: Category;
 
-  constructor(id: number, titulo: string, category: Category) {
-    this.id = id;
-    this.title = titulo;
+  constructor(id: number, title: string, category: Category) {
+    super(id); // ← Calls BaseEntity constructor (sets id & createdAt)
+    this.title = title;
     this.finished = false;
     this.category = category;
+  }
+
+  getType(): string {
+    return;
+  }
+  
+  moveTo(status: TaskStatus): void {
+    
   }
 }

@@ -1,16 +1,17 @@
-// export class BaseEntity {
-//     protected id: number;
-//     protected createdAt: Date;
+export class BaseEntity {
+  public readonly id: number;
+  protected createdAt: Date;
 
-//     constructor(id: number) {
-//         // TODO: inicializar id e createdAt
-//     }
+  constructor(id: number) {
+    this.id = id;
+    this.createdAt = new Date(); 
+  }
 
-//     getId(): number {
-//         // TODO
-//     }
+  getId(): number {
+    return this.id;
+  }
 
-//     getCreatedAt(): Date {
-//         // TODO
-//     }
-// }
+  getCreatedAt(): Date {
+    return this.createdAt;
+  }
+}

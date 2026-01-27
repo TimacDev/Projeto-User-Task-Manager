@@ -1,3 +1,6 @@
+import { BaseEntity } from "./BaseEntity.js";
+import { UserRole } from "../security/UserRole.js";
+
 export interface User {
   id: number;
   name: string;
@@ -5,14 +8,13 @@ export interface User {
   active: boolean;
 }
 
-export class UserClass implements User {
-  id: number;
+export class UserClass extends BaseEntity implements User {
   name: string;
   email: string;
   active: boolean;
 
   constructor(id: number, name: string, email: string) {
-    this.id = id;
+    super(id); // ← Calls BaseEntity constructor (sets id & createdAt)
     this.name = name;
     this.email = email;
     this.active = true;
@@ -24,5 +26,9 @@ export class UserClass implements User {
 
   activate(): void {
     this.active = true;
+  }
+
+  getRole(): UserRole {
+    return UserRole;
   }
 }

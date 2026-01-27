@@ -1,6 +1,8 @@
-export class UserClass {
+import { BaseEntity } from "./BaseEntity.js";
+import { UserRole } from "../security/UserRole.js";
+export class UserClass extends BaseEntity {
     constructor(id, name, email) {
-        this.id = id;
+        super(id); // ← Calls BaseEntity constructor (sets id & createdAt)
         this.name = name;
         this.email = email;
         this.active = true;
@@ -10,5 +12,8 @@ export class UserClass {
     }
     activate() {
         this.active = true;
+    }
+    getRole() {
+        return UserRole;
     }
 }
