@@ -1,4 +1,4 @@
-import { taskList, getCurrentSearchTerm, setSearchTerm, orderTasks, removeDoneTasks, removeTask, updateTaskTitle, toggleTaskFinished, addTask, clearAllTasks, getPendingCount, getFilteredTasks } from "../services/taskService.js";
+import { taskList, getCurrentSearchTerm, setSearchTerm, orderTasks, removeDoneTasks, removeTask, updateTaskTitle, toggleTaskFinished, addTask, clearAllTasks, getPendingCount, getFilteredTasks, } from "../services/taskService.js";
 // ============ DOM ELEMENTS ============
 const counterSpan = document.querySelector("#numPendentes");
 const output = document.querySelector("#output");

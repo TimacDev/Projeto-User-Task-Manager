@@ -29,7 +29,7 @@ export function toggleUserActive(userId: number): void {
   const user = userList.find((u) => u.id === userId);
   if (!user) return;
 
-  user.active ? user.deactivate() : user.activate(); 
+  user.active ? user.deactivate() : user.activate();
   onUpdate?.();
 }
 
@@ -55,12 +55,15 @@ export function getInactiveUsersCount(): number {
   return userList.filter((user) => !user.active).length;
 }
 
-export function getFilteredUsers(searchTerm: string, onlyActive: boolean): UserClass[] {
+export function getFilteredUsers(
+  searchTerm: string,
+  onlyActive: boolean,
+): UserClass[] {
   let filtered = userList;
 
   if (searchTerm.trim() !== "") {
     filtered = filtered.filter((user) =>
-      user.name.toLowerCase().includes(searchTerm.toLowerCase())
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()),
     );
   }
 

@@ -1,5 +1,5 @@
 import { setOnUpdate } from "./services/taskService.js";
-import { renderTasks, updateCounter, handleAddTask, handleClearAllTasks } from "./ui/renderTask.js";
+import { renderTasks, updateCounter, handleAddTask, handleClearAllTasks, } from "./ui/renderTask.js";
 import { initUserPage } from "./ui/renderUser.js";
 // ========== TASK PAGE ==========
 const addBtn = document.querySelector("#addBtn");

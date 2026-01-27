@@ -4,7 +4,7 @@ export class BaseEntity {
 
   constructor(id: number) {
     this.id = id;
-    this.createdAt = new Date(); 
+    this.createdAt = new Date();
   }
 
   getId(): number {

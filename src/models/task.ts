@@ -22,7 +22,12 @@ export class TaskClass extends BaseEntity implements Task {
   category: Category;
   status: TaskStatus;
 
-  constructor(id: number, title: string, category: Category, status: TaskStatus) {
+  constructor(
+    id: number,
+    title: string,
+    category: Category,
+    status: TaskStatus,
+  ) {
     super(id); // ← Calls BaseEntity constructor (sets id & createdAt)
     this.title = title;
     this.finished = false;

@@ -15,7 +15,12 @@ export class UserClass extends BaseEntity implements User {
   active: boolean;
   role: UserRole;
 
-  constructor(id: number, name: string, email: string, role: UserRole = UserRole.VIEWER) {
+  constructor(
+    id: number,
+    name: string,
+    email: string,
+    role: UserRole = UserRole.VIEWER,
+  ) {
     super(id); // ← Calls BaseEntity constructor (sets id & createdAt)
     this.name = name;
     this.email = email;

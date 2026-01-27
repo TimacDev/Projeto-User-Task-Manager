@@ -11,14 +11,16 @@ import {
   addTask,
   clearAllTasks,
   getPendingCount,
-  getFilteredTasks
+  getFilteredTasks,
 } from "../services/taskService.js";
 
 // ============ DOM ELEMENTS ============
 const counterSpan = document.querySelector("#numPendentes") as HTMLSpanElement;
 const output = document.querySelector("#output") as HTMLDivElement;
 const taskInput = document.querySelector("#taskInput") as HTMLInputElement;
-const categorySelect = document.querySelector("#categorySelect") as HTMLSelectElement;
+const categorySelect = document.querySelector(
+  "#categorySelect",
+) as HTMLSelectElement;
 
 // ============ UI FUNCTIONS ============
 export function updateCounter(): void {
@@ -50,7 +52,7 @@ export function handleClearAllTasks(): void {
 export function handleAddTask(): void {
   const title = taskInput.value.trim();
   const category = categorySelect.value as Category;
-  
+
   if (addTask(title, category)) {
     taskInput.value = "";
   }
@@ -117,7 +119,10 @@ function renderTaskList(ul: HTMLUListElement, tasks: typeof taskList): void {
 
     const categoryBadge = document.createElement("span");
     categoryBadge.textContent = task.category;
-    categoryBadge.classList.add("category-badge", `category-${task.category.toLowerCase()}`);
+    categoryBadge.classList.add(
+      "category-badge",
+      `category-${task.category.toLowerCase()}`,
+    );
 
     const spanText = document.createElement("span");
     spanText.textContent = task.title;

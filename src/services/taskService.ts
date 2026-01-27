@@ -72,9 +72,9 @@ export function toggleTaskFinished(id: number): void {
 
 export function getFilteredTasks(): Task[] {
   if (currentSearchTerm.trim() === "") return taskList;
-  
+
   return taskList.filter((task) =>
-    task.title.toLowerCase().includes(currentSearchTerm.toLowerCase())
+    task.title.toLowerCase().includes(currentSearchTerm.toLowerCase()),
   );
 }
 
