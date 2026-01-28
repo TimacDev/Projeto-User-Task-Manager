@@ -1,11 +1,23 @@
+import { userList } from "../services/userService.js";
+import { UserRole } from "../security/UserRole.js";
 export class NotificationService {
     notifyUser(userId, message) {
-        // TODO
+        const user = userList.find((u) => u.id === userId);
+        if (!user) {
+            console.warn(`User with ID ${userId} not found`);
+            return;
+        }
+        console.log(`Notification for ${user.name}: ${message}`);
     }
     notifyGroup(userIds, message) {
-        // TODO
+        for (const user of userIds) {
+            this.notifyUser(user, message);
+        }
     }
     notifyAdmins(message) {
-        // TODO
+        const admins = userList.filter((user) => user.getRole() === UserRole.ADMIN);
+        for (const admin of admins) {
+            this.notifyUser(admin.id, message);
+        }
     }
 }
