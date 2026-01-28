@@ -5,7 +5,6 @@ export class NotificationService {
   notifyUser(userId: number, message: string) {
     const user = userList.find((u) => u.id === userId);
     if (!user) {
-      console.warn(`User with ID ${userId} not found`);
       return;
     }
     console.log(`Notification for ${user.name}: ${message}`);
