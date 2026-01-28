@@ -1,13 +1,16 @@
-"use strict";
-// export class HistoryLog {
-//     private logs: string[] = [];
-//     addLog(message: string) {
-//         // TODO
-//     }
-//     getLogs(): string[] {
-//         // TODO
-//     }
-//     clearLogs() {
-//         // TODO
-//     }
-// }
+export class HistoryLog {
+    constructor() {
+        this.logs = [];
+    }
+    addLog(message) {
+        const timestamp = new Date().toLocaleString("en");
+        const logEntry = `[${timestamp}] ${message}`;
+        this.logs.push(logEntry);
+    }
+    getLogs() {
+        return this.logs;
+    }
+    clearLogs() {
+        this.logs = [];
+    }
+}

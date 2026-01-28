@@ -1,12 +1,11 @@
-"use strict";
-// export class NotificationService {
-//     notifyUser(userId: number, message: string) {
-//         // TODO
-//     }
-//     notifyGroup(userIds: number[], message: string) {
-//         // TODO
-//     }
-//     notifyAdmins(message: string) {
-//         // TODO
-//     }
-// }
+export class NotificationService {
+    notifyUser(userId, message) {
+        // TODO
+    }
+    notifyGroup(userIds, message) {
+        // TODO
+    }
+    notifyAdmins(message) {
+        // TODO
+    }
+}
