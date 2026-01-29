@@ -1,4 +1,3 @@
-// Attachment class with type annotations
 export class Attachment {
   id: number;
   taskId: number;
@@ -30,7 +29,6 @@ export interface AttachmentInput {
   url: string;
 }
 
-// AttachmentService class
 export class AttachmentService {
   private attachments: Attachment[] = [];
   private nextId: number = 1;

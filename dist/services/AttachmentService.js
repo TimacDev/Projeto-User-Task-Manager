@@ -1,4 +1,3 @@
-// Attachment class with type annotations
 export class Attachment {
     constructor(id, taskId, filename, size, url) {
         this.id = id;
@@ -9,7 +8,6 @@ export class Attachment {
         this.uploadedAt = new Date();
     }
 }
-// AttachmentService class
 export class AttachmentService {
     constructor() {
         this.attachments = [];
