@@ -1,6 +1,5 @@
-"use strict";
 // Attachment class with type annotations
-class Attachment {
+export class Attachment {
     constructor(id, taskId, filename, size, url) {
         this.id = id;
         this.taskId = taskId;
@@ -11,7 +10,7 @@ class Attachment {
     }
 }
 // AttachmentService class
-class AttachmentService {
+export class AttachmentService {
     constructor() {
         this.attachments = [];
         this.nextId = 1;

@@ -1,5 +1,5 @@
 // Attachment class with type annotations
-class Attachment {
+export class Attachment {
   id: number;
   taskId: number;
   filename: string;
@@ -24,14 +24,14 @@ class Attachment {
 }
 
 // Input type for adding attachments
-interface AttachmentInput {
+export interface AttachmentInput {
   filename: string;
   size: number;
   url: string;
 }
 
 // AttachmentService class
-class AttachmentService {
+export class AttachmentService {
   private attachments: Attachment[] = [];
   private nextId: number = 1;
 

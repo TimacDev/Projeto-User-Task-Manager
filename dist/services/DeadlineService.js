@@ -20,7 +20,6 @@ export class DeadlineService {
         console.log(`Deadline set for "${task.title}": ${date.toLocaleString()}`);
     }
     isExpired(taskId) {
-        // Get the deadline for this task
         const deadline = this.deadlines.get(taskId);
         if (!deadline) {
             return false;

@@ -29,7 +29,7 @@ export class DeadlineService {
   }
 
   isExpired(taskId: number): boolean {
-    // Get the deadline for this task
+    
     const deadline = this.deadlines.get(taskId);
 
     if (!deadline) {
