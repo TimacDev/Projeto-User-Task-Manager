@@ -15,7 +15,7 @@ export class DeadlineService {
   // ============ MAIN FUNCTIONS ============
 
   setDeadline(taskId: number, date: Date): void {
-    // Check if task exists
+    
     const task = taskList.find((t) => t.id === taskId);
 
     if (!task) {
@@ -46,11 +46,10 @@ export class DeadlineService {
   getExpiredTasks(): Task[] {
     const expiredTasks: Task[] = [];
 
-    // Iterate through all deadlines
     this.deadlines.forEach((deadline, taskId) => {
-      // Check if this deadline is expired
+      
       if (this.isExpired(taskId)) {
-        // Find the task and add to result
+        
         const task = taskList.find((t) => t.id === taskId);
         if (task) {
           expiredTasks.push(task);
