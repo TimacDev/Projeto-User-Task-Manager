@@ -14,7 +14,7 @@ export class PriorityService {
             return;
         }
         this.priorities.set(taskId, priority);
-        console.log(`🎯 Priority set for "${task.title}": ${priority}`);
+        console.log(`Priority set for "${task.title}": ${priority}`);
     }
     getPriority(taskId) {
         return this.priorities.get(taskId);
