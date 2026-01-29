@@ -1,5 +1,4 @@
-export // Comment class with type annotations
- class Comment {
+export class Comment {
     constructor(id, taskId, userId, message) {
         this.id = id;
         this.taskId = taskId;
@@ -9,7 +8,7 @@ export // Comment class with type annotations
     }
 }
 // CommentService class
-class CommentService {
+export class CommentService {
     constructor() {
         this.comments = [];
         this.nextId = 1;

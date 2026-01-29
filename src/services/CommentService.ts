@@ -1,5 +1,4 @@
-export // Comment class with type annotations
-class Comment {
+export class Comment {
   id: number;
   taskId: number;
   userId: number;
@@ -16,7 +15,7 @@ class Comment {
 }
 
 // CommentService class
-class CommentService {
+export class CommentService {
   private comments: Comment[] = [];
   private nextId: number = 1;
 
