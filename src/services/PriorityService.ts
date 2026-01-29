@@ -4,13 +4,12 @@ import { Task } from "../models/task.js";
 import { TaskPriority } from "../tasks/TaskPriority.js";
 
 export class PriorityService {
-  // Storage: taskId → priority
   private priorities: Map<number, TaskPriority> = new Map();
 
   // ============ MAIN FUNCTIONS ============
 
   setPriority(taskId: number, priority: TaskPriority): void {
-    const task = taskList.find(t => t.id === taskId);
+    const task = taskList.find((t) => t.id === taskId);
 
     if (!task) {
       console.warn(`Task with ID ${taskId} not found`);
@@ -28,11 +27,12 @@ export class PriorityService {
   getHighPriorityTasks(): Task[] {
     const highPriorityTasks: Task[] = [];
 
-    // Iterate through all priorities
     this.priorities.forEach((priority, taskId) => {
-      // Filter by HIGH and CRITICAL
-      if (priority === TaskPriority.HIGH || priority === TaskPriority.CRITICAL) {
-        const task = taskList.find(t => t.id === taskId);
+      if (
+        priority === TaskPriority.HIGH ||
+        priority === TaskPriority.CRITICAL
+      ) {
+        const task = taskList.find((t) => t.id === taskId);
         if (task) {
           highPriorityTasks.push(task);
         }
