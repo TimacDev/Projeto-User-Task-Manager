@@ -5,7 +5,7 @@ export class AssignmentService {
         this.taskToUsers = new Map();
         this.userToTasks = new Map();
     }
-    // ============ MAIN FUNCTIONS ============
+    // ===== MAIN FUNCTIONS ===== //
     assignUser(taskId, userId) {
         const task = taskList.find((t) => t.id === taskId);
         if (!task) {

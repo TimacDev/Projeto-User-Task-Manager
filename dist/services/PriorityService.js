@@ -5,7 +5,7 @@ export class PriorityService {
     constructor() {
         this.priorities = new Map();
     }
-    // ============ MAIN FUNCTIONS ============
+    // ===== MAIN FUNCTIONS ===== //
     setPriority(taskId, priority) {
         const task = taskList.find((t) => t.id === taskId);
         if (!task) {

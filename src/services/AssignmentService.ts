@@ -7,7 +7,7 @@ export class AssignmentService {
   private taskToUsers: Map<number, number[]> = new Map();
   private userToTasks: Map<number, number[]> = new Map();
 
-  // ============ MAIN FUNCTIONS ============
+  // ===== MAIN FUNCTIONS ===== //
 
   assignUser(taskId: number, userId: number): void {
     const task = taskList.find((t) => t.id === taskId);

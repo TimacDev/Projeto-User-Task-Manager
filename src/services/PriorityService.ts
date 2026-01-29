@@ -6,7 +6,7 @@ import { TaskPriority } from "../tasks/TaskPriority.js";
 export class PriorityService {
   private priorities: Map<number, TaskPriority> = new Map();
 
-  // ============ MAIN FUNCTIONS ============
+  // ===== MAIN FUNCTIONS ===== //
 
   setPriority(taskId: number, priority: TaskPriority): void {
     const task = taskList.find((t) => t.id === taskId);

@@ -14,7 +14,8 @@ import {
   getFilteredTasks,
 } from "../services/taskService.js";
 
-// ============ DOM ELEMENTS ============
+// ===== DOM ELEMENTS ===== //
+
 const counterSpan = document.querySelector("#numPendentes") as HTMLSpanElement;
 const output = document.querySelector("#output") as HTMLDivElement;
 const taskInput = document.querySelector("#taskInput") as HTMLInputElement;
@@ -22,14 +23,14 @@ const categorySelect = document.querySelector(
   "#categorySelect",
 ) as HTMLSelectElement;
 
-// ============ UI FUNCTIONS ============
+// ===== UI FUNCTIONS ===== //
 export function updateCounter(): void {
   if (counterSpan) {
     counterSpan.textContent = getPendingCount().toString();
   }
 }
 
-// ✅ UI handles the prompt() interaction
+// UI handles the prompt() interaction
 export function handleEditTask(id: number): void {
   const task = taskList.find((t) => t.id === id);
   if (!task) return;
@@ -40,7 +41,7 @@ export function handleEditTask(id: number): void {
   }
 }
 
-// ✅ UI handles the confirm() interaction
+// UI handles the confirm() interaction
 export function handleClearAllTasks(): void {
   if (taskList.length === 0) return;
   if (confirm("Are you sure you want to delete all tasks?")) {
@@ -48,7 +49,7 @@ export function handleClearAllTasks(): void {
   }
 }
 
-// ✅ UI handles reading from input fields
+// UI handles reading from input fields
 export function handleAddTask(): void {
   const title = taskInput.value.trim();
   const category = categorySelect.value as Category;

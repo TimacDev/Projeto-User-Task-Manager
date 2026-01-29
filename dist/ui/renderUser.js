@@ -1,9 +1,9 @@
 import { userList, toggleUserActive, deleteUser, orderUserList, getUserById, getTotalUsers, getActiveUsersCount, getInactiveUsersCount, getFilteredUsers, addUser, setOnUserUpdate, } from "../services/userService.js";
-// ============ STATE ============
+// ===== STATE ===== //
 let showOnlyActive = false;
 let currentSearchTerm = "";
 let selectedUser = null;
-// ============ DOM DISPLAY FUNCTIONS ============
+// ===== DOM DISPLAY FUNCTIONS ===== //
 export function displayTotalUsers() {
     const el = document.querySelector("#totalUsers");
     if (el)
@@ -24,7 +24,7 @@ function updateAllCounters() {
     displayActiveUsers();
     displayInactiveUsers();
 }
-// ============ RENDER USERS ============
+// ===== RENDER USERS ===== //
 export function renderUsers() {
     var _a, _b;
     const userSearchBox = document.querySelector("#userSearchBox");
@@ -105,7 +105,7 @@ export function renderUsers() {
     });
     updateAllCounters();
 }
-// ============ USER DETAILS MODAL ============
+// ===== USER DETAILS MODAL ===== //
 export function showUserDetails(userId) {
     const user = getUserById(userId);
     if (!user)
@@ -168,7 +168,7 @@ export function setupModal() {
             closeUserDetails();
     });
 }
-// ============ INIT FUNCTION ============
+// ===== INIT FUNCTION ===== //
 export function initUserPage() {
     const form = document.querySelector("form");
     const nameInput = document.querySelector("#nameInput");

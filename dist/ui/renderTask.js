@@ -1,16 +1,16 @@
 import { taskList, getCurrentSearchTerm, setSearchTerm, orderTasks, removeDoneTasks, removeTask, updateTaskTitle, toggleTaskFinished, addTask, clearAllTasks, getPendingCount, getFilteredTasks, } from "../services/taskService.js";
-// ============ DOM ELEMENTS ============
+// ===== DOM ELEMENTS ===== //
 const counterSpan = document.querySelector("#numPendentes");
 const output = document.querySelector("#output");
 const taskInput = document.querySelector("#taskInput");
 const categorySelect = document.querySelector("#categorySelect");
-// ============ UI FUNCTIONS ============
+// ===== UI FUNCTIONS ===== //
 export function updateCounter() {
     if (counterSpan) {
         counterSpan.textContent = getPendingCount().toString();
     }
 }
-// ✅ UI handles the prompt() interaction
+// UI handles the prompt() interaction
 export function handleEditTask(id) {
     const task = taskList.find((t) => t.id === id);
     if (!task)
@@ -20,7 +20,7 @@ export function handleEditTask(id) {
         updateTaskTitle(id, newTitle);
     }
 }
-// ✅ UI handles the confirm() interaction
+// UI handles the confirm() interaction
 export function handleClearAllTasks() {
     if (taskList.length === 0)
         return;
@@ -28,7 +28,7 @@ export function handleClearAllTasks() {
         clearAllTasks();
     }
 }
-// ✅ UI handles reading from input fields
+// UI handles reading from input fields
 export function handleAddTask() {
     const title = taskInput.value.trim();
     const category = categorySelect.value;

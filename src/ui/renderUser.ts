@@ -13,12 +13,14 @@ import {
   setOnUserUpdate,
 } from "../services/userService.js";
 
-// ============ STATE ============
+// ===== STATE ===== //
+
 let showOnlyActive = false;
 let currentSearchTerm = "";
 let selectedUser: UserClass | null = null;
 
-// ============ DOM DISPLAY FUNCTIONS ============
+// ===== DOM DISPLAY FUNCTIONS ===== //
+
 export function displayTotalUsers(): void {
   const el = document.querySelector("#totalUsers");
   if (el) el.innerHTML = `Total users: ${getTotalUsers()}`;
@@ -40,7 +42,8 @@ function updateAllCounters(): void {
   displayInactiveUsers();
 }
 
-// ============ RENDER USERS ============
+// ===== RENDER USERS ===== //
+
 export function renderUsers(): void {
   const userSearchBox = document.querySelector(
     "#userSearchBox",
@@ -145,7 +148,8 @@ export function renderUsers(): void {
   updateAllCounters();
 }
 
-// ============ USER DETAILS MODAL ============
+// ===== USER DETAILS MODAL ===== //
+
 export function showUserDetails(userId: number): void {
   const user = getUserById(userId);
   if (!user) return;
@@ -213,7 +217,7 @@ export function setupModal(): void {
   });
 }
 
-// ============ INIT FUNCTION ============
+// ===== INIT FUNCTION ===== //
 export function initUserPage(): void {
   const form = document.querySelector("form") as HTMLFormElement;
   const nameInput = document.querySelector("#nameInput") as HTMLInputElement;

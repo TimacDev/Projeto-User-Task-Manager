@@ -1,12 +1,12 @@
 import { UserClass } from "../models/index.js";
-// ============ DATA ============
+// ===== DATA ===== //
 export let userList = [];
-// ============ CALLBACKS ============
+// ===== CALLBACKS ===== //
 let onUpdate = null;
 export function setOnUserUpdate(callback) {
     onUpdate = callback;
 }
-// ============ BUSINESS LOGIC ============
+// ===== BUSINESS LOGIC ===== //
 export function addUser(name, email) {
     if (name.trim() === "" || email.trim() === "")
         return false;
@@ -33,7 +33,7 @@ export function orderUserList() {
 export function getUserById(userId) {
     return userList.find((u) => u.id === userId);
 }
-// ============ COMPUTED DATA ============
+// ===== COMPUTED DATA ===== //
 export function getTotalUsers() {
     return userList.length;
 }

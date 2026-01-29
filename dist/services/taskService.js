@@ -1,13 +1,13 @@
 import { TaskClass } from "../models/index.js";
-// ============ DATA ============
+// ===== DATA ===== //
 export let taskList = [];
 let currentSearchTerm = "";
-// ============ CALLBACKS ============
+// ===== CALLBACKS ===== //
 let onUpdate = null;
 export function setOnUpdate(callback) {
     onUpdate = callback;
 }
-// ============ GETTERS/SETTERS ============
+// ===== GETTERS/SETTERS ===== //
 export function getCurrentSearchTerm() {
     return currentSearchTerm;
 }
@@ -15,7 +15,7 @@ export function setSearchTerm(term) {
     currentSearchTerm = term;
     onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
 }
-// ============ BUSINESS LOGIC ============
+// ===== BUSINESS LOGIC ===== //
 export function addTask(title, category) {
     if (title.trim() === "")
         return false;

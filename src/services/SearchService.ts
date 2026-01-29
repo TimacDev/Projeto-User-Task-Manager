@@ -18,7 +18,7 @@ export class SearchService {
     });
   }
 
-  // Search by category (replacing searchByUser since your Task has no userId)
+  // Search by category 
   searchByCategory(category: Category): Task[] {
     return this.tasks.filter((task) => task.category === category);
   }
@@ -28,7 +28,7 @@ export class SearchService {
     return this.tasks.filter((task) => task.status === status);
   }
 
-  // Global search (searches in title only, since status is numeric)
+  // Global search 
   globalSearch(query: string): Task[] {
     return this.searchByTitle(query);
   }
