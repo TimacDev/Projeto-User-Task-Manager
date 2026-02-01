@@ -1,8 +1,10 @@
 export class IdGenerator {
+  private static counter: number = 0;
 
-    // CRIAR:
-    // private static counter: number
+  private constructor() {} // prevents new instances
 
-    // IMPLEMENTAR:
-    // static generate(): number
+  static generate(): number {
+    IdGenerator.counter++;
+    return IdGenerator.counter;
+  }
 }
