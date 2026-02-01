@@ -1,8 +1,15 @@
 import { setOnUpdate } from "./services/taskService.js";
 import { renderTasks, updateCounter, handleAddTask, handleClearAllTasks, } from "./ui/renderTask.js";
 import { initUserPage } from "./ui/renderUser.js";
-import { SystemConfig } from "./services/SystemConfig";
-import { SystemLogger } from "./logs/SystemLogger";
+import { SystemConfig } from "./services/SystemConfig.js";
+import { IdGenerator } from "./utils/IdGenerator.js";
+import { SystemLogger } from "./logs/SystemLogger.js";
+import { GlobalValidators } from "./utils/GlobalValidators.js";
+import { BusinessRules } from "./services/BusinessRules.js";
+import { TaskClass } from "./models/task.js";
+import { UserClass } from "./models/user.js";
+import { UserRole } from "./security/UserRole.js";
+import { TaskStatus } from "./tasks/TaskStatus.js";
 // ===== TASK PAGE ===== //
 const addBtn = document.querySelector("#addBtn");
 if (addBtn) {
@@ -21,9 +28,113 @@ if (nameInput) {
     initUserPage();
 }
 // ===== PRATICAL DEMO ===== //
-console.log("=== STEP 1: System Configuration ===\n");
+// Configure System
 SystemConfig.setEnvironment("production");
-SystemLogger.log("System environment configured");
-const systemInfo = SystemConfig.getInfo();
-console.log(`System info: ${systemInfo}`);
-SystemLogger.log(`App "${systemInfo.appName}" v${systemInfo.version} started in ${systemInfo.environment} mode`);
+SystemLogger.log("System configured");
+console.log("=== System Info ===");
+console.log(SystemConfig.getInfo());
+// Create Users (with validation)
+SystemLogger.log("Starting user creation");
+const users = [];
+function createUser(name, email, role) {
+    // Validate email
+    if (!GlobalValidators.isValidEmail(email)) {
+        SystemLogger.log(`ERROR: Invalid email - ${email}`);
+        console.log(`Invalid email: ${email}`);
+        return null;
+    }
+    const user = new UserClass(IdGenerator.generate(), name, email, role);
+    users.push(user);
+    SystemLogger.log(`User created: ${name} (ID: ${user.id})`);
+    console.log(`User created: ${name}`);
+    return user;
+}
+console.log("\n=== Creating Users ===");
+const alice = createUser("Alice", "alice@mail.com", UserRole.ADMIN);
+const bob = createUser("Bob", "invalid-email", UserRole.VIEWER); // Will fail
+const charlie = createUser("Charlie", "charlie@mail.com", UserRole.VIEWER);
+// Create Tasks (with validation)
+SystemLogger.log("Starting task creation");
+const tasks = [];
+function createTask(title, category) {
+    // Validate title
+    if (!GlobalValidators.isNonEmpty(title)) {
+        SystemLogger.log(`ERROR: Empty title`);
+        console.log(`Empty title`);
+        return null;
+    }
+    const task = new TaskClass(IdGenerator.generate(), title, category);
+    tasks.push(task);
+    SystemLogger.log(`Task created: ${title} (ID: ${task.id})`);
+    console.log(`Task created: ${title}`);
+    return task;
+}
+console.log("\n=== Creating Tasks ===");
+const task1 = createTask("Complete project", "Work");
+const task2 = createTask("", "Personal"); // Will fail
+const task3 = createTask("Study TypeScript", "Study");
+// Assign Tasks (Business Rules)
+function assignTask(task, user) {
+    if (!task || !user)
+        return false;
+    if (!BusinessRules.canAssignTask(user.active)) {
+        SystemLogger.log(`ERROR: Cannot assign to inactive user ${user.name}`);
+        console.log(`Cannot assign - ${user.name} is inactive`);
+        return false;
+    }
+    task.assignedTo = user.id;
+    user.activeTasks++;
+    SystemLogger.log(`Task "${task.title}" assigned to ${user.name}`);
+    console.log(`"${task.title}" → ${user.name}`);
+    return true;
+}
+console.log("\n=== Assigning Tasks ===");
+assignTask(task1, alice);
+assignTask(task3, alice);
+// Complete Tasks (Business Rules)
+function completeTask(task, user) {
+    if (!task || !user)
+        return false;
+    if (!BusinessRules.canTaskBeCompleted(task.isBlocked)) {
+        SystemLogger.log(`ERROR: Task "${task.title}" is blocked`);
+        console.log(`Cannot complete - "${task.title}" is blocked`);
+        return false;
+    }
+    task.finished = true;
+    task.completionDate = new Date();
+    task.moveTo(TaskStatus.COMPLETED);
+    user.activeTasks--;
+    SystemLogger.log(`Task "${task.title}" completed`);
+    console.log(`"${task.title}" completed`);
+    return true;
+}
+console.log("\n=== Completing Tasks ===");
+// Block task3 for demonstration
+if (task3)
+    task3.isBlocked = true;
+completeTask(task1, alice); // Will succeed
+completeTask(task3, alice); // Will fail (blocked)
+// Deactivate User (Business Rules)
+function deactivateUser(user) {
+    if (!user)
+        return false;
+    if (!BusinessRules.canUserBeDeactivated(user.activeTasks)) {
+        SystemLogger.log(`ERROR: ${user.name} has ${user.activeTasks} active tasks`);
+        console.log(`Cannot deactivate ${user.name} - has active tasks`);
+        return false;
+    }
+    user.deactivate();
+    SystemLogger.log(`User ${user.name} deactivated`);
+    console.log(`${user.name} deactivated`);
+    return true;
+}
+console.log("\n=== Deactivating Users ===");
+deactivateUser(alice); // Will fail (has 1 blocked task)
+deactivateUser(charlie); // Will succeed (0 tasks)
+// Print Results
+console.log("\n=== FINAL RESULTS ===");
+console.log("\nSystem:", SystemConfig.getInfo());
+console.log("\nUsers:", users.map(u => ({ id: u.id, name: u.name, active: u.active, tasks: u.activeTasks })));
+console.log("\nTasks:", tasks.map(t => ({ id: t.id, title: t.title, finished: t.finished, blocked: t.isBlocked })));
+console.log("\n=== ALL LOGS ===");
+SystemLogger.getLogs().forEach((log, i) => console.log(`${i + 1}. ${log}`));
