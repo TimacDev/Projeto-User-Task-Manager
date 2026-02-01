@@ -14,6 +14,7 @@ export class UserClass extends BaseEntity implements User {
   email: string;
   active: boolean;
   role: UserRole;
+  activeTasks: number = 0;
 
   constructor(
     id: number,

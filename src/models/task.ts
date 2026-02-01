@@ -21,6 +21,8 @@ export class TaskClass extends BaseEntity implements Task {
   completionDate?: Date;
   category: Category;
   status: TaskStatus;
+  isBlocked: boolean = false; 
+  assignedTo: number | null = null;
 
   constructor(
     id: number,

@@ -3,6 +3,8 @@ import { TaskStatus } from "../tasks/TaskStatus.js";
 export class TaskClass extends BaseEntity {
     constructor(id, title, category, status = TaskStatus.CREATED) {
         super(id); // BaseEntity constructor (sets id & createdAt)
+        this.isBlocked = false;
+        this.assignedTo = null;
         this.title = title;
         this.finished = false;
         this.category = category;
