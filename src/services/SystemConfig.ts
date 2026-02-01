@@ -1,7 +1,7 @@
 export class SystemConfig {
   static appName: string = "MyApp";
   static version: string = "1.0.0";
-  static environment: string;
+  static environment: string = "development";
 
   static setEnvironment(env: string): void {
     SystemConfig.environment = env;

@@ -12,3 +12,4 @@ export class SystemConfig {
 }
 SystemConfig.appName = "MyApp";
 SystemConfig.version = "1.0.0";
+SystemConfig.environment = "development";
