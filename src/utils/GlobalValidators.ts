@@ -1,4 +1,20 @@
 export class GlobalValidators {
+  private constructor() {} // prevents new instances
 
-    // IMPLEMENTAR TODAS AS FUNÇÕES ACIMA COMO static
+  static isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  static isNonEmpty(text: string): boolean {
+    return text.trim().length > 0;
+  }
+
+  static isPositiveNumber(value: number): boolean {
+    return value > 0; 
+  }
+
+  static minLength(text: string, size: number): boolean {
+    return text.length >= size;
+  }
 }
