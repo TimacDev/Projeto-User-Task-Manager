@@ -19,6 +19,7 @@ import { EntityList } from './utils/EntityList.js';
 import { SimpleCache } from "./utils/SimpleCache.js";
 import { Favorites } from "./utils/Favorites.js";
 import { Paginator } from "./utils/Paginator.js";
+import { TagManager } from "./utils/TagManager.js";
 
 
 // ===== TASK PAGE ===== //
@@ -248,3 +249,10 @@ const page2 = paginator.paginate(userList.getAll(), 2, 2);
 
 console.log(page1);
 console.log(page2);
+
+// ===== Tag Manager =====
+
+const tagManager = new TagManager();
+tagManager.addTag(task1, 'urgente');
+tagManager.addTag(task1, 'backend');
+console.log(tagManager.getTags(task1));
