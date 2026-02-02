@@ -15,6 +15,7 @@ import { TaskClass } from "./models/task.js";
 import { UserClass } from "./models/user.js";
 import { UserRole } from "./security/UserRole.js";
 import { TaskStatus } from "./tasks/TaskStatus.js";
+import { EntityList } from './utils/EntityList';
 
 
 // ===== TASK PAGE ===== //
@@ -193,3 +194,22 @@ console.log("\nTasks:", tasks.map(t => ({ id: t.id, title: t.title, finished: t.
 
 console.log("\n=== ALL LOGS ===");
 SystemLogger.getLogs().forEach((log, i) => console.log(`${i + 1}. ${log}`));
+
+// Create users using YOUR UserClass constructor
+const user1 = new UserClass(1, "Alice", "alice@example.com", UserRole.ADMIN);
+const user2 = new UserClass(2, "Bob", "bob@example.com", UserRole.VIEWER);
+
+// Create tasks using YOUR TaskClass constructor
+const task4 = new TaskClass(1, "Learn TypeScript", "Work", TaskStatus.CREATED);
+
+// Use the generic EntityList with your classes
+const userList = new EntityList<UserClass>();
+userList.add(user1);
+userList.add(user2);
+
+const taskList = new EntityList<TaskClass>();
+taskList.add(task4);
+
+// Output results
+console.log("Users:", userList.getAll());
+console.log("Tasks:", taskList.getAll());
