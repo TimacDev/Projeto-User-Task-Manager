@@ -1,4 +1,5 @@
 export class EntityList<T> {
+    
   private items: T[];
 
   constructor() {

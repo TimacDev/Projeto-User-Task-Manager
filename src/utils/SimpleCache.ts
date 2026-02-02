@@ -1,4 +1,5 @@
 export class SimpleCache<K, T> {
+    
   private cache: Map<K, T>;
 
   constructor() {
