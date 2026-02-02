@@ -159,5 +159,5 @@ const taskCache = new SimpleCache();
 taskCache.set(10, task4);
 console.log("\n=== SimpleCache ===");
 console.log("User with ID 1:", userCache.get(1));
-console.log("Task with ID 10:", taskCache.get(10));
 console.log("User with ID 99:", userCache.get(99)); // undefined
+console.log("Task with ID 10:", taskCache.get(10));
