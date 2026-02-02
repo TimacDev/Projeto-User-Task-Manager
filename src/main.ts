@@ -18,6 +18,7 @@ import { TaskStatus } from "./tasks/TaskStatus.js";
 import { EntityList } from './utils/EntityList';
 import { SimpleCache } from "./utils/SimpleCache.js";
 import { Favorites } from "./utils/Favorites.js";
+import { Paginator } from "./utils/Paginator.js";
 
 
 // ===== TASK PAGE ===== //
@@ -238,3 +239,12 @@ console.log(favUsers.getAll());
 const favTasks = new Favorites();
 favTasks.add(task1);
 console.log(favTasks.exists(task1));
+
+// ===== Paginator =====
+
+const paginator = new Paginator();
+const page1 = paginator.paginate(userList.getAll(), 1, 2);
+const page2 = paginator.paginate(userList.getAll(), 2, 2);
+
+console.log(page1);
+console.log(page2);
