@@ -10,7 +10,7 @@ import { TaskClass } from "./models/task.js";
 import { UserClass } from "./models/user.js";
 import { UserRole } from "./security/UserRole.js";
 import { TaskStatus } from "./tasks/TaskStatus.js";
-import { EntityList } from './utils/EntityList';
+import { EntityList } from './utils/EntityList.js';
 import { SimpleCache } from "./utils/SimpleCache.js";
 import { Favorites } from "./utils/Favorites.js";
 import { Paginator } from "./utils/Paginator.js";
