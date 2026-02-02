@@ -12,6 +12,7 @@ import { UserRole } from "./security/UserRole.js";
 import { TaskStatus } from "./tasks/TaskStatus.js";
 import { EntityList } from './utils/EntityList';
 import { SimpleCache } from "./utils/SimpleCache.js";
+import { Favorites } from "./utils/Favorites.js";
 // ===== TASK PAGE ===== //
 const addBtn = document.querySelector("#addBtn");
 if (addBtn) {
@@ -142,7 +143,7 @@ SystemLogger.getLogs().forEach((log, i) => console.log(`${i + 1}. ${log}`));
 const user1 = new UserClass(1, "Alice", "alice@example.com", UserRole.ADMIN);
 const user2 = new UserClass(2, "Bob", "bob@example.com", UserRole.VIEWER);
 const task4 = new TaskClass(1, "Learn TypeScript", "Work", TaskStatus.CREATED);
-// Use the generic EntityList with your classes
+// Use the generic EntityList 
 const userList = new EntityList();
 userList.add(user1);
 userList.add(user2);
@@ -151,7 +152,7 @@ taskList.add(task4);
 // Output results
 console.log("Users:", userList.getAll());
 console.log("Tasks:", taskList.getAll());
-// ========== Exercise 2: SimpleCache ==========
+// ===== SimpleCache =====
 const userCache = new SimpleCache();
 userCache.set(1, user1);
 userCache.set(2, user2);
@@ -161,3 +162,12 @@ console.log("\n=== SimpleCache ===");
 console.log("User with ID 1:", userCache.get(1));
 console.log("User with ID 99:", userCache.get(99)); // undefined
 console.log("Task with ID 10:", taskCache.get(10));
+// ===== Favorites =====
+const favUsers = new Favorites();
+favUsers.add(user1);
+favUsers.add(user2);
+favUsers.remove(user1);
+console.log(favUsers.getAll());
+const favTasks = new Favorites();
+favTasks.add(task1);
+console.log(favTasks.exists(task1));
