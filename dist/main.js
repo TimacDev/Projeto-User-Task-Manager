@@ -11,6 +11,7 @@ import { UserClass } from "./models/user.js";
 import { UserRole } from "./security/UserRole.js";
 import { TaskStatus } from "./tasks/TaskStatus.js";
 import { EntityList } from './utils/EntityList';
+import { SimpleCache } from "./utils/SimpleCache.js";
 // ===== TASK PAGE ===== //
 const addBtn = document.querySelector("#addBtn");
 if (addBtn) {
@@ -110,7 +111,6 @@ function completeTask(task, user) {
     return true;
 }
 console.log("\n=== Completing Tasks ===");
-// Block task3 for demonstration
 if (task3)
     task3.isBlocked = true;
 completeTask(task1, alice); // Will succeed
@@ -139,10 +139,8 @@ console.log("\nUsers:", users.map(u => ({ id: u.id, name: u.name, active: u.acti
 console.log("\nTasks:", tasks.map(t => ({ id: t.id, title: t.title, finished: t.finished, blocked: t.isBlocked })));
 console.log("\n=== ALL LOGS ===");
 SystemLogger.getLogs().forEach((log, i) => console.log(`${i + 1}. ${log}`));
-// Create users using YOUR UserClass constructor
 const user1 = new UserClass(1, "Alice", "alice@example.com", UserRole.ADMIN);
 const user2 = new UserClass(2, "Bob", "bob@example.com", UserRole.VIEWER);
-// Create tasks using YOUR TaskClass constructor
 const task4 = new TaskClass(1, "Learn TypeScript", "Work", TaskStatus.CREATED);
 // Use the generic EntityList with your classes
 const userList = new EntityList();
@@ -153,3 +151,13 @@ taskList.add(task4);
 // Output results
 console.log("Users:", userList.getAll());
 console.log("Tasks:", taskList.getAll());
+// ========== Exercise 2: SimpleCache ==========
+const userCache = new SimpleCache();
+userCache.set(1, user1);
+userCache.set(2, user2);
+const taskCache = new SimpleCache();
+taskCache.set(10, task4);
+console.log("\n=== SimpleCache ===");
+console.log("User with ID 1:", userCache.get(1));
+console.log("Task with ID 10:", taskCache.get(10));
+console.log("User with ID 99:", userCache.get(99)); // undefined
