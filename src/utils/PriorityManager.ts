@@ -1,4 +1,5 @@
 export class PriorityManager<T> {
+    
   private priorities: Map<T, number>;
 
   constructor() {
