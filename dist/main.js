@@ -18,6 +18,7 @@ import { TagManager } from "./utils/TagManager.js";
 import { WatcherSystem } from "./utils/WatcherSystem.js";
 import { PriorityManager } from "./utils/PriorityManager.js";
 import { RatingSystem } from "./utils/RatingSystem.js";
+import { DependencyGraph } from "./utils/DependencyGraph.js";
 // ===== TASK PAGE ===== //
 const addBtn = document.querySelector("#addBtn");
 if (addBtn) {
@@ -201,3 +202,7 @@ ratingSystem.rate(task1, 5);
 ratingSystem.rate(task1, 3);
 console.log(ratingSystem.getAverage(task1));
 // ===== Dependency Graph =====
+const depGraph = new DependencyGraph();
+depGraph.addDependency(task2, task1);
+depGraph.addDependency(task3, task2);
+console.log(depGraph.getDependencies(task2));
