@@ -20,9 +20,11 @@ import { SimpleCache } from "./utils/SimpleCache.js";
 import { Favorites } from "./utils/Favorites.js";
 import { Paginator } from "./utils/Paginator.js";
 import { TagManager } from "./utils/TagManager.js";
+import { WatcherSystem } from "./utils/WatcherSystem.js";
 
 
 // ===== TASK PAGE ===== //
+
 const addBtn = document.querySelector("#addBtn");
 
 if (addBtn) {
@@ -40,6 +42,7 @@ if (addBtn) {
 }
 
 // ===== USER PAGE ===== //
+
 const nameInput = document.querySelector("#nameInput");
 
 if (nameInput) {
@@ -63,7 +66,7 @@ SystemLogger.log("Starting user creation");
 const users: UserClass[] = [];
 
 function createUser(name: string, email: string, role: UserRole): UserClass | null {
-    // Validate email
+    
     if (!GlobalValidators.isValidEmail(email)) {
         SystemLogger.log(`ERROR: Invalid email - ${email}`);
         console.log(`Invalid email: ${email}`);
@@ -91,7 +94,7 @@ SystemLogger.log("Starting task creation");
 const tasks: TaskClass[] = [];
 
 function createTask(title: string, category: "Work" | "Personal" | "Study"): TaskClass | null {
-    // Validate title
+    
     if (!GlobalValidators.isNonEmpty(title)) {
         SystemLogger.log(`ERROR: Empty title`);
         console.log(`Empty title`);
@@ -205,6 +208,7 @@ const user2 = new UserClass(2, "Bob", "bob@example.com", UserRole.VIEWER);
 const task4 = new TaskClass(1, "Learn TypeScript", "Work", TaskStatus.CREATED);
 
 // Use the generic EntityList 
+
 const userList = new EntityList<UserClass>();
 userList.add(user1);
 userList.add(user2);
@@ -217,6 +221,7 @@ console.log("Users:", userList.getAll());
 console.log("Tasks:", taskList.getAll());
 
 // ===== SimpleCache =====
+
 const userCache = new SimpleCache<number, UserClass>();
 userCache.set(1, user1);
 userCache.set(2, user2);
@@ -256,3 +261,10 @@ const tagManager = new TagManager();
 tagManager.addTag(task1, 'urgente');
 tagManager.addTag(task1, 'backend');
 console.log(tagManager.getTags(task1));
+
+// ===== Watchers =====
+
+const watcherSystem = new WatcherSystem();
+watcherSystem.watch(task1, user1);
+watcherSystem.watch(task1, user2);
+console.log(watcherSystem.getWatchers(task1));

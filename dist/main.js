@@ -15,6 +15,7 @@ import { SimpleCache } from "./utils/SimpleCache.js";
 import { Favorites } from "./utils/Favorites.js";
 import { Paginator } from "./utils/Paginator.js";
 import { TagManager } from "./utils/TagManager.js";
+import { WatcherSystem } from "./utils/WatcherSystem.js";
 // ===== TASK PAGE ===== //
 const addBtn = document.querySelector("#addBtn");
 if (addBtn) {
@@ -42,7 +43,6 @@ console.log(SystemConfig.getInfo());
 SystemLogger.log("Starting user creation");
 const users = [];
 function createUser(name, email, role) {
-    // Validate email
     if (!GlobalValidators.isValidEmail(email)) {
         SystemLogger.log(`ERROR: Invalid email - ${email}`);
         console.log(`Invalid email: ${email}`);
@@ -62,7 +62,6 @@ const charlie = createUser("Charlie", "charlie@mail.com", UserRole.VIEWER);
 SystemLogger.log("Starting task creation");
 const tasks = [];
 function createTask(title, category) {
-    // Validate title
     if (!GlobalValidators.isNonEmpty(title)) {
         SystemLogger.log(`ERROR: Empty title`);
         console.log(`Empty title`);
@@ -184,3 +183,8 @@ const tagManager = new TagManager();
 tagManager.addTag(task1, 'urgente');
 tagManager.addTag(task1, 'backend');
 console.log(tagManager.getTags(task1));
+// ===== Watchers =====
+const watcherSystem = new WatcherSystem();
+watcherSystem.watch(task1, user1);
+watcherSystem.watch(task1, user2);
+console.log(watcherSystem.getWatchers(task1));
