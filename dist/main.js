@@ -16,7 +16,8 @@ import { Favorites } from "./utils/Favorites.js";
 import { Paginator } from "./utils/Paginator.js";
 import { TagManager } from "./utils/TagManager.js";
 import { WatcherSystem } from "./utils/WatcherSystem.js";
-import { PriorityManager } from "utils/PriorityManager.js";
+import { PriorityManager } from "./utils/PriorityManager.js";
+import { RatingSystem } from "./utils/RatingSystem.js";
 // ===== TASK PAGE ===== //
 const addBtn = document.querySelector("#addBtn");
 if (addBtn) {
@@ -195,4 +196,8 @@ priorityManager.setPriority(task1, 5);
 priorityManager.setPriority(task2, 1);
 console.log(priorityManager.getPriority(task1));
 // ===== Rating System =====
+const ratingSystem = new RatingSystem();
+ratingSystem.rate(task1, 5);
+ratingSystem.rate(task1, 3);
+console.log(ratingSystem.getAverage(task1));
 // ===== Dependency Graph =====
