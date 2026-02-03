@@ -21,6 +21,7 @@ import { Favorites } from "./utils/Favorites.js";
 import { Paginator } from "./utils/Paginator.js";
 import { TagManager } from "./utils/TagManager.js";
 import { WatcherSystem } from "./utils/WatcherSystem.js";
+import { PriorityManager } from "utils/PriorityManager.js";
 
 
 // ===== TASK PAGE ===== //
@@ -268,3 +269,14 @@ const watcherSystem = new WatcherSystem();
 watcherSystem.watch(task1, user1);
 watcherSystem.watch(task1, user2);
 console.log(watcherSystem.getWatchers(task1));
+
+// ===== Priority Manager =====
+
+const priorityManager = new PriorityManager();
+priorityManager.setPriority(task1, 5);
+priorityManager.setPriority(task2, 1);
+console.log(priorityManager.getPriority(task1));
+
+// ===== Rating System =====
+
+// ===== Dependency Graph =====
