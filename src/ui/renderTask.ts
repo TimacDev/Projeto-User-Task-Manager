@@ -1,4 +1,4 @@
-import { Category } from "../models/index.js";
+import { Task } from "../models/index.js";
 import {
   taskList,
   getCurrentSearchTerm,
@@ -19,9 +19,6 @@ import {
 const counterSpan = document.querySelector("#numPendentes") as HTMLSpanElement;
 const output = document.querySelector("#output") as HTMLDivElement;
 const taskInput = document.querySelector("#taskInput") as HTMLInputElement;
-const categorySelect = document.querySelector(
-  "#categorySelect",
-) as HTMLSelectElement;
 
 // ===== UI FUNCTIONS ===== //
 export function updateCounter(): void {
@@ -31,30 +28,29 @@ export function updateCounter(): void {
 }
 
 // UI handles the prompt() interaction
-export function handleEditTask(id: number): void {
+export async function handleEditTask(id: number): Promise<void> {
   const task = taskList.find((t) => t.id === id);
   if (!task) return;
 
   const newTitle = prompt("Editar tarefa:", task.title);
   if (newTitle !== null) {
-    updateTaskTitle(id, newTitle);
+    await updateTaskTitle(id, newTitle);
   }
 }
 
 // UI handles the confirm() interaction
-export function handleClearAllTasks(): void {
+export async function handleClearAllTasks(): Promise<void> {
   if (taskList.length === 0) return;
   if (confirm("Are you sure you want to delete all tasks?")) {
-    clearAllTasks();
+    await clearAllTasks();
   }
 }
 
 // UI handles reading from input fields
-export function handleAddTask(): void {
+export async function handleAddTask(): Promise<void> {
   const title = taskInput.value.trim();
-  const category = categorySelect.value as Category;
 
-  if (addTask(title, category)) {
+  if (await addTask(title)) {
     taskInput.value = "";
   }
 }
@@ -104,7 +100,7 @@ export function renderTasks(): void {
   updateCounter();
 }
 
-function renderTaskList(ul: HTMLUListElement, tasks: typeof taskList): void {
+function renderTaskList(ul: HTMLUListElement, tasks: Task[]): void {
   ul.innerHTML = "";
 
   if (tasks.length === 0) {
@@ -118,17 +114,14 @@ function renderTaskList(ul: HTMLUListElement, tasks: typeof taskList): void {
   for (const task of tasks) {
     const li = document.createElement("li");
 
-    const categoryBadge = document.createElement("span");
-    categoryBadge.textContent = task.category;
-    categoryBadge.classList.add(
-      "category-badge",
-      `category-${task.category.toLowerCase()}`,
-    );
+    const statusBadge = document.createElement("span");
+    statusBadge.textContent = task.status;
+    statusBadge.classList.add("category-badge", `category-${task.status}`);
 
     const spanText = document.createElement("span");
     spanText.textContent = task.title;
     spanText.style.cursor = "pointer";
-    if (task.finished) spanText.classList.add("finished");
+    if (task.status === "completed") spanText.classList.add("finished");
     spanText.addEventListener("click", () => toggleTaskFinished(task.id));
 
     const btnRemove = document.createElement("button");
@@ -141,12 +134,12 @@ function renderTaskList(ul: HTMLUListElement, tasks: typeof taskList): void {
     btnEdit.classList.add("btn-edit");
     btnEdit.addEventListener("click", () => handleEditTask(task.id));
 
-    li.appendChild(categoryBadge);
+    li.appendChild(statusBadge);
     li.appendChild(spanText);
 
-    if (task.finished && task.completionDate) {
+    if (task.status === "completed" && task.completed_at) {
       const finishedDate = document.createElement("p");
-      finishedDate.textContent = `Finished in: ${task.completionDate.toLocaleString("en")}`;
+      finishedDate.textContent = `Finished in: ${new Date(task.completed_at).toLocaleString("en")}`;
       finishedDate.classList.add("task-date");
       li.appendChild(finishedDate);
     }

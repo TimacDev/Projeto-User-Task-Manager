@@ -14,13 +14,13 @@ export class BackupService {
         this.assignments = assignments;
     }
     exportUsers() {
-        return this.users.map((user) => (Object.assign({}, user)));
+        return this.users.map((user) => ({ ...user }));
     }
     exportTasks() {
-        return this.tasks.map((task) => (Object.assign({}, task)));
+        return this.tasks.map((task) => ({ ...task }));
     }
     exportAssignments() {
-        return this.assignments.map((assignment) => (Object.assign({}, assignment)));
+        return this.assignments.map((assignment) => ({ ...assignment }));
     }
     exportAll() {
         return {

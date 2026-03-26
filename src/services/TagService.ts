@@ -1,52 +1,51 @@
-export class TagService {
-  private taskTags: Map<number, string[]> = new Map();
+import { Task } from "../models/index.js";
+import {
+  Tag,
+  getTags as apiGetTags,
+  createTag as apiCreateTag,
+  deleteTag as apiDeleteTag,
+  getTasksByTag as apiGetTasksByTag,
+  addTagToTask as apiAddTagToTask,
+} from "../api/apiTagService.js";
 
-  addTag(taskId: number, tag: string): boolean {
-    const normalizedTag = tag.toLowerCase().trim();
-    const tags = this.taskTags.get(taskId) || [];
-    
-    if (tags.indexOf(normalizedTag) !== -1) {
-      return false;
-    }
+// ===== DATA ===== //
 
-    tags.push(normalizedTag);
-    this.taskTags.set(taskId, tags);
-    return true;
-  }
+export let tagList: Tag[] = [];
 
-  removeTag(taskId: number, tag: string): boolean {
-    const normalizedTag = tag.toLowerCase().trim();
-    const tags = this.taskTags.get(taskId);
+// ===== CALLBACKS ===== //
 
-    if (!tags) {
-      return false;
-    }
+let onUpdate: (() => void) | null = null;
 
-    const filteredTags = tags.filter((t) => t !== normalizedTag);
+export function setOnTagUpdate(callback: () => void): void {
+  onUpdate = callback;
+}
 
-    if (filteredTags.length === tags.length) {
-      return false;
-    }
+// ===== LOAD TAGS (syncs API → local array) ===== //
 
-    this.taskTags.set(taskId, filteredTags);
-    return true;
-  }
+export async function loadTags(): Promise<void> {
+  tagList = await apiGetTags();
+  onUpdate?.();
+}
 
-  getTags(taskId: number): string[] {
-    return this.taskTags.get(taskId) || [];
-  }
+// ===== BUSINESS LOGIC ===== //
 
-  getTasksByTag(tag: string): number[] {
-    const normalizedTag = tag.toLowerCase().trim();
-    const taskIds: number[] = [];
+export async function addTag(name: string): Promise<boolean> {
+  if (name.trim() === "") return false;
 
-    this.taskTags.forEach((tags, taskId) => {
-      
-      if (tags.indexOf(normalizedTag) !== -1) {
-        taskIds.push(taskId);
-      }
-    });
+  await apiCreateTag({ name: name.trim() });
+  await loadTags();
+  return true;
+}
 
-    return taskIds;
-  }
+export async function removeTag(id: number): Promise<void> {
+  await apiDeleteTag(id);
+  await loadTags();
+}
+
+export async function getTasksByTag(tagId: number): Promise<Task[]> {
+  return await apiGetTasksByTag(tagId);
+}
+
+export async function addTagToTask(taskId: number, tagId: number): Promise<void> {
+  await apiAddTagToTask(taskId, tagId);
 }

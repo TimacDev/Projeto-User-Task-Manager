@@ -1,8 +1,14 @@
-import { UserClass } from "../models/index.js";
+import { User } from "../models/index.js";
+import {
+  getUsers as apiGetUsers,
+  createUser as apiCreateUser,
+  patchUser as apiPatchUser,
+  deleteUser as apiDeleteUser,
+} from "../api/apiUserService.js";
 
 // ===== DATA ===== //
 
-export let userList: UserClass[] = [];
+export let userList: User[] = [];
 
 // ===== CALLBACKS ===== //
 
@@ -12,28 +18,34 @@ export function setOnUserUpdate(callback: () => void): void {
   onUpdate = callback;
 }
 
+// ===== LOAD USERS (syncs API → local array) ===== //
+
+export async function loadUsers(): Promise<void> {
+  userList = await apiGetUsers();
+  onUpdate?.();
+}
+
 // ===== BUSINESS LOGIC ===== //
 
-export function addUser(name: string, email: string): boolean {
+export async function addUser(name: string, email: string): Promise<boolean> {
   if (name.trim() === "" || email.trim() === "") return false;
 
-  const newUser = new UserClass(Date.now(), name.trim(), email.trim());
-  userList.push(newUser);
-  onUpdate?.();
+  await apiCreateUser({ name: name.trim(), email: email.trim() });
+  await loadUsers();
   return true;
 }
 
-export function deleteUser(userId: number): void {
-  userList = userList.filter((u) => u.id !== userId);
-  onUpdate?.();
+export async function deleteUser(userId: number): Promise<void> {
+  await apiDeleteUser(userId);
+  await loadUsers();
 }
 
-export function toggleUserActive(userId: number): void {
+export async function toggleUserActive(userId: number): Promise<void> {
   const user = userList.find((u) => u.id === userId);
   if (!user) return;
 
-  user.active ? user.deactivate() : user.activate();
-  onUpdate?.();
+  await apiPatchUser(userId, { active: !user.active });
+  await loadUsers();
 }
 
 export function orderUserList(): void {
@@ -41,11 +53,12 @@ export function orderUserList(): void {
   onUpdate?.();
 }
 
-export function getUserById(userId: number): UserClass | undefined {
+export function getUserById(userId: number): User | undefined {
   return userList.find((u) => u.id === userId);
 }
 
 // ===== COMPUTED DATA ===== //
+
 export function getTotalUsers(): number {
   return userList.length;
 }
@@ -61,7 +74,7 @@ export function getInactiveUsersCount(): number {
 export function getFilteredUsers(
   searchTerm: string,
   onlyActive: boolean,
-): UserClass[] {
+): User[] {
   let filtered = userList;
 
   if (searchTerm.trim() !== "") {

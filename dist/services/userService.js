@@ -1,4 +1,4 @@
-import { UserClass } from "../models/index.js";
+import { getUsers as apiGetUsers, createUser as apiCreateUser, patchUser as apiPatchUser, deleteUser as apiDeleteUser, } from "../api/apiUserService.js";
 // ===== DATA ===== //
 export let userList = [];
 // ===== CALLBACKS ===== //
@@ -6,29 +6,33 @@ let onUpdate = null;
 export function setOnUserUpdate(callback) {
     onUpdate = callback;
 }
+// ===== LOAD USERS (syncs API → local array) ===== //
+export async function loadUsers() {
+    userList = await apiGetUsers();
+    onUpdate?.();
+}
 // ===== BUSINESS LOGIC ===== //
-export function addUser(name, email) {
+export async function addUser(name, email) {
     if (name.trim() === "" || email.trim() === "")
         return false;
-    const newUser = new UserClass(Date.now(), name.trim(), email.trim());
-    userList.push(newUser);
-    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+    await apiCreateUser({ name: name.trim(), email: email.trim() });
+    await loadUsers();
     return true;
 }
-export function deleteUser(userId) {
-    userList = userList.filter((u) => u.id !== userId);
-    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+export async function deleteUser(userId) {
+    await apiDeleteUser(userId);
+    await loadUsers();
 }
-export function toggleUserActive(userId) {
+export async function toggleUserActive(userId) {
     const user = userList.find((u) => u.id === userId);
     if (!user)
         return;
-    user.active ? user.deactivate() : user.activate();
-    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+    await apiPatchUser(userId, { active: !user.active });
+    await loadUsers();
 }
 export function orderUserList() {
     userList.sort((a, b) => a.name.localeCompare(b.name, "pt-PT"));
-    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+    onUpdate?.();
 }
 export function getUserById(userId) {
     return userList.find((u) => u.id === userId);

@@ -1,4 +1,3 @@
-import { TaskStatus } from "../tasks/TaskStatus.js";
 export class AutomationRulesService {
     constructor(notificationService, historyLog) {
         this.assignments = [];
@@ -9,25 +8,25 @@ export class AutomationRulesService {
         this.assignments = assignments;
     }
     // ===== TASK RULES ===== //
-    // Rule: If task is COMPLETED, create log
+    // Rule: If task is completed, create log
     ruleTaskCompleted(task) {
-        if (task.status === TaskStatus.COMPLETED) {
+        if (task.status === "completed") {
             this.historyLog.addLog(`Task "${task.title}" was completed`);
         }
     }
-    // Rule: If task is BLOCKED, notify admins
+    // Rule: If task is blocked, notify admins
     ruleTaskBlocked(task) {
-        if (task.status === TaskStatus.BLOCKED) {
+        if (task.status === "blocked") {
             this.notificationService.notifyAdmins(`Task "${task.title}" is blocked and needs attention`);
         }
     }
-    // Rule: If task expired, move to BLOCKED
+    // Rule: If task expired, move to blocked
     ruleTaskExpired(task) {
-        if (task.completionDate && task.status !== TaskStatus.COMPLETED) {
+        if (task.due_date && task.status !== "completed") {
             const now = new Date();
-            if (task.completionDate < now) {
-                task.moveTo(TaskStatus.BLOCKED);
-                this.historyLog.addLog(`Task "${task.title}" expired and was moved to BLOCKED`);
+            if (new Date(task.due_date) < now) {
+                task.status = "blocked";
+                this.historyLog.addLog(`Task "${task.title}" expired and was moved to blocked`);
                 this.notificationService.notifyAdmins(`Task "${task.title}" has expired`);
             }
         }

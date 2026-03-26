@@ -1,5 +1,4 @@
 import { Task } from "../models/task.js";
-import { TaskStatus } from "../tasks/TaskStatus.js";
 
 interface User {
   id: number;
@@ -7,12 +6,8 @@ interface User {
 }
 
 interface TasksByStatus {
-  created: number;
-  assigned: number;
-  inProgress: number;
-  blocked: number;
+  pending: number;
   completed: number;
-  archived: number;
 }
 
 export class StatisticsService {
@@ -36,35 +31,17 @@ export class StatisticsService {
   }
 
   countCompletedTasks(): number {
-    return this.tasks.filter((task) => task.status === TaskStatus.COMPLETED)
-      .length;
+    return this.tasks.filter((task) => task.status === "completed").length;
   }
 
   countActiveTasks(): number {
-    return this.tasks.filter((task) => {
-      return (
-        task.status !== TaskStatus.COMPLETED &&
-        task.status !== TaskStatus.ARCHIVED
-      );
-    }).length;
+    return this.tasks.filter((task) => task.status === "pending").length;
   }
 
   tasksByStatus(): TasksByStatus {
     return {
-      created: this.tasks.filter((task) => task.status === TaskStatus.CREATED)
-        .length,
-      assigned: this.tasks.filter((task) => task.status === TaskStatus.ASSIGNED)
-        .length,
-      inProgress: this.tasks.filter(
-        (task) => task.status === TaskStatus.IN_PROGRESS,
-      ).length,
-      blocked: this.tasks.filter((task) => task.status === TaskStatus.BLOCKED)
-        .length,
-      completed: this.tasks.filter(
-        (task) => task.status === TaskStatus.COMPLETED,
-      ).length,
-      archived: this.tasks.filter((task) => task.status === TaskStatus.ARCHIVED)
-        .length,
+      pending: this.tasks.filter((task) => task.status === "pending").length,
+      completed: this.tasks.filter((task) => task.status === "completed").length,
     };
   }
 }

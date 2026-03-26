@@ -1,15 +1,5 @@
-import { Category, TaskClass } from "../models/task.js";
-import { TaskStatus } from "./TaskStatus.js";
+import { Task } from "../models/task.js";
 
-export class FeatureTask extends TaskClass {
+export interface FeatureTask extends Task {
   priority: "Low" | "Medium" | "High";
-  
-  constructor(id: number, title: string, category: Category, status: TaskStatus) {
-    super(id, title, category, status);
-    this.priority = "Medium";
-  }
-
-  getType(): string {
-    return "Feature";
-  }
 }

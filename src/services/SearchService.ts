@@ -1,6 +1,4 @@
 import { Task } from "../models/task.js";
-import { Category } from "../models/task.js";
-import { TaskStatus } from "../tasks/TaskStatus.js";
 
 export class SearchService {
   private tasks: Task[] = [];
@@ -18,17 +16,12 @@ export class SearchService {
     });
   }
 
-  // Search by category 
-  searchByCategory(category: Category): Task[] {
-    return this.tasks.filter((task) => task.category === category);
-  }
-
   // Search by status
-  searchByStatus(status: TaskStatus): Task[] {
+  searchByStatus(status: string): Task[] {
     return this.tasks.filter((task) => task.status === status);
   }
 
-  // Global search 
+  // Global search
   globalSearch(query: string): Task[] {
     return this.searchByTitle(query);
   }

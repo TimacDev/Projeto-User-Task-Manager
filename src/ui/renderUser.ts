@@ -1,4 +1,4 @@
-import { UserClass } from "../models/index.js";
+import { User } from "../models/index.js";
 import {
   userList,
   toggleUserActive,
@@ -17,7 +17,7 @@ import {
 
 let showOnlyActive = false;
 let currentSearchTerm = "";
-let selectedUser: UserClass | null = null;
+let selectedUser: User | null = null;
 
 // ===== DOM DISPLAY FUNCTIONS ===== //
 
@@ -231,7 +231,7 @@ export function initUserPage(): void {
     renderUsers();
   });
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
     errorMsg.textContent = "";
 
@@ -249,7 +249,7 @@ export function initUserPage(): void {
       return;
     }
 
-    addUser(name, email);
+    await addUser(name, email);
     nameInput.value = "";
     emailInput.value = "";
   });

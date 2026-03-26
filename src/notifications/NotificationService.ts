@@ -17,7 +17,7 @@ export class NotificationService {
   }
 
   notifyAdmins(message: string) {
-    const admins = userList.filter((user) => user.getRole() === UserRole.ADMIN);
+    const admins = userList.filter((user) => user.role === UserRole.ADMIN);
     for (const admin of admins) {
       this.notifyUser(admin.id, message);
     }

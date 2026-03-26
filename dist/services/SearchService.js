@@ -12,15 +12,11 @@ export class SearchService {
             return task.title.toLowerCase().indexOf(normalizedText) !== -1;
         });
     }
-    // Search by category 
-    searchByCategory(category) {
-        return this.tasks.filter((task) => task.category === category);
-    }
     // Search by status
     searchByStatus(status) {
         return this.tasks.filter((task) => task.status === status);
     }
-    // Global search 
+    // Global search
     globalSearch(query) {
         return this.searchByTitle(query);
     }

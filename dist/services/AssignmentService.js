@@ -53,8 +53,7 @@ export class AssignmentService {
         console.log(`User ${userId} unassigned from task ${taskId}`);
     }
     getUsersFromTask(taskId) {
-        var _a;
-        const userIds = (_a = this.taskToUsers.get(taskId)) !== null && _a !== void 0 ? _a : [];
+        const userIds = this.taskToUsers.get(taskId) ?? [];
         const users = [];
         for (const userId of userIds) {
             const user = userList.find((u) => u.id === userId);
@@ -65,8 +64,7 @@ export class AssignmentService {
         return users;
     }
     getTasksFromUser(userId) {
-        var _a;
-        const taskIds = (_a = this.userToTasks.get(userId)) !== null && _a !== void 0 ? _a : [];
+        const taskIds = this.userToTasks.get(userId) ?? [];
         const tasks = [];
         for (const taskId of taskIds) {
             const task = taskList.find((t) => t.id === taskId);

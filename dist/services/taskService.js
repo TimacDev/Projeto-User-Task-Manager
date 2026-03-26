@@ -1,4 +1,4 @@
-import { TaskClass } from "../models/index.js";
+import { getTasks as apiGetTasks, createTask as apiCreateTask, updateTask as apiUpdateTask, deleteTask as apiDeleteTask, } from "../api/apiTaskService.js";
 // ===== DATA ===== //
 export let taskList = [];
 let currentSearchTerm = "";
@@ -7,62 +7,69 @@ let onUpdate = null;
 export function setOnUpdate(callback) {
     onUpdate = callback;
 }
+// ===== LOAD TASKS (syncs API → local array) ===== //
+export async function loadTasks() {
+    taskList = await apiGetTasks();
+    onUpdate?.();
+}
 // ===== GETTERS/SETTERS ===== //
 export function getCurrentSearchTerm() {
     return currentSearchTerm;
 }
 export function setSearchTerm(term) {
     currentSearchTerm = term;
-    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+    onUpdate?.();
 }
 // ===== BUSINESS LOGIC ===== //
-export function addTask(title, category) {
+export async function addTask(title) {
     if (title.trim() === "")
         return false;
-    const newTask = new TaskClass(Date.now(), title.trim(), category);
-    taskList.push(newTask);
-    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+    await apiCreateTask({ title: title.trim(), status: "pending" });
+    await loadTasks();
     return true;
 }
-export function removeTask(id) {
-    const index = taskList.findIndex((task) => task.id === id);
-    if (index !== -1)
-        taskList.splice(index, 1);
-    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+export async function removeTask(id) {
+    await apiDeleteTask(id);
+    await loadTasks();
 }
-export function removeDoneTasks() {
-    taskList = taskList.filter((task) => !task.finished);
-    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+export async function removeDoneTasks() {
+    const doneTasks = taskList.filter((task) => task.status === "completed");
+    for (const task of doneTasks) {
+        await apiDeleteTask(task.id);
+    }
+    await loadTasks();
 }
-export function clearAllTasks() {
-    taskList.length = 0;
-    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+export async function clearAllTasks() {
+    for (const task of taskList) {
+        await apiDeleteTask(task.id);
+    }
+    await loadTasks();
 }
 export function orderTasks() {
     taskList.sort((a, b) => a.title.localeCompare(b.title, "pt-PT"));
-    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+    onUpdate?.();
 }
-export function updateTaskTitle(id, newTitle) {
-    const task = taskList.find((t) => t.id === id);
-    if (!task || newTitle.trim() === "")
+export async function updateTaskTitle(id, newTitle) {
+    if (newTitle.trim() === "")
         return false;
-    task.title = newTitle.trim();
-    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+    await apiUpdateTask(id, { title: newTitle.trim() });
+    await loadTasks();
     return true;
 }
-export function toggleTaskFinished(id) {
+export async function toggleTaskFinished(id) {
     const task = taskList.find((t) => t.id === id);
     if (!task)
         return;
-    task.finished = !task.finished;
-    task.completionDate = task.finished ? new Date() : undefined;
-    onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+    const newStatus = task.status === "completed" ? "pending" : "completed";
+    await apiUpdateTask(id, { status: newStatus });
+    await loadTasks();
 }
+// ===== FILTERED DATA ===== //
 export function getFilteredTasks() {
     if (currentSearchTerm.trim() === "")
         return taskList;
     return taskList.filter((task) => task.title.toLowerCase().includes(currentSearchTerm.toLowerCase()));
 }
 export function getPendingCount() {
-    return taskList.filter((task) => !task.finished).length;
+    return taskList.filter((task) => task.status === "pending").length;
 }

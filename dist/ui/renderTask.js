@@ -3,7 +3,6 @@ import { taskList, getCurrentSearchTerm, setSearchTerm, orderTasks, removeDoneTa
 const counterSpan = document.querySelector("#numPendentes");
 const output = document.querySelector("#output");
 const taskInput = document.querySelector("#taskInput");
-const categorySelect = document.querySelector("#categorySelect");
 // ===== UI FUNCTIONS ===== //
 export function updateCounter() {
     if (counterSpan) {
@@ -11,28 +10,27 @@ export function updateCounter() {
     }
 }
 // UI handles the prompt() interaction
-export function handleEditTask(id) {
+export async function handleEditTask(id) {
     const task = taskList.find((t) => t.id === id);
     if (!task)
         return;
     const newTitle = prompt("Editar tarefa:", task.title);
     if (newTitle !== null) {
-        updateTaskTitle(id, newTitle);
+        await updateTaskTitle(id, newTitle);
     }
 }
 // UI handles the confirm() interaction
-export function handleClearAllTasks() {
+export async function handleClearAllTasks() {
     if (taskList.length === 0)
         return;
     if (confirm("Are you sure you want to delete all tasks?")) {
-        clearAllTasks();
+        await clearAllTasks();
     }
 }
 // UI handles reading from input fields
-export function handleAddTask() {
+export async function handleAddTask() {
     const title = taskInput.value.trim();
-    const category = categorySelect.value;
-    if (addTask(title, category)) {
+    if (await addTask(title)) {
         taskInput.value = "";
     }
 }
@@ -83,13 +81,13 @@ function renderTaskList(ul, tasks) {
     }
     for (const task of tasks) {
         const li = document.createElement("li");
-        const categoryBadge = document.createElement("span");
-        categoryBadge.textContent = task.category;
-        categoryBadge.classList.add("category-badge", `category-${task.category.toLowerCase()}`);
+        const statusBadge = document.createElement("span");
+        statusBadge.textContent = task.status;
+        statusBadge.classList.add("category-badge", `category-${task.status}`);
         const spanText = document.createElement("span");
         spanText.textContent = task.title;
         spanText.style.cursor = "pointer";
-        if (task.finished)
+        if (task.status === "completed")
             spanText.classList.add("finished");
         spanText.addEventListener("click", () => toggleTaskFinished(task.id));
         const btnRemove = document.createElement("button");
@@ -100,11 +98,11 @@ function renderTaskList(ul, tasks) {
         btnEdit.textContent = "Edit";
         btnEdit.classList.add("btn-edit");
         btnEdit.addEventListener("click", () => handleEditTask(task.id));
-        li.appendChild(categoryBadge);
+        li.appendChild(statusBadge);
         li.appendChild(spanText);
-        if (task.finished && task.completionDate) {
+        if (task.status === "completed" && task.completed_at) {
             const finishedDate = document.createElement("p");
-            finishedDate.textContent = `Finished in: ${task.completionDate.toLocaleString("en")}`;
+            finishedDate.textContent = `Finished in: ${new Date(task.completed_at).toLocaleString("en")}`;
             finishedDate.classList.add("task-date");
             li.appendChild(finishedDate);
         }

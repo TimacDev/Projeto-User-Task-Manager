@@ -1,7 +1,7 @@
 import { taskList } from "./taskService.js";
 import { userList } from "./userService.js";
 import { Task } from "../models/task.js";
-import { UserClass } from "../models/user.js";
+import { User } from "../models/user.js";
 
 export class AssignmentService {
   private taskToUsers: Map<number, number[]> = new Map();
@@ -63,10 +63,10 @@ export class AssignmentService {
     console.log(`User ${userId} unassigned from task ${taskId}`);
   }
 
-  getUsersFromTask(taskId: number): UserClass[] {
+  getUsersFromTask(taskId: number): User[] {
     const userIds = this.taskToUsers.get(taskId) ?? [];
 
-    const users: UserClass[] = [];
+    const users: User[] = [];
     for (const userId of userIds) {
       const user = userList.find((u) => u.id === userId);
       if (user) {

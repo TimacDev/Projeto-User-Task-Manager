@@ -1,4 +1,3 @@
-import { TaskStatus } from "../tasks/TaskStatus.js";
 export class StatisticsService {
     constructor() {
         this.tasks = [];
@@ -17,27 +16,15 @@ export class StatisticsService {
         return this.tasks.length;
     }
     countCompletedTasks() {
-        return this.tasks.filter((task) => task.status === TaskStatus.COMPLETED)
-            .length;
+        return this.tasks.filter((task) => task.status === "completed").length;
     }
     countActiveTasks() {
-        return this.tasks.filter((task) => {
-            return (task.status !== TaskStatus.COMPLETED &&
-                task.status !== TaskStatus.ARCHIVED);
-        }).length;
+        return this.tasks.filter((task) => task.status === "pending").length;
     }
     tasksByStatus() {
         return {
-            created: this.tasks.filter((task) => task.status === TaskStatus.CREATED)
-                .length,
-            assigned: this.tasks.filter((task) => task.status === TaskStatus.ASSIGNED)
-                .length,
-            inProgress: this.tasks.filter((task) => task.status === TaskStatus.IN_PROGRESS).length,
-            blocked: this.tasks.filter((task) => task.status === TaskStatus.BLOCKED)
-                .length,
-            completed: this.tasks.filter((task) => task.status === TaskStatus.COMPLETED).length,
-            archived: this.tasks.filter((task) => task.status === TaskStatus.ARCHIVED)
-                .length,
+            pending: this.tasks.filter((task) => task.status === "pending").length,
+            completed: this.tasks.filter((task) => task.status === "completed").length,
         };
     }
 }

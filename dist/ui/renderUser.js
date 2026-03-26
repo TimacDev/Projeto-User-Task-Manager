@@ -26,7 +26,6 @@ function updateAllCounters() {
 }
 // ===== RENDER USERS ===== //
 export function renderUsers() {
-    var _a, _b;
     const userSearchBox = document.querySelector("#userSearchBox");
     const userContainer = document.querySelector("#userContainer");
     if (!userSearchBox || !userContainer)
@@ -45,13 +44,15 @@ export function renderUsers() {
                 currentSearchTerm = searchInput.value;
                 renderUsers();
             };
-            (_a = userSearchBox
-                .querySelector("#btnFilter")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
+            userSearchBox
+                .querySelector("#btnFilter")
+                ?.addEventListener("click", () => {
                 showOnlyActive = !showOnlyActive;
                 renderUsers();
             });
-            (_b = userSearchBox
-                .querySelector("#btnOrder")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", orderUserList);
+            userSearchBox
+                .querySelector("#btnOrder")
+                ?.addEventListener("click", orderUserList);
         }
         // Update controls state
         const searchInput = userSearchBox.querySelector(".search-box");
@@ -72,7 +73,6 @@ export function renderUsers() {
     userContainer.innerHTML = "";
     const usersToDisplay = getFilteredUsers(currentSearchTerm, showOnlyActive);
     usersToDisplay.forEach((user) => {
-        var _a, _b;
         const userCard = document.createElement("li");
         userCard.className = "user-card";
         userCard.innerHTML = `
@@ -93,11 +93,11 @@ export function renderUsers() {
                 return;
             showUserDetails(user.id);
         });
-        (_a = userCard.querySelector(".btnDeactivate")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", (e) => {
+        userCard.querySelector(".btnDeactivate")?.addEventListener("click", (e) => {
             e.stopPropagation();
             toggleUserActive(user.id);
         });
-        (_b = userCard.querySelector(".btnDeleteUser")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", (e) => {
+        userCard.querySelector(".btnDeleteUser")?.addEventListener("click", (e) => {
             e.stopPropagation();
             deleteUser(user.id);
         });
@@ -158,8 +158,8 @@ export function closeUserDetails() {
 export function setupModal() {
     const closeBtn = document.querySelector("#closeDetails");
     const userDetails = document.querySelector("#userDetails");
-    closeBtn === null || closeBtn === void 0 ? void 0 : closeBtn.addEventListener("click", closeUserDetails);
-    userDetails === null || userDetails === void 0 ? void 0 : userDetails.addEventListener("click", (e) => {
+    closeBtn?.addEventListener("click", closeUserDetails);
+    userDetails?.addEventListener("click", (e) => {
         if (e.target === userDetails)
             closeUserDetails();
     });
@@ -180,7 +180,7 @@ export function initUserPage() {
     setOnUserUpdate(() => {
         renderUsers();
     });
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
         event.preventDefault();
         errorMsg.textContent = "";
         const name = nameInput.value.trim();
@@ -194,7 +194,7 @@ export function initUserPage() {
             errorMsg.textContent = "Invalid e-mail";
             return;
         }
-        addUser(name, email);
+        await addUser(name, email);
         nameInput.value = "";
         emailInput.value = "";
     });
