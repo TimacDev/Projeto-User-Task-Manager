@@ -17,7 +17,7 @@ export async function getUsers(search?: string, sort?: 'asc' | 'desc'): Promise<
   const res = await fetch(url);
 
   if (!res.ok) {
-    throw new Error('Erro ao buscar users');
+    throw new Error('Error getting users');
   }
 
   return await res.json();
@@ -32,7 +32,7 @@ export async function createUser(user: Partial<User>): Promise<User> {
   });
 
   if (!res.ok) {
-    throw new Error('Erro ao criar user');
+    throw new Error('Error creating user');
   }
 
   return await res.json();
@@ -47,7 +47,7 @@ export async function updateUser(id: number, user: Partial<User>): Promise<User>
   });
 
   if (!res.ok) {
-    throw new Error('Erro ao atualizar user');
+    throw new Error('Error updating user');
   }
 
   return await res.json();
@@ -62,7 +62,7 @@ export async function patchUser(id: number, fields: Partial<User>): Promise<User
   });
 
   if (!res.ok) {
-    throw new Error('Erro ao atualizar parcialmente user');
+    throw new Error('Error patching user');
   }
 
   return await res.json();
@@ -75,7 +75,7 @@ export async function deleteUser(id: number): Promise<void> {
   });
 
   if (!res.ok) {
-    throw new Error('Erro ao apagar user');
+    throw new Error('Error deleting user');
   }
 
   await res.json();
@@ -86,7 +86,7 @@ export async function getUserStats(): Promise<any> {
   const res = await fetch(`${BASE_URL}/users/stats`);
 
   if (!res.ok) {
-    throw new Error('Erro ao buscar stats de users');
+    throw new Error('Error getting users stats');
   }
 
   return await res.json();

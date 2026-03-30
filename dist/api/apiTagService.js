@@ -3,7 +3,7 @@ const BASE_URL = 'http://localhost:3000';
 export async function getTags() {
     const res = await fetch(`${BASE_URL}/tags`);
     if (!res.ok) {
-        throw new Error('Erro ao buscar tags');
+        throw new Error('Error getting tags');
     }
     return await res.json();
 }
@@ -15,7 +15,7 @@ export async function createTag(tag) {
         body: JSON.stringify(tag),
     });
     if (!res.ok) {
-        throw new Error('Erro ao criar tag');
+        throw new Error('Error. creating tag');
     }
     return await res.json();
 }
@@ -25,7 +25,7 @@ export async function deleteTag(id) {
         method: 'DELETE',
     });
     if (!res.ok) {
-        throw new Error('Erro ao apagar tag');
+        throw new Error('Error deleting tag');
     }
     await res.json();
 }
@@ -33,7 +33,7 @@ export async function deleteTag(id) {
 export async function getTasksByTag(tagId) {
     const res = await fetch(`${BASE_URL}/tags/${tagId}/tasks`);
     if (!res.ok) {
-        throw new Error('Erro ao buscar tasks da tag');
+        throw new Error('Error getting tags tasks');
     }
     return await res.json();
 }
@@ -45,7 +45,7 @@ export async function addTagToTask(taskId, tagId) {
         body: JSON.stringify({ tagId }),
     });
     if (!res.ok) {
-        throw new Error('Erro ao adicionar tag à task');
+        throw new Error('Error adding tag to task');
     }
     return await res.json();
 }

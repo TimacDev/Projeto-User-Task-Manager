@@ -13,7 +13,7 @@ export async function getUsers(search, sort) {
     }
     const res = await fetch(url);
     if (!res.ok) {
-        throw new Error('Erro ao buscar users');
+        throw new Error('Error getting users');
     }
     return await res.json();
 }
@@ -25,7 +25,7 @@ export async function createUser(user) {
         body: JSON.stringify(user),
     });
     if (!res.ok) {
-        throw new Error('Erro ao criar user');
+        throw new Error('Error creating user');
     }
     return await res.json();
 }
@@ -37,7 +37,7 @@ export async function updateUser(id, user) {
         body: JSON.stringify(user),
     });
     if (!res.ok) {
-        throw new Error('Erro ao atualizar user');
+        throw new Error('Error updating user');
     }
     return await res.json();
 }
@@ -49,7 +49,7 @@ export async function patchUser(id, fields) {
         body: JSON.stringify(fields),
     });
     if (!res.ok) {
-        throw new Error('Erro ao atualizar parcialmente user');
+        throw new Error('Error patching user');
     }
     return await res.json();
 }
@@ -59,7 +59,7 @@ export async function deleteUser(id) {
         method: 'DELETE',
     });
     if (!res.ok) {
-        throw new Error('Erro ao apagar user');
+        throw new Error('Error deleting user');
     }
     await res.json();
 }
@@ -67,7 +67,7 @@ export async function deleteUser(id) {
 export async function getUserStats() {
     const res = await fetch(`${BASE_URL}/users/stats`);
     if (!res.ok) {
-        throw new Error('Erro ao buscar stats de users');
+        throw new Error('Error getting users stats');
     }
     return await res.json();
 }

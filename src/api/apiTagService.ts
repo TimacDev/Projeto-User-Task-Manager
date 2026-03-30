@@ -1,9 +1,5 @@
 import { Task } from '../models/task.js';
-
-export interface Tag {
-  id: number;
-  name: string;
-}
+import { Tag } from '../models/tag.js';
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -12,7 +8,7 @@ export async function getTags(): Promise<Tag[]> {
   const res = await fetch(`${BASE_URL}/tags`);
 
   if (!res.ok) {
-    throw new Error('Erro ao buscar tags');
+    throw new Error('Error getting tags');
   }
 
   return await res.json();
@@ -27,7 +23,7 @@ export async function createTag(tag: { name: string }): Promise<Tag> {
   });
 
   if (!res.ok) {
-    throw new Error('Erro ao criar tag');
+    throw new Error('Error. creating tag');
   }
 
   return await res.json();
@@ -40,7 +36,7 @@ export async function deleteTag(id: number): Promise<void> {
   });
 
   if (!res.ok) {
-    throw new Error('Erro ao apagar tag');
+    throw new Error('Error deleting tag');
   }
 
   await res.json();
@@ -51,7 +47,7 @@ export async function getTasksByTag(tagId: number): Promise<Task[]> {
   const res = await fetch(`${BASE_URL}/tags/${tagId}/tasks`);
 
   if (!res.ok) {
-    throw new Error('Erro ao buscar tasks da tag');
+    throw new Error('Error getting tags tasks');
   }
 
   return await res.json();
@@ -66,7 +62,7 @@ export async function addTagToTask(taskId: number, tagId: number): Promise<Task>
   });
 
   if (!res.ok) {
-    throw new Error('Erro ao adicionar tag à task');
+    throw new Error('Error adding tag to task');
   }
 
   return await res.json();

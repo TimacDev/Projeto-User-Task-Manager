@@ -13,7 +13,7 @@ export async function getTasks(search, sort) {
     }
     const res = await fetch(url);
     if (!res.ok) {
-        throw new Error('Erro ao buscar tasks');
+        throw new Error('Error getting task');
     }
     return await res.json();
 }
@@ -25,7 +25,7 @@ export async function createTask(task) {
         body: JSON.stringify(task),
     });
     if (!res.ok) {
-        throw new Error('Erro ao criar task');
+        throw new Error('Error creating task');
     }
     return await res.json();
 }
@@ -37,7 +37,7 @@ export async function updateTask(id, task) {
         body: JSON.stringify(task),
     });
     if (!res.ok) {
-        throw new Error('Erro ao atualizar task');
+        throw new Error('Error updating task');
     }
     return await res.json();
 }
@@ -47,7 +47,7 @@ export async function deleteTask(id) {
         method: 'DELETE',
     });
     if (!res.ok) {
-        throw new Error('Erro ao apagar task');
+        throw new Error('Error deleting task');
     }
     await res.json();
 }
@@ -55,7 +55,7 @@ export async function deleteTask(id) {
 export async function getTaskStats() {
     const res = await fetch(`${BASE_URL}/tasks/stats`);
     if (!res.ok) {
-        throw new Error('Erro ao buscar stats de tasks');
+        throw new Error('Error getting task stats');
     }
     return await res.json();
 }
@@ -63,7 +63,7 @@ export async function getTaskStats() {
 export async function getTasksByUser(userId) {
     const res = await fetch(`${BASE_URL}/users/${userId}/tasks`);
     if (!res.ok) {
-        throw new Error('Erro ao buscar tasks do user');
+        throw new Error('Error getting user tasks');
     }
     return await res.json();
 }
